@@ -15,7 +15,7 @@ import fitz
 PAPERS = [("development", "paper/main.pdf", "paper/main.log", "paper/main.tex"),
           ("TEST", "submission_TEST/main_test.pdf", "review/test_build.log",
            "submission_TEST/source/main_test.tex"),
-          ("TEST supplement", "submission_TEST/supplementary.pdf",
+          ("TEST supplement", "submission_TEST/ESM_1.pdf",
            "review/test_supplementary_build.log", "submission_TEST/source/supplementary.tex")]
 
 

@@ -40,6 +40,7 @@ import re
 import shutil
 import subprocess
 import sys
+import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE = os.path.join(ROOT, "test_template")
@@ -47,36 +48,38 @@ TEMPLATE = os.path.join(ROOT, "test_template")
 # TEST's own description of the abstract is a short unstructured summary; Springer's template
 # asks for it without citations and without displayed equations, so this is a separate text.
 ABSTRACT = r"""Quantile regression with covariate measurement error is well understood in
-fixed dimension, where corrected scores and conditional estimating equations give consistent
-estimators, and penalised high-dimensional versions of those routes have been proposed. What
-is missing is a theory for the shortcut that is nonetheless common in practice, and for
-calibration-based inference when the covariates outnumber the observations. The first half of
-this paper closes the first gap with a negative result: convolving the check loss with the
-measurement error distribution is not a correction. At the true coefficient vector the
-population score of the convolved loss is a fixed non-zero multiple of the design error, for
-every kernel with positive density at zero, and under a Gaussian design the population
-minimiser of the smoothed loss is exactly the attenuated value that naive quantile regression
-already targets, whatever the bandwidth. The smoothed estimator therefore shares its limit
-with the naive one. The second half gives the repair: conditioning on the observed covariate
-produces a calibrated regressor under which ordinary quantile regression is correctly
-specified and its score is exactly mean-zero, so penalised estimation and debiased inference
-become available. We give oracle inequalities in the regime where the covariates outnumber
-the observations, first for a known calibration and then for an estimated one, prove that the
-debiased estimator is asymptotically normal with the oracle-calibration variance under an
-explicit condition on the accuracy of the calibration, and show that the sample-covariance
-plug-in does not meet that condition while a known calibration does. The behaviour of the
-intervals is measured in simulations, and the correction is applied to NHANES 2017-2018,
-where the measurement-error covariance is estimated from two dietary recalls rather than
-assumed and the correction changes coefficient magnitudes severalfold."""
+fixed dimension, where corrected scores give consistent estimators, and penalised
+high-dimensional versions have been proposed. What is missing is a theory for the shortcut
+that remains common in practice, and for calibration-based inference when covariates outnumber
+observations. The first half closes that gap with a negative result: convolving the check loss
+with the measurement error distribution is not a correction. At the true coefficient vector
+the population score of the convolved loss is a fixed non-zero multiple of the design error
+for every kernel with positive density at zero; under a Gaussian design the smoothed loss is
+minimised exactly at the attenuated value that naive quantile regression already targets,
+whatever the bandwidth, so the two estimators share their limit. The second half gives the
+repair: conditioning on the observed covariate yields a calibrated regressor under which
+ordinary quantile regression is correctly specified and its score exactly mean-zero, so
+penalised estimation and debiased inference become available. We give oracle inequalities when
+the covariates outnumber the observations, first for a known calibration and then for an
+estimated one, prove asymptotic normality of the debiased estimator with the
+oracle-calibration variance under an explicit condition, and show that the sample-covariance
+plug-in does not meet it. Simulations measure the coverage, and an application to NHANES
+2017-2018, where the measurement-error covariance is estimated from two dietary recalls rather
+than assumed, changes coefficient magnitudes several-fold."""
 
 PREAMBLE_HEAD = r"""%% Submission to TEST (Springer, for the Spanish Society of Statistics and Operations
 %% Research), built from paper/main.tex by simulations/build_test.py -- do not edit by hand.
 \documentclass[pdflatex,sn-basic]{sn-jnl}% author-year references, TEST's convention
 
-%%%% Page geometry. The class sets a binding offset that shifts the text block
+%% Page geometry. The class sets a binding offset that shifts the text block
 %%%% sideways on facing pages; for a PDF that is read on screen we centre it, so
 %%%% that consecutive pages line up. Text width and height are unchanged.
 \geometry{twoside=false,hcentering=true,bindingoffset=0pt}
+
+%%%% The class leaves a full em of vertical space between bibliography entries, which pushes
+%%%% the reference list onto an extra page; a tighter list keeps the paper inside TEST's
+%%%% 20-page limit without dropping a single reference.
+\setlength{\bibsep}{0.35em}
 
 %%%% Standard packages
 \usepackage{graphicx}
@@ -141,17 +144,23 @@ Corrections Fail in Quantile Regression with Measurement Error}
 \author*[1]{\fnm{Kaixu} \sur{Cai}}\email{1006282498@qq.com}
 
 \affil*[1]{\orgdiv{School of Mathematics and Statistics}, \orgname{Guangxi Normal
-University}, \orgaddress{\street{Guilin 541006}, \state{Guangxi}, \country{China}}}
+University}, \orgaddress{\street{Guilin 541006}, \state{Guangxi}, \country{China}}.
+ORCID: 0009-0001-4999-6203}
 
 \abstract{%%ABSTRACT%%}
 
 \keywords{Measurement error, quantile regression, regression calibration, corrected score,
-smoothed check loss, errors-in-variables, debiased inference}
+smoothed check loss, debiased inference}
+
+%% TEST asks for an appropriate number of MSC codes. The class's \pacs macro takes the label
+%% as its optional argument, so it prints as "MSC codes". The same codes go into Editorial
+%% Manager, which is where Mathematical Reviews and Zentralblatt pick them up.
+\pacs[MSC codes]{62J05 (primary), 62G08, 62G20, 62J07, 62H12}
 
 \maketitle
 """
 
-SI_FRONTMATTER = r"""%% Supplementary material for the TEST submission, built by simulations/build_test.py.
+SI_FRONTMATTER = r"""%% Online Resource 1 (ESM_1.pdf) for the TEST submission, built by simulations/build_test.py.
 \documentclass[pdflatex,sn-basic]{sn-jnl}
 \geometry{twoside=false,hcentering=true,bindingoffset=0pt}% same centred block as the paper
 \usepackage{graphicx}
@@ -168,46 +177,58 @@ SI_FRONTMATTER = r"""%% Supplementary material for the TEST submission, built by
 """ + DEFS + r"""
 \begin{document}
 
-\title[Supplementary material]{Supplementary material for ``The Smoothed-Check-Loss Trap: Why
-Convolution-Based Corrections Fail in Quantile Regression with Measurement Error''}
+%% Springer asks every supplementary file to carry the article title, the journal, the
+%% author, the affiliation and the e-mail address of the corresponding author.
+\title[Online Resource 1]{Online Resource 1: Supplementary material for ``The
+Smoothed-Check-Loss Trap: Why Convolution-Based Corrections Fail in Quantile Regression with
+Measurement Error''}
 
 \author*[1]{\fnm{Kaixu} \sur{Cai}}\email{1006282498@qq.com}
 
 \affil*[1]{\orgdiv{School of Mathematics and Statistics}, \orgname{Guangxi Normal
-University}, \orgaddress{\street{Guilin 541006}, \state{Guangxi}, \country{China}}}
+University}, \orgaddress{\street{Guilin 541006}, \state{Guangxi}, \country{China}}.
+ORCID: 0009-0001-4999-6203}
+
+\abstract{Appendix A gives the proofs of all results stated in the paper. Appendix B collects
+the computational details of the population targets, the quadrature used for the loss curves and
+the design of the simulation study. Appendix C reports the numerical studies that support the
+theory but are not needed for the argument of the paper. Appendix D is the reproducibility
+inventory: the scripts, the independent verification scripts and the archived locations of the
+code and results.}
+
+\keywords{Supplementary material: proofs, computational details, reproducibility}
 
 \maketitle
 """
 
-BACKMATTER = r"""
-\backmatter
+# Springer numbers the tables and figures of a supplementary file S1, S2, ..., so that they
+# cannot be confused with the tables and figures of the paper.
+SI_NUMBERING = r"""
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+"""
+
+BACKMATTER = r"""\backmatter
 
 \bmhead{Acknowledgments}
 The author gratefully acknowledges the developers of the NumPy, SciPy and scikit-learn
 packages, which were used for all computations reported here, and the US Centers for Disease
 Control and Prevention for making the NHANES public-use data available.
 
-\section*{Declarations}
+\bmhead{Statements and Declarations}
 
-\begin{itemize}
-\item Funding: This work was not supported by any funding agency.
-\item Competing interests: The author declares no competing interests.
-\item Ethics approval: Not applicable; the study uses publicly available, de-identified
-secondary data.
-\item Consent to participate: Not applicable.
-\item Consent for publication: Not applicable.
-\item Availability of data and materials: All data are publicly available. The simulation
-studies use synthetic Gaussian covariates and known Gaussian measurement error and need no
-external data. The application uses the NHANES 2017--2018 public-use demographic,
-body-measure and two 24-hour dietary-recall files, archived by the US Centers for Disease
-Control and Prevention at \texttt{https://wwwn.cdc.gov/nchs/nhanes/}.
-\item Code availability: The scripts that produce every table and figure, together with their
-saved output and the verification scripts, are archived in a version-controlled repository and
-on Zenodo: \texttt{https://doi.org/10.5281/zenodo.23175827} (repository:
-\texttt{https://github.com/CIKIXI/smoothed-check-loss-trap}).
-\item Authors' contributions: Kaixu Cai is the sole author and carried out all parts of the
-work.
-\end{itemize}
+\noindent Funding: this work was not supported by any funding agency. Competing interests:
+the author declares no competing interests. Ethics approval: not applicable, as the study
+uses publicly available, de-identified secondary data; consent to participate and consent
+for publication are likewise not applicable. Data availability: all data are publicly
+available, the simulations using synthetic Gaussian covariates and known Gaussian
+measurement error and the application using the NHANES 2017--2018 public-use demographic,
+body-measure and two 24-hour dietary-recall files archived at
+\texttt{https://wwwn.cdc.gov/nchs/nhanes/}. Code availability: the scripts that produce
+every table and figure, with their saved output and the verification scripts, are archived
+at \texttt{https://doi.org/10.5281/zenodo.23175827} (repository:
+\texttt{https://github.com/CIKIXI/smoothed-check-loss-trap}). Authors' contributions: Kaixu
+Cai is the sole author and carried out all parts of the work.
 """
 
 
@@ -282,20 +303,29 @@ def main():
                         os.path.join(figdir, name + ".pdf"))
         figs.append(name + ".pdf")
     body = re.sub(r"\.\./figures/([A-Za-z0-9_]+)\.pdf", r"figures/\1.pdf", body)
+    # the appendix material travels to the SI with the same figure paths
+    proofs = re.sub(r"\.\./figures/([A-Za-z0-9_]+)\.pdf", r"figures/\1.pdf", proofs)
+    rest = re.sub(r"\.\./figures/([A-Za-z0-9_]+)\.pdf", r"figures/\1.pdf", rest)
 
-    # Cross-references to appendices that leave the paper.
+    # Cross-references to appendices that leave the paper. Springer asks for supplementary
+    # files to be cited as "Online Resource", with the file itself named ESM_<n>.
     def retarget(text, moved, label, letter):
         if label not in moved:
             return text
-        tail = r"Appendix~" + letter + " of the supplementary material"
+        tail = r"Appendix~" + letter + " of Online Resource~1"
         text = text.replace(r"\S\ref{" + label + "}", tail)          # "(\S\ref{...}"
         text = text.replace(r"Appendix~\ref{" + label + "}", tail)
         text = text.replace(r"\ref{" + label + "}", letter)          # anything left bare
         return text
 
+    # Appendix letters in the order they appear in paper/main.tex. Anything that leaves the
+    # paper is cited from the main text as "Appendix <letter> of Online Resource 1".
+    APPENDICES = [("app:proofs", "A"), ("app:computation", "B"), ("app:numerics", "C"),
+                  ("app:repro", "D")]
     moved = {"app:proofs": args.si == "all", "app:computation": args.si in ("all", "proofs"),
+             "app:numerics": args.si in ("all", "proofs"),
              "app:repro": args.si in ("all", "proofs")}
-    for label, letter in (("app:proofs", "A"), ("app:computation", "B"), ("app:repro", "C")):
+    for label, letter in APPENDICES:
         body = retarget(body, moved, label, letter)
 
     keep = []
@@ -305,7 +335,7 @@ def main():
         keep.append(rest)
     appendix_text = "\n\n".join(keep)
     backmatter = BACKMATTER
-    for label, letter in (("app:proofs", "A"), ("app:computation", "B"), ("app:repro", "C")):
+    for label, letter in APPENDICES:
         backmatter = retarget(backmatter, moved, label, letter)
     main_body = (body + ("\n\\begin{appendices}\n" + appendix_text + "\n\\end{appendices}\n"
                          if appendix_text else "")
@@ -326,8 +356,11 @@ def main():
                                         (rest if moved["app:computation"] else "")) if x)
         prefix = "\\setcounter{section}{1}%\n" if not moved["app:proofs"] else ""
         io.open(si_tex, "w", encoding="utf-8").write(
-            SI_FRONTMATTER + "\n\\begin{appendices}\n" + prefix + si_body
-            + "\n\\end{appendices}\n\n\\end{document}\n")
+            SI_FRONTMATTER + "\n\\begin{appendices}\n" + prefix + SI_NUMBERING + si_body
+            + "\n\\end{appendices}\n\n"
+            # the appendices cite the literature too, so the file carries its own list
+            # (the class already sets the bibliography style)
+            + "\\bibliography{references}\n\n\\end{document}\n")
         print(f"[written] {os.path.relpath(si_tex, ROOT)}")
 
     for name in ("sn-jnl.cls", "sn-basic.bst"):
@@ -341,7 +374,9 @@ def main():
     run("pdflatex -interaction=nonstopmode -halt-on-error main_test.tex", src)
     run("pdflatex -interaction=nonstopmode -halt-on-error main_test.tex", src)
     if args.si != "none":
-        print("[compile] supplementary.tex (after the main file, for xr): pdflatex x2")
+        print("[compile] supplementary.tex (after the main file, for xr): pdflatex + bibtex + x2")
+        run("pdflatex -interaction=nonstopmode -halt-on-error supplementary.tex", src)
+        run("bibtex supplementary", src)
         run("pdflatex -interaction=nonstopmode -halt-on-error supplementary.tex", src)
         run("pdflatex -interaction=nonstopmode -halt-on-error supplementary.tex", src)
 
@@ -350,10 +385,12 @@ def main():
     print("[compile] cover_letter_test.tex")
     run("pdflatex -interaction=nonstopmode -halt-on-error cover_letter_test.tex", src)
 
-    for name in ("main_test.pdf", "supplementary.pdf", "cover_letter_test.pdf"):
+    # Springer asks supplementary files to be named ESM_<n>; the SI is Online Resource 1.
+    renamed = {"main_test.pdf": "main_test.pdf", "supplementary.pdf": "ESM_1.pdf",
+               "cover_letter_test.pdf": "cover_letter.pdf"}
+    for name, dest in renamed.items():
         p = os.path.join(src, name)
         if os.path.exists(p):
-            dest = "cover_letter.pdf" if name == "cover_letter_test.pdf" else name
             shutil.copyfile(p, os.path.join(pkg, dest))
             os.remove(p)
     for f, dest in (("main_test.log", "review/test_build.log"),
@@ -367,15 +404,27 @@ def main():
 
     pages = count_pages(os.path.join(pkg, "main_test.pdf"))
     cover_pages = count_pages(os.path.join(pkg, "cover_letter.pdf"))
-    si_pages = (count_pages(os.path.join(pkg, "supplementary.pdf"))
-                if os.path.exists(os.path.join(pkg, "supplementary.pdf")) else 0)
+    si_pages = (count_pages(os.path.join(pkg, "ESM_1.pdf"))
+                if os.path.exists(os.path.join(pkg, "ESM_1.pdf")) else 0)
     with io.open(os.path.join(ROOT, "paper", "references.bib"), encoding="utf-8") as fh:
         nrefs = len(re.findall(r"^@", fh.read(), re.M))
+
+    # Springer requires the editable sources at every submission ("failing to submit a
+    # complete set of editable source files will result in your article not being considered
+    # for review"), so they travel as one archive next to the PDFs.
+    zip_path = os.path.join(pkg, "latex_source.zip")
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+        for root, _dirs, files in os.walk(src):
+            for f in sorted(files):
+                full = os.path.join(root, f)
+                z.write(full, os.path.relpath(full, src))
+
     print(f"\n[package] {args.out}")
     print(f"  main_test.pdf     {pages} pages")
     if si_pages:
-        print(f"  supplementary.pdf {si_pages} pages")
+        print(f"  ESM_1.pdf         {si_pages} pages (Online Resource 1)")
     print(f"  cover_letter.pdf  {cover_pages} page")
+    print(f"  latex_source.zip  {round(os.path.getsize(zip_path) / 1024)} KB (editable sources)")
     print(f"  source/           main_test.tex, supplementary.tex, references.bib ({nrefs} "
           f"entries), sn-jnl.cls, sn-basic.bst, {len(figs)} figures")
     return dict(pages=pages, si_pages=si_pages)

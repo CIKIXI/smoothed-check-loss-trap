@@ -11,7 +11,7 @@ Run:  python review/page_top_indent.py
 import fitz
 
 DOCS = [("TEST paper", "submission_TEST/main_test.pdf"),
-        ("TEST supplement", "submission_TEST/supplementary.pdf"),
+        ("TEST supplement", "submission_TEST/ESM_1.pdf"),
         ("development", "paper/main.pdf")]
 
 BODY_LEFT = {"TEST paper": 112.3, "TEST supplement": 112.3, "development": 72.0}

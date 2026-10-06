@@ -114,182 +114,99 @@ calibration; corrected score; smoothed check loss; errors-in-variables; debiased
 \section{Introduction}
 % ============================================================
 
-Covariates are rarely observed exactly. Gene expression measured by RNA-seq carries
-technical noise \citep{carroll2006measurement}; pollutant exposures are obtained by
-spatial interpolation of sparse monitoring networks \citep{gryparis2009measurement};
-functional connectivity in imaging studies has test--retest reliability far below one
-\citep{noble2017}; dietary intake, which is measured by 24-hour recall, is the example we
-use in \S\ref{sec:nhanes}. When such a covariate enters a regression, classical measurement
-error $W = X + U$ attenuates mean-regression coefficients, and quantile regression
-\citep{koenker1978} is often preferred because it describes effects away from
-the centre of the response distribution.
+Covariates are rarely observed exactly: RNA-seq expression is noisy
+\citep{carroll2006measurement}, pollutant exposures are interpolated from sparse monitors
+\citep{gryparis2009measurement}, imaging connectivity has test--retest reliability far below
+one \citep{noble2017}, and dietary intake from 24-hour recall, our example in
+\S\ref{sec:nhanes}. Classical measurement error $W=X+U$ attenuates mean-regression
+coefficients, and quantile regression \citep{koenker1978} describes effects away from the
+centre.
 
-For mean regression the correction problem is well understood: correct the loss, the
-score, or the design \citep{fuller1987,carroll2006measurement}. Among these devices the
-\emph{corrected score} of \citet{stefanski1989} and \citet{nakamura1990} is the most
-portable, because it needs only the measurement error distribution and not the
-distribution of the latent covariate. It works by finding a function whose expectation
-under the observed data equals the expectation of the infeasible score. Its applicability
-is, however, restricted to losses with a polynomial--exponential structure. The check
-loss $\rho_\tau(u) = u(\tau - \ind{u<0})$ is not of this type, and the recipe that has
-been used instead is to \emph{convolve the loss} with the measurement error distribution.
-Since $U^\top\beta \sim \cN(0,\beta^\top\Sigma_u\beta)$ this yields the closed form
+For mean regression the remedies are standard: correct the loss, the score, or the design
+\citep{fuller1987,carroll2006measurement}. The most portable is the \emph{corrected score} of
+\citet{stefanski1989} and \citet{nakamura1990}, needing only the measurement error
+distribution but a polynomial--exponential loss. The check loss
+$\rho_\tau(u)=u(\tau-\ind{u<0})$ is not of that type; the recipe used instead
+\emph{convolves the loss} with the measurement error distribution, as
+$U^\top\beta\sim\cN(0,\beta^\top\Sigma_u\beta)$, giving the closed form
 \begin{equation}
 \rht(r,\sigma) \;=\; r\Big[\Phi\!\Big(\frac{r}{\sigma}\Big)-(1-\tau)\Big]
 + \sigma\phi\!\Big(\frac{r}{\sigma}\Big),
 \qquad \sigma^2 = \beta^\top\Sigma_u\beta,
 \label{eq:loss}
 \end{equation}
-with $\Phi,\phi$ the standard normal cdf and density, and the associated smoothed score
-$\psit(r,\sigma) = \Phi(r/\sigma)-(1-\tau)$.
+with $\Phi,\phi$ the standard normal cdf and density, and smoothed score
+$\psit(r,\sigma)=\Phi(r/\sigma)-(1-\tau)$.
 
-This article is about what \eqref{eq:loss} actually estimates. Our starting point is an
-identity: \eqref{eq:loss} is exactly the check loss convolved with $\cN(0,\sigma^2)$,
+This article is about what \eqref{eq:loss} estimates. It is the check loss convolved
+with $\cN(0,\sigma^2)$,
 \begin{equation}
 \rht(r,\sigma) = \E_{Z\sim\cN(0,\sigma^2)}\big[\rho_\tau(r-Z)\big],
 \label{eq:identity}
 \end{equation}
-so minimising the empirical version of $\rht(Y-W^\top\beta,\sigma)$ is minimising the
-check loss of the residual $Y-W^\top\beta - Z = Y - X^\top\beta - U^\top\beta - Z$. The
-residual therefore contains \emph{two} independent copies of the measurement error in the
-direction $\beta$: the realised $U^\top\beta$ and the added $Z$. Convolution adds noise;
-it cannot remove it.
+so minimising the empirical $\rht(Y-W^\top\beta,\sigma)$ adds $Z$ to a residual that already
+contains $U^\top\beta$: two independent copies of the measurement error along $\beta$.
 
-This observation has sharp consequences, and they are what the paper establishes.
+\paragraph{Smoothing cannot work (Theorem~\ref{thm:score}, Lemma~\ref{lem:bias},
+Proposition~\ref{prop:target}).} The population score is
+$\E[W\psit(r_i^*,\sigma)]=-(\Sigma_u\betas)\,d(\sigma)$, with
+$d(\sigma)=(\cN(0,\sigma^{*2}+\sigma^2)*f_\varepsilon)(0)>0$ and
+$\sigma^{*2}={\betas}^\top\Sigma_u\betas$: the bias is of order $\|\Sigma_u\betas\|$, does not
+vanish with $n$, and cannot be tuned away, the identity holding for all $\sigma>0$. A
+first-order expansion, exact under the Gaussian design
+(Proposition~\ref{prop:exact-target}), identifies the target as the \emph{attenuated}
+parameter $\bbar=(\Sigma_x+\Sigma_u)^{-1}\Sigma_x\betas$,
+$\|\bbar-\betas\|\ge\|\Sigma_u\betas\|\,d(\sigma)\,\sigma/(\lambda_{\max}(\Sigma_x+\Sigma_u)\phi(0))$,
+also the target of \emph{naive} quantile regression on $W$
+(Corollary~\ref{cor:same-target}), bounded away from zero by the mean value theorem. No
+other convolution repairs it (Corollary~\ref{cor:no-conv}): any kernel covariance
+$\Sigma_k\succ0$ leaves $\E[W\psit]=-(\Sigma_k\betas)\,d_k$ non-zero whenever
+$\Sigma_k\betas\neq0$, so the \emph{posterior} covariance of $X$ given $W$ is still
+inconsistent, its self-consistent scale minimising at the attenuated value
+(Proposition~\ref{prop:posterior-adaptive}, verified in \S\ref{sec:targets}).
 
-\paragraph{The smoothed score is biased at $\betas$, for every scale
-(Theorem~\ref{thm:score}).} We compute the population score exactly:
-$\E[W\psit(r_i^*,\sigma)] = -(\Sigma_u\betas)\,d(\sigma)$ where $d(\sigma) =
-(\cN(0,\sigma^{*2}+\sigma^2)*f_\varepsilon)(0)>0$ and $\sigma^{*2} =
-{\betas}^\top\Sigma_u\betas$. The bias is of order $\|\Sigma_u\betas\|$ and does not vanish
-with $n$, and it cannot be tuned away, because the identity holds simultaneously for
-all $\sigma>0$. This includes the scale produced by any pilot estimate.
-
-\paragraph{The population target is displaced (Lemma~\ref{lem:bias} and
-Proposition~\ref{prop:target}).} Since the loss is convex in $\beta$ for fixed $\sigma$, a
-non-zero gradient at $\betas$ means $\betas$ is not a minimiser; the mean value theorem
-gives the explicit lower bound $\|\bbar-\betas\| \ge
-\|\Sigma_u\betas\|\,d(\sigma)\,\sigma / (\lambda_{\max}(\Sigma_x+\Sigma_u)\phi(0))$,
-which is bounded away from zero. A first-order expansion, and exactly so under the Gaussian
-design (Proposition~\ref{prop:exact-target}), identifies the target as the \emph{attenuated}
-parameter
-$\bbar = (\Sigma_x+\Sigma_u)^{-1}\Sigma_x\betas$, which, as we also show
-(Corollary~\ref{cor:same-target}), is the parameter that \emph{naive} quantile
-regression on $W$ targets. Smoothing therefore changes the finite-sample behaviour of the
-estimator but not the estimand: it cannot remove attenuation.
-
-\paragraph{No convolution can repair it (Corollary~\ref{cor:no-conv}).} Replacing
-$\Sigma_u$ by any other kernel covariance $\Sigma_k \succ 0$ in \eqref{eq:identity}
-leaves the score $\E[W\psit] = -(\Sigma_k\betas)\,d_k$ non-zero whenever
-$\Sigma_k\betas \neq 0$. In particular the tempting repair of convolving with the
-\emph{posterior} covariance of $X$ given $W$, which is smaller than $\Sigma_u$, is still
-inconsistent; we verify this numerically in \S\ref{sec:targets}, and
-Proposition~\ref{prop:posterior-adaptive} shows that with its self-consistent scale it
-has the attenuated value itself as its population minimiser. The obstruction is
-structural: the $\tau$-quantile functional is not equivariant under convolution, whereas
-the mean functional is. Convolution-based corrections therefore work for squared loss and
-fail for the check loss.
-
-\paragraph{The correct operation is conditioning, not convolving
-(Theorem~\ref{thm:calib}).} Condition on the observed covariate. Under a Gaussian design
-the calibrated covariate $\muv = \Ccal W$ with $\Ccal = \Sigma_x(\Sigma_x+\Sigma_u)^{-1}$
-satisfies $Y = \muv^\top\betas + e$ where $e$ is independent of $\muv$ and
-$Q_\tau(e\mid\muv) = \delta_\tau$ is a constant. Hence an ordinary quantile regression of
-$Y$ on $(\muv,1)$ is a correctly specified linear quantile regression model: the slope is
-$\betas$ for every $\tau$ and the intercept estimates $\delta_\tau$. The check loss is
-kept, nothing is smoothed, and the calibrated score is exactly mean-zero, which is what
-makes the debiasing of \S\ref{sec:debiasing} available here and unavailable for the
-smoothed loss.
-Theorem~\ref{thm:lowdim} gives consistency and asymptotic normality in fixed dimension and
-Theorem~\ref{thm:highdim} the $\ell_1$ oracle inequality when the calibration is known.
-
-\paragraph{The oracle calibration can be estimated (Theorem~\ref{thm:estimated}).}
-In $p\gg n$ the calibration matrix $\Ccal$ must itself be estimated. We give a
-perturbation lemma for $\hat\Ccal=\hat\Sigma_x(\hat\Sigma_x+\Sigma_u)^{-1}$, show that the
-restricted eigenvalue condition transfers to the estimated design, and control the
-sup-norm of the score, which is the quantity the penalty must dominate. The resulting
-oracle inequality has the standard rates whenever the calibration is row-wise accurate;
-Remark~\ref{rem:spectral-not-enough} explains why spectral accuracy alone is provably not
-enough, and \S\ref{sec:hd-est} shows numerically that in banded designs the plug-in is
-indistinguishable from the oracle.
-
-\paragraph{Debiased inference becomes available, under a condition we can state
-(\S\ref{sec:debiasing}).} Because \eqref{eq:calib-score} holds exactly, the standard
-debiasing construction applies to the calibrated estimator, and we prove its asymptotic
-normality, with the oracle-calibration variance, under an explicit condition on the accuracy
-of the calibration: the design-error part of the penalty must be $o_P(n^{-1/2})$. A known
-calibration satisfies this; the sample-covariance plug-in does not, because its row-wise
-$\ell_1$ error is of order $\sqrt{\log p/n}$, which leaves a bias of order $\sqrt{\log p}$
-standard errors (Proposition~\ref{prop:plugin}). We also implement the construction and
-report what it needed: refitting the initial estimator on the selected support, because
-one-step debiasing fails when the $\ell_1$ bias is large (we measure coverage $0.25$
-for the $\ell_1$ initial estimator at the theory-scale penalty), and using the exact indicator
-score rather than a smoothed one. With both, coverage is $0.973$--$0.981$ in our
-simulations, against the penalised estimator's own $0.08$--$0.75$
-(Table~\ref{tab:debias}), while the plug-in calibration loses the nominal level at
-$\sigma_u=0.5$ (Table~\ref{tab:plugin}).
-
-Section~\ref{sec:setup} fixes notation and records the identity
-\eqref{eq:identity}. Section~\ref{sec:negative} contains the negative results for the
-smoothed loss, Section~\ref{sec:fix} the calibration identity and the estimator,
-Section~\ref{sec:estimated} the theory with an estimated calibration,
-Section~\ref{sec:debiasing} inference, Section~\ref{sec:simu} the numerical evidence, and
-Section~\ref{sec:discussion} the discussion. Proofs are in Appendix~\ref{app:proofs}.
+\paragraph{The correct operation is conditioning (Theorem~\ref{thm:calib}).} Under a Gaussian
+design the calibrated covariate $\muv=\Ccal W$, with
+$\Ccal=\Sigma_x(\Sigma_x+\Sigma_u)^{-1}$, gives $Y=\muv^\top\betas+e$ with $e$ independent of
+$\muv$ and $Q_\tau(e\mid\muv)=\delta_\tau$ constant, so quantile regression of $Y$ on
+$(\muv,1)$ is correctly specified, with slope $\betas$ for all $\tau$. The calibrated score
+is exactly mean-zero, so the debiasing of \S\ref{sec:debiasing} applies here but not to the
+smoothed loss. Theorem~\ref{thm:lowdim} and Theorem~\ref{thm:highdim}
+give the fixed-dimensional and $\ell_1$-oracle results.
 
 \medskip
 \noindent\textbf{Relation to the literature.}
-Corrected scores for measurement error go back to \citet{stefanski1989} and
-\citet{nakamura1990}; \citet{fuller1987} and \citet{carroll2006measurement} survey the
-field. For quantile regression in fixed dimension, three approaches are known to work.
-\citet{he2000quantile} use orthogonal residuals under spherical symmetry.
-\citet{wei2009quantile} solve the conditional estimating equation
-$n^{-1}\sum_i\int_x \Psi_\tau(y_i-x^\top\beta)x\,f(x\mid y_i,w_i)\,dx=0$, whose estimating
-function is unbiased by construction, via an EM-type algorithm over a grid of quantile
-levels. \citet{wang2012correctedloss} construct a genuine corrected loss: they smooth the
-check loss and then remove the measurement-error bias either by \citet{stefanski1989}'s
-complex-argument device (for normal errors) or by a second-derivative correction (for
-Laplace errors), and prove consistency and asymptotic normality. Our negative result in
-\S\ref{sec:negative} concerns none of these; it concerns the shortcut of convolving the
-check loss with the measurement error distribution while holding the bandwidth fixed at the
-measurement-error scale. That shortcut is not a corrected score: the convolution is a
-smoothing operator, whereas the corrections above invert it. It is attractive in high
-dimensions because it is a convex, closed-form loss. We show
-it fails, and explain why the corrected-score devices that do work cannot be replaced by
-it.
+Corrected scores go back to \citet{stefanski1989} and \citet{nakamura1990}, surveyed with the
+wider field by \citet{fuller1987} and \citet{carroll2006measurement}. Three fixed-dimension
+corrections work: orthogonal residuals under spherical symmetry \citep{he2000quantile}; the
+unbiased conditional estimating equation
+$n^{-1}\sum_i\int_x \Psi_\tau(y_i-x^\top\beta)x\,f(x\mid y_i,w_i)\,dx=0$, solved by
+\citet{wei2009quantile} through EM over quantile levels; and a smoothed loss that
+\citet{wang2012correctedloss} debias by \citet{stefanski1989}'s complex-argument device
+(normal errors) or a second-derivative correction (Laplace errors). Our negative result in
+\S\ref{sec:negative} concerns not these but the shortcut of convolving the check loss with the
+measurement error distribution at a bandwidth fixed at the error scale
+(Proposition~\ref{prop:exact-target}).
 
-The high-dimensional literature on measurement error in quantile regression has developed
-along two lines. \citet{kaul2015weighted} penalise a weighted corrected score and prove
-$\ell_1$ consistency and model selection consistency when the number of covariates may grow
-exponentially with $n$; their latent covariates are treated as fixed, the correction is a
-Stefanski-type device rather than a convolution, and the target is $\betas$ rather than the
-attenuated parameter. \citet{bai2021variable} combine penalised quantile regression with
-missing data and measurement error through a corrected loss, again in a non-random-design
-setting, and \citet{ma2022highdim} develop theory for high-dimensional measurement error
-models under a general Lipschitz loss, quantile regression included. Our negative result
-concerns a different object: the loss obtained by convolving the check loss with the
-measurement error distribution at a bandwidth tied to the error scale, which is what a
-practitioner reaches for because it is closed-form and convex. To our knowledge that
-shortcut has not been analysed, and the reason is now clear: it cannot work at any bandwidth
-(Proposition~\ref{prop:exact-target}). Identification of quantile models with mismeasured
-covariates by instrumental variables goes back to \citet{schennach2008quantile}, and the
-censored-data branch uses smoothed and corrected scores
-\citep{ma2011censored,wu2015smoothed}; SIMEX has been applied to quantile-type problems
-\citep{shang2012measurement,tekwe2022estimation}, the latter on NHANES physical-activity
-data. None of these uses the raw design $W$ with a fixed-bandwidth convolution, and none
-provides debiased inference for the calibrated estimator.
+In high dimensions, \citet{kaul2015weighted} prove $\ell_1$ consistency for a weighted
+corrected score with many covariates, targeting $\betas$ rather than the attenuated
+parameter; \citet{bai2021variable} treat quantile regression with
+missingness and measurement error through a corrected loss; \citet{ma2022highdim} a general
+Lipschitz loss. Instrumental-variable identification goes to \citet{schennach2008quantile};
+censored-data work uses smoothed and corrected scores \citep{ma2011censored,wu2015smoothed}
+and SIMEX \citep{shang2012measurement,tekwe2022estimation}, the latter on NHANES
+physical-activity data. None uses the raw design $W$ with fixed bandwidth.
 
 For high-dimensional quantile regression without measurement error we rely on
-\citet{belloni2011l1} and \citet{wang2012}, and for the general theory of regularised
-$M$-estimators on \citet{negahban2012unified} and \citet{buhlmann2011statistics}; the
-smoothed check loss we analyse is the standard device of
-\citet{fernandes2021smoothing} and \citet{he2023smoothed}, used there with a bandwidth that
-tends to zero. For high-dimensional measurement error in mean regression we rely on
-\citet{rosenbaum2010}, \citet{datta2017cocolasso} and \citet{loh2012highdim}, the last of
-which provides the template for regression with an imperfectly observed design. For
-debiased inference we use \citet{zhang2014confidence},
-\citet{vandegeer2014asymptotically}, \citet{javanmard2014hypothesis} and, for quantile
-regression, \citet{bradic2017uniform}. Regression calibration is classical
-\citep{carroll2006measurement} and is the device our estimator uses.
+\citet{belloni2011l1} and \citet{wang2012}, for regularised $M$-estimation on
+\citet{negahban2012unified} and \citet{buhlmann2011statistics}, and for mean-regression
+measurement error on \citet{rosenbaum2010}, \citet{datta2017cocolasso} and
+\citet{loh2012highdim}; the smoothed check loss is the device of
+\citet{fernandes2021smoothing} and \citet{he2023smoothed} at a vanishing bandwidth, and our
+debiasing follows \citet{zhang2014confidence},
+\citet{vandegeer2014asymptotically} and \citet{javanmard2014hypothesis}, with
+\citet{bradic2017uniform} for quantile regression. Regression calibration
+\citep{carroll2006measurement} is the device our estimator uses.
 
 % ============================================================
 \section{Setup and the smoothing identity}
@@ -336,12 +253,10 @@ $\sigma\downarrow0$.
 \end{lemma}
 
 \begin{proof}
-See Appendix~\ref{app:proofs}. The identity follows by differentiating
-$\E_Z[\rho_\tau(r-\sigma Z)]$ with respect to $r$ and matching the limits as
-$r\to-\infty$.
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
-\begin{remark}[What the residual contains]
+\begin{remark}[What smoothing buys, and what it contains]
 \label{rem:double}
 By Lemma~\ref{lem:identity}, the population objective of a fixed-scale smoothed
 estimator is
@@ -351,20 +266,16 @@ L_\sigma(\beta) = \E\big[\rht(Y-W^\top\beta,\sigma)\big]
 \qquad Z\sim\cN(0,\sigma^2),
 \label{eq:double}
 \end{equation}
-with $Z$ independent of $(X,U,\varepsilon)$.
-At $\beta=\betas$ the argument of the check loss is
+with $Z$ independent of $(X,U,\varepsilon)$. At $\beta=\betas$ the argument of the check loss is
 $\varepsilon_i - U_i^\top\betas - Z_i$, whose variance is
-$\mathrm{Var}(\varepsilon)+\sigma^{*2}+\sigma^2$; the measurement error enters \emph{with}
-the added Gaussian, not instead of it. Section~\ref{sec:negative} shows that this is not
-a cosmetic difference: it moves the minimiser.
-\end{remark}
-
-\begin{remark}[Optimisation, not statistics, is what smoothing buys]
-For fixed $\sigma$ the objective $\beta\mapsto L_\sigma(\beta)$ is convex, which is the
-practical advantage usually attributed to \eqref{eq:loss}. Lemma~\ref{lem:identity}
-identifies the price: the same smoothing that convexifies the loss also changes the
-parameter it estimates. A convex surrogate for computation must be paired with a target
-that is corrected separately; \S\ref{sec:fix} shows how.
+$\mathrm{Var}(\varepsilon)+\sigma^{*2}+\sigma^2$: the measurement error enters \emph{with}
+the added Gaussian, not instead of it, and Section~\ref{sec:negative} shows that this is not
+a cosmetic difference, because it moves the minimiser. For fixed $\sigma$ the objective
+$\beta\mapsto L_\sigma(\beta)$ is convex, which is the practical advantage usually attributed
+to \eqref{eq:loss}; Lemma~\ref{lem:identity} identifies the price, namely that the same
+smoothing which convexifies the loss also changes the parameter it estimates. A convex
+surrogate for computation must therefore be paired with a target corrected separately, which
+is what \S\ref{sec:fix} does.
 \end{remark}
 
 % ============================================================
@@ -372,9 +283,8 @@ that is corrected separately; \S\ref{sec:fix} shows how.
 \label{sec:negative}
 % ============================================================
 
-Throughout this section $\sigma>0$ is an arbitrary \emph{fixed} scale, as in the
-two-stage algorithms that compute a pilot estimate and then hold its scale fixed. No
-sparsity, rate, or dimension condition is imposed.
+Throughout, $\sigma>0$ is a \emph{fixed} scale, as in two-stage algorithms that hold a pilot
+scale fixed. No sparsity or dimension condition is imposed.
 
 \begin{theorem}[The smoothed score has a non-vanishing mean]
 \label{thm:score}
@@ -392,35 +302,14 @@ In particular the score is mean-zero at $\betas$ only if $\Sigma_u\betas = 0$, i
 if the measurement error does not affect the regression function.
 \end{theorem}
 
-\begin{proof}[Proof]
-Condition on $\varepsilon_i=e$. The map
-$z\mapsto h(z) = \Phi((e-z)/\sigma)-(1-\tau)$ is Lipschitz, so Stein's lemma applies to
-the jointly Gaussian pair $(U_{ij},U_i^\top\betas)$:
-$\E[U_{ij}h(U_i^\top\betas)] = (\Sigma_u\betas)_j\,\E[h'(U_i^\top\betas)]
-= -(\Sigma_u\betas)_j\,\E[\phi((e-U_i^\top\betas)/\sigma)]/\sigma$.
-Since $U_i^\top\betas\sim\cN(0,\sigma^{*2})$,
-$\E[\phi((e-U_i^\top\betas)/\sigma)]/\sigma = g(e)$, the density of
-$e+\cN(0,\sigma^{*2}+\sigma^2)$ evaluated at $0$. Integrating over $e$ gives
-$\E[U_{ij}\psit(r_i^*,\sigma)] = -(\Sigma_u\betas)_j d(\sigma)$ with
-$d(\sigma) = \E[g(\varepsilon_i)] = (\cN(0,\sigma^{*2}+\sigma^2)*f_\varepsilon)(0)$.
-Finally $\psit(r_i^*,\sigma)$ is a function of $(\varepsilon_i,U_i)$ only, so
-$\E[X_{ij}\psit(r_i^*,\sigma)] = \E[X_{ij}]\E[\psit(r_i^*,\sigma)] = 0$, and
-$W_i = X_i+U_i$ gives \eqref{eq:score-bias}. Positivity of $d(\sigma)$ follows from
-$f_\varepsilon(0)>0$ and continuity.
+\begin{proof}
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
-\begin{remark}[Three consequences of Theorem~\ref{thm:score}]
-(i) The bias is $O(\|\Sigma_u\betas\|)$, independent of $n$: it is a target shift, not a
-variance effect. (ii) It holds for \emph{every} $\sigma>0$, so no data-driven choice of
-scale, including a pilot-based $\sigmah$, removes it. (iii) It is not a defect of the
-estimator (penalised, unpenalised, high- or low-dimensional); any consistent estimator of
-$\betas$ must solve an estimating equation that is mean-zero at $\betas$, and
-\eqref{eq:score-bias} says this one is not.
+\begin{remark}
+The bias is $O(\|\Sigma_u\betas\|)$, independent of $n$, and non-zero at every $\sigma>0$:
+no data-driven scale, including a pilot-based $\sigmah$, removes it.
 \end{remark}
-
-Theorem~\ref{thm:score} is stated for a Gaussian kernel and a fixed scale. Both
-restrictions can be removed, and doing so turns the result into an impossibility statement
-about the whole class of convolution-type corrections.
 
 \begin{theorem}[No convolution kernel is a corrected score]
 \label{thm:kernel-class}
@@ -444,15 +333,7 @@ particular the posterior covariance $\Sxw$ suggested by calibration.
 \end{theorem}
 
 \begin{proof}
-The score is $\psi_G(r) = F_G(r)-(1-\tau)$, so with $h(z) := F_G(\varepsilon_i-z)-(1-\tau)$,
-$h'(z) = -g(\varepsilon_i-z)$. Conditioning on $\varepsilon_i$ and applying Stein's lemma to
-$(U_{ij},U_i^\top\betas)$ gives
-$\E[U_{ij}\psi_G(r_i^*)] = -(\Sigma_u\betas)_j\E[g(\varepsilon_i-U_i^\top\betas)]
-= -(\Sigma_u\betas)_j D_G$, and $\E[X_{ij}\psi_G(r_i^*)]=0$ exactly as before. Positivity
-of $D_G$ follows from $g(0)>0$ and continuity. For $G=\cN(0,\sigma^2)$ we have
-$g(x)=\phi(x/\sigma)/\sigma$, so
-$D_G = \E[\phi((\varepsilon_i-Z_i)/\sigma)]/\sigma = d(\sigma)$ by the computation in the
-proof of Theorem~\ref{thm:score}.
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{theorem}[A scale that adapts to $\beta$ does not repair the bias either]
@@ -476,7 +357,7 @@ kernel matrix $M$. Two choices of $M$ matter in practice. For the self-consisten
 $M=\Sigma_u$ the gradient is $2\Sigma_u\betas d_{M}$, exactly \emph{twice} the
 fixed-scale gradient of Theorem~\ref{thm:score}; the exact targets at $\sigma_u=0.5$ are
 $1.600$ for the fixed-scale form and $1.333$ for this one, against $\betas=2$
-(Table~\ref{tab:targets} and Proposition~\ref{prop:exact-target}). For the posterior
+(Table~S8 of Online Resource~1 and Proposition~\ref{prop:exact-target}). For the posterior
 kernel $M=\Sxw$ the gradient is $(\Sigma_u+\Sxw)\betas\,d_M$, which is non-zero as well;
 this is the control experiment of \S\ref{sec:targets}, and it shows that the natural
 repair suggested by calibration, convolving with the smaller posterior covariance rather
@@ -486,34 +367,14 @@ minimiser moves to $\bbar$ exactly; see Proposition~\ref{prop:posterior-adaptive
 \end{theorem}
 
 \begin{proof}
-Differentiating under the expectation is justified because $\psit$ and $\phi$ are bounded
-and $\E\|W_i\|<\infty$. At $\beta=\betas$ the first term equals
-$\Sigma_u\betas\,d_M$ by Theorem~\ref{thm:score} with $\sigma=s_M$. For the second we need
-$\E[\phi(r_i^*/s_M)]$: conditioning on $\varepsilon_i$ and using
-$U_i^\top\betas\sim\cN(0,\sigma^{*2})$,
-\[
-\E\big[\phi((\varepsilon_i-U_i^\top\betas)/s_M)\big]
-= \int\phi\Big(\frac{\varepsilon_i-z}{s_M}\Big)\frac{1}{\sigma^*}\phi\Big(\frac{z}{\sigma^*}\Big)dz
-= s_M\,\phi_{\sqrt{\sigma^{*2}+s_M^{2}}}(\varepsilon_i),
-\]
-the convolution of $\cN(0,s_M^{2})$ and $\cN(0,\sigma^{*2})$. Integrating over
-$\varepsilon_i$ and using the symmetry of the Gaussian density,
-$\E[\phi(r_i^*/s_M)] = s_M\E[\phi_{\sqrt{\sigma^{*2}+s_M^{2}}}(\varepsilon_i)] = s_M\,d_M$.
-Multiplying by $M\betas/s_M$ and adding the first term gives \eqref{eq:adaptive}.
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{remark}
-Theorems~\ref{thm:kernel-class} and \ref{thm:adaptive} are the two statements that a
-negative result of this kind needs. The first says the failure is not an artefact of the
-Gaussian kernel or of the choice of scale, so it cannot be fixed by re-parameterising the
-correction; the second says it is not an artefact of holding the scale fixed, which is the
-form in which such losses are usually written. Together they delimit the class: a
-convolution of the check loss with a kernel of positive density at zero is not a corrected
-score. The corrections that do work, the complex-argument device of
-\citet{stefanski1989} used by \citet{wang2012correctedloss} for normal errors or their
-second-derivative correction for Laplace errors, are not convolutions: they invert the
-convolution rather than repeat it, which is why they carry the slower, deconvolution-type
-rates and the numerical instability that come with inversion.
+The complex-argument device of \citet{stefanski1989} used by
+\citet{wang2012correctedloss} for normal errors, and their second-derivative correction for
+Laplace errors, are not convolutions: they invert the convolution, hence deconvolution-type
+rates and numerical instability.
 \end{remark}
 
 \begin{lemma}[Bias lower bound]
@@ -531,19 +392,8 @@ The right-hand side is strictly positive whenever $\Sigma_u\betas\neq0$ and does
 depend on $n$.
 \end{lemma}
 
-\begin{proof}[Proof]
-$L_\sigma$ is convex and differentiable, with
-$\nabla L_\sigma(\beta) = -\E[W\psit(Y-W^\top\beta,\sigma)]$, so
-$\nabla L_\sigma(\betas) = \Sigma_u\betas\,d(\sigma)$ by Theorem~\ref{thm:score}. Its
-Hessian $H(\beta) = \E[WW^\top\phi((Y-W^\top\beta)/\sigma)/\sigma]$ is positive
-semidefinite, and since $\phi\le\phi(0)$,
-\begin{equation*}
-\norm{H(\beta)}_2 \;\le\; \frac{\phi(0)\,\lambda_{\max}(\E[WW^\top])}{\sigma}
-= \frac{\phi(0)\,\lambda_{\max}(\Sigma_x+\Sigma_u)}{\sigma}.
-\end{equation*}
-Since $\nabla L_\sigma(\betas)-\nabla L_\sigma(\bbar_\sigma)
-= \int_0^1 H(\betas+t(\bbar_\sigma-\betas))\,dt\,(\betas-\bbar_\sigma)$ and
-$\nabla L_\sigma(\bbar_\sigma)=0$, the bound follows.
+\begin{proof}
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{proposition}[Local expansion of the minimiser]
@@ -562,28 +412,14 @@ $\bbar_\sigma$ in $B(\betas,\eta)$, and
 \end{proposition}
 
 \begin{proof}
-By the mean value theorem in its integral form,
-$\nabla L(\betas+v) = g+Hv+R(v)$ with
-$\|R(v)\|\le\frac\Lambda2\|v\|^2$ for $\|v\|\le\eta$. Since $0=\nabla L(\bbar_\sigma)$,
-\[
-\bbar_\sigma-\betas = -H^{-1}g - H^{-1}R(\bbar_\sigma-\betas),
-\]
-so with $u = \|\bbar_\sigma-\betas\|$,
-$u \le \|H^{-1}g\| + \frac{\Lambda}{2\kappa}u^2$. Write
-$m=\|H^{-1}g\|\le\|g\|/\kappa$. Hypothesis (iii) gives $\frac{2\Lambda}{\kappa}m\le\frac14$,
-so the quadratic inequality implies $u\le2m$ (standard bootstrap: the set of $u\ge0$
-satisfying $u\le m+\frac{\Lambda}{2\kappa}u^2$ contains $[0,2m]$ under that condition), and
-substituting back gives the first bound. Strict convexity on $B(\betas,\eta)$ gives
-uniqueness.
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{remark}[The target, and why $\bbar$ is only a first-order description]
 \label{rem:target}
-Hypotheses (i)--(iii) are what makes the expansion a theorem rather than a formal
-Taylor series; they hold in the designs we study, and hypothesis (iii) is a small-gradient
-condition of the kind that is automatic once $n$ is large, since
-$\|g\|=\norm{\Sigma_u\betas}\,d(\sigma)=O(\rho)$ by Theorem~\ref{thm:score}. Combining
-\eqref{eq:expansion} with the Hessian identity
+Hypotheses (i)--(iii) hold in the designs we study; (iii) is automatic once $n$ is large,
+since $\|g\|=\norm{\Sigma_u\betas}\,d(\sigma)=O(\rho)$ by Theorem~\ref{thm:score}.
+Combining \eqref{eq:expansion} with the Hessian identity
 \begin{equation}
 H \;=\; \E\big[WW^\top\phi(r^*/\sigma)/\sigma\big]
 \;=\; (\Sigma_x+\Sigma_u)\,d(\sigma) + (\Sigma_u\betas)(\Sigma_u\betas)^\top
@@ -600,15 +436,11 @@ gives
 \bbar := (\Sigma_x+\Sigma_u)^{-1}\Sigma_x\betas ,
 \label{eq:attn}
 \end{equation}
-i.e.\ the leading-order target is the classical attenuation value $\bbar$. The residual
-$O(\rho^{3/2})$ arises because the second term in \eqref{eq:hessian} is
+so the leading-order target is the classical attenuation value $\bbar$, with remainder
+$O(\rho^{3/2})$ because the second term in \eqref{eq:hessian} is
 $O(\rho^2/\sigma^3)=O(\rho^{1/2})$ relative to $d(\sigma)$ when
-$\sigma=\sigma^*=O(\rho^{1/2})$, so \eqref{eq:attn} locates the target at $\bbar$ up to a
-remainder of that order. Under the Gaussian design the target can be identified exactly:
-Proposition~\ref{prop:exact-target}(ii) shows that the fixed-scale smoothed loss is
-minimised at $\bbar$ for every bandwidth, so the attenuation is not an approximation that a
-different scale might remove. The expansion remains the statement available for
-non-Gaussian designs, where that reduction does not apply.
+$\sigma=\sigma^*=O(\rho^{1/2})$. In the Gaussian design Proposition~\ref{prop:exact-target}(ii)
+makes \eqref{eq:attn} exact.
 \end{remark}
 
 \begin{corollary}[No Gaussian convolution of the check loss is consistent]
@@ -624,10 +456,7 @@ also inconsistent.
 \end{corollary}
 
 \begin{proof}
-The computation of Theorem~\ref{thm:score} uses only $W = X+U$ with
-$U\sim\cN(0,\Sigma_u)$; replacing $\Sigma_u$ by $\Sigma_k$ is the same calculation with
-$\Sigma_k$ in place of $\Sigma_u$, and $\E[X\psit]=0$ is unchanged. Displacement follows
-from Lemma~\ref{lem:bias} with $\Sigma_k$.
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{proposition}[The posterior kernel with a self-consistent scale targets $\bbar$
@@ -648,55 +477,14 @@ is uniquely minimised at $\bbar=(\Sigma_x+\Sigma_u)^{-1}\Sigma_x\betas$.
 \end{proposition}
 
 \begin{proof}
-Write $\xi_i=X_i-\Ccal W_i$, so that $\E[\xi_i\mid W_i]=0$ and
-$\mathrm{Var}(\xi_i\mid W_i)=\Sxw$ under the Gaussian design, and let $Z\sim\cN(0,1)$ be
-independent of $(X_i,U_i,\varepsilon_i)$. Since $\rht(r,\sigma)=\E[\rho_\tau(r-\sigma Z)]$,
-\begin{equation}
-Y_i-{\muv}_i^\top\beta
-=(\Ccal W_i)^\top(\betas-\beta)+{\betas}^\top\xi_i+\varepsilon_i,
-\qquad
-L_{\mathrm{cal}}(\beta)=\E\big[\rho_\tau\big(\varepsilon_i+G_i(\beta)\big)\big],
-\label{eq:cal-gauss}
-\end{equation}
-where $G_i(\beta)\sim\cN(0,\varsigma^2(\beta))$ is independent of $\varepsilon_i$ and
-\begin{equation}
-\varsigma^2(\beta)=(\betas-\beta)^\top\Ccal(\Sigma_x+\Sigma_u)\Ccal^\top(\betas-\beta)
-+{\betas}^\top\Sxw\betas+\beta^\top\Sxw\beta .
-\label{eq:cal-scale}
-\end{equation}
-Indeed, conditional on $W_i$ the term ${\betas}^\top\xi_i-\sigma_{\Sxw}(\beta)Z$ is centred
-Gaussian with variance ${\betas}^\top\Sxw\betas+\beta^\top\Sxw\beta$ irrespective of $W_i$,
-hence independent of $(\Ccal W_i)^\top(\betas-\beta)$; the latter is centred Gaussian with
-covariance $\Ccal(\Sigma_x+\Sigma_u)\Ccal^\top$ because
-$\Ccal W_i\sim\cN(0,\Ccal(\Sigma_x+\Sigma_u)\Ccal^\top)$. Next, for $N\sim\cN(0,1)$
-independent of $\varepsilon_i$,
-\[
-\frac{\partial}{\partial\sigma}\E\big[\rho_\tau(\varepsilon_i+\sigma N)\big]
-=\E\big[\psit(\varepsilon_i+\sigma N)N\big]
-=\E\big[\phi(\varepsilon_i/\sigma)\big]>0,
-\]
-using $\E[N\ind{N<c}]=-\phi(c)$ for standard normal $N$; so \eqref{eq:cal-gauss} is
-strictly increasing in $\varsigma(\beta)$, and minimising $L_{\mathrm{cal}}$ is the same as
-minimising $\varsigma^2$. Finally
-$\Ccal(\Sigma_x+\Sigma_u)\Ccal^\top=\Sigma_x(\Sigma_x+\Sigma_u)^{-1}\Sigma_x
-=\Sigma_x-\Sxw$, so \eqref{eq:cal-scale} has gradient $2\Sigma_x(\beta-\bbar)$, which
-vanishes only at $\bbar$, and $\Sigma_x\succ0$.
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{remark}
-Proposition~\ref{prop:posterior-adaptive} is the sharp form of
-Corollary~\ref{cor:no-conv} for the kernel that calibration itself suggests. It says that
-even when the convolution is applied to the calibrated regressor $\muv$, for which the
-unsmoothed check loss is correctly specified by Theorem~\ref{thm:calib}, the
-self-consistent posterior kernel reproduces the attenuated target $\bbar$ itself, not
-merely its first-order approximation. Theorem~\ref{thm:adaptive}, in contrast,
-describes the same kernel applied to the \emph{raw} regressor $W$, where the obstruction is
-a non-zero gradient at $\betas$. The numerical control of \S\ref{sec:targets} and panel (b)
-of Figure~\ref{fig:loss} are the finite-sample form of the proposition, and the residual
-deviation there is Monte-Carlo error. The statement uses the Gaussian design, under which
-the conditional law of $X_i$ given $W_i$ is exactly $\cN(\Ccal W_i,\Sxw)$; it does not
-claim that an adaptive scale can never help, only that the repair suggested by the
-calibration identity is not a repair.
+Theorem~\ref{thm:adaptive} is the same kernel on the \emph{raw} regressor $W$; the control of
+\S\ref{sec:targets} and panel (b) of Figure~\ref{fig:loss} are its finite-sample form, the
+residual deviation being Monte-Carlo error. The claim is not that an adaptive scale can never
+help, but that the repair suggested by calibration is not one.
 \end{remark}
 
 \begin{corollary}[The naive and the smoothed estimator share their leading-order target]
@@ -719,17 +507,7 @@ changes the constant ($d_{\mathrm{naive}}$ versus $d(\sigma)$) but not the targe
 \end{corollary}
 
 \begin{proof}
-For $Z\sim\cN(0,\sigma^{*2})$ and $U_i^\top\betas$ jointly Gaussian with
-$U_{ij}$,
-$\E[U_{ij}\ind{U_i^\top\betas>\varepsilon_i}]
-= (\Sigma_u\betas)_j\,\phi_{\sigma^*}(\varepsilon_i)$
-by the conditional-expectation formula for jointly Gaussian variables
-($\E[U_{ij}\mid U_i^\top\betas=z] = (\Sigma_u\betas)_j z/\sigma^{*2}$ and
-$\E[Z\ind{Z>\varepsilon}] = \sigma^{*2}\phi_{\sigma^*}(\varepsilon)$). Hence
-$\E[U_{ij}(\tau-\ind{r_i^*<0})] = -(\Sigma_u\betas)_j\E[\phi_{\sigma^*}(\varepsilon_i)]
-= -(\Sigma_u\betas)_j(\cN(0,\sigma^{*2})*f_\varepsilon)(0)$, while
-$\E[X_{ij}(\tau-\ind{r_i^*<0})]=0$ as before. The target statement follows from
-Proposition~\ref{prop:target} with $d_{\mathrm{naive}}$ in place of $d(\sigma)$.
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{proposition}[Exact population targets in the Gaussian design]
@@ -750,71 +528,50 @@ $(\Sigma_x+\Sigma_u+M)^{-1}\Sigma_x\betas$.
 \end{proposition}
 
 \begin{proof}
-Write the residual at a candidate $\beta$ as
-$\varepsilon_i+X_i^\top(\betas-\beta)-U_i^\top\beta-Z\sigma$, where $Z\equiv0$ and
-$\sigma=0$ for the naive risk and $Z\sim\cN(0,1)$ is independent of everything for the
-smoothed ones, with $\sigma$ replaced by $\sigma_M(\beta)$ in case (iii). Its
-non-$\varepsilon$ part is centred Gaussian, because $(X_i,U_i,Z)$ is Gaussian and
-$\E[X_i]=0$ and $\E[U_i]=0$; its variance is
-$s^2(\beta)=(\betas-\beta)^\top\Sigma_x(\betas-\beta)+\beta^\top\Sigma_u\beta+\sigma^2$ in
-cases (i)--(ii) and $\beta^\top(\Sigma_u+M)\beta$ in place of $\beta^\top\Sigma_u\beta+\sigma^2$
-in case (iii), and it is independent of $\varepsilon_i$. The risk is therefore
-$\E[\rho_\tau(\varepsilon_i+s(\beta)Z_0)]$ with $Z_0\sim\cN(0,1)$, which depends on $\beta$
-only through $s(\beta)$; the map $s\mapsto\E[\rho_\tau(\varepsilon_i+sZ_0)]$ is strictly
-increasing, as shown in the proof of Proposition~\ref{prop:posterior-adaptive}. The risk is
-therefore a strictly increasing function of $s^2(\beta)$, so it has the same minimiser as
-$s^2(\beta)$; that minimiser is unique because $s^2$ is a strictly convex quadratic whose
-gradient $2\big[(\Sigma_x+\Sigma_u+M)\beta-\Sigma_x\betas\big]$ vanishes exactly at the three
-values stated.
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{remark}
 Part (ii) is the precise sense in which smoothing cannot repair attenuation: the population
 minimiser is $\bbar$ for every bandwidth, so the bandwidth affects the finite-sample
-behaviour and not the estimand. Numerically the invariance is exact but delicate: the
-\emph{value} at the optimum moves with $\sigma$, and the contrast between two candidates
+behaviour and not the estimand. The invariance is exact but delicate in floating point: the
+\emph{value} at the optimum moves with $\sigma$ and the contrast between two candidates
 decays like $\phi(0)/(2\sigma)$, so at very large bandwidths the criterion is nearly flat
-and the minimiser is poorly identified in floating point even though it is exactly $\bbar$.
-Part (iii) quantifies how much an adaptive scale can move
-it: adding $M\succeq0$ attenuates the target further, and for the self-consistent choice
-$M=\Sigma_u$ of Theorem~\ref{thm:adaptive} the target is
+and the minimiser poorly identified even though it is exactly $\bbar$. Part (iii)
+quantifies how far an adaptive scale moves it: adding $M\succeq0$ attenuates the target
+further, and for $M=\Sigma_u$ of Theorem~\ref{thm:adaptive} the target is
 $(\Sigma_x+2\Sigma_u)^{-1}\Sigma_x\betas$. In the scalar design of \S\ref{sec:targets}
-these are $\bbar=\betas/(1+\sigma_u^2)$ and $\betas/(1+2\sigma_u^2)$, i.e.\ $1.600$ and
-$1.333$ at $\sigma_u=0.5$.
+these are $\bbar=\betas/(1+\sigma_u^2)$ and $\betas/(1+2\sigma_u^2)$.
 \end{remark}
 
 \begin{remark}
-Corollary~\ref{cor:same-target} states what smoothing does and does not do. It does not
-remove the attenuation: the smoothed and the naive estimator converge to the same
-parameter. What it changes is the finite-sample behaviour, since the smoothed objective is
-smooth and strongly convex near the optimum, which typically reduces the variance of the
-computed estimator. Our experiments reproduce both facts: in
-Table~\ref{tab:targets} the two estimators' population targets agree, exactly by
+The experiments bear out Corollary~\ref{cor:same-target}: in
+Table~S8 of Online Resource~1 the two estimators' population targets agree, exactly by
 Proposition~\ref{prop:exact-target} and numerically to within Monte-Carlo error, at every
-$(\sigma_u,\tau)$, and in Table~\ref{tab:highdim} they are equally far from the oracle.
+$(\sigma_u,\tau)$, and in the high-dimensional comparison of Online Resource~1 (Table~S4)
+they are equally far from the oracle.
 \end{remark}
 
 \begin{remark}[Why smoothing works for squared loss and fails here]
-The mean functional is convolution-equivariant: if $Y = X^\top\betas+\varepsilon$ then
-$\E[Y\mid X] = X^\top\betas$ and adding independent noise to the residual leaves the
-minimiser of $\E[(Y-X^\top\beta-Z)^2]$ at $\betas$. The $\tau$-quantile is not: adding
+The mean functional is convolution-equivariant: for $Y = X^\top\betas+\varepsilon$, adding
+independent noise to the residual leaves the minimiser of $\E[(Y-X^\top\beta-Z)^2]$ at
+$\betas$. The $\tau$-quantile is not: adding
 $\cN(0,\sigma^2)$ shifts $Q_\tau$ by a strictly positive amount unless the distribution is
 symmetric around its $\tau$-quantile. The check loss is therefore not ``correctable'' in
-the sense of \citet{stefanski1989} and \citet{nakamura1990}. This is why
-convolution-based corrections, which are exact for squared loss (and underlie
-CoCoLasso-type Gram corrections, \citealp{datta2017cocolasso}) and for SIMEX
-extrapolation of smooth losses \citep{stefanski1995simulation}, have no
-consistent counterpart for $\rho_\tau$.
+the sense of \citet{stefanski1989} and \citet{nakamura1990}, so
+convolution-based corrections, exact for squared loss (CoCoLasso-type Gram corrections,
+\citealp{datta2017cocolasso}) and for SIMEX extrapolation of smooth losses
+\citep{stefanski1995simulation}, have no consistent counterpart for $\rho_\tau$.
 \end{remark}
 
 \begin{remark}[Why subsampling cannot rescue inference]
 \label{rem:subsampling}
 A subsampling or bootstrap calibration of the smoothed estimator
 \citep{politis1999subsampling} estimates the distribution of
-$\sqrt{n}(\betah-\bbar)$, because $\bbar$ is the probability limit. The
-resulting intervals are valid for $\bbar$ and not for $\betas$; the gap is
-$\norm{\bbar-\betas} = \Theta(\rho)$ by \eqref{eq:attn}. A target shift cannot be
-repaired by any resampling scheme.
+$\sqrt{n}(\betah-\bbar)$, since $\bbar$ is the probability limit; the intervals are valid
+for $\bbar$, not for $\betas$, the gap being
+$\norm{\bbar-\betas} = \Theta(\rho)$ by \eqref{eq:attn}. No resampling scheme repairs a
+target shift.
 \end{remark}
 
 % ============================================================
@@ -822,9 +579,8 @@ repaired by any resampling scheme.
 \label{sec:fix}
 % ============================================================
 
-The failure above is a failure to condition. The measurement error is not an extra source
-of noise to be averaged over; it is uncertainty about $X$ \emph{given the data we hold},
-and it must be removed using that conditioning.
+The failure above is a failure to condition: measurement error is uncertainty about $X$ given
+the observed data, not extra noise, and only conditioning on $W$ removes it.
 
 \begin{assumption}[Gaussian design]
 \label{ass:gauss}
@@ -862,31 +618,19 @@ mean-zero at the truth,
 \end{equation}
 \end{theorem}
 
-\begin{proof}[Proof]
-For jointly Gaussian vectors, the conditional mean ${\muv}_i=\E[X_i\mid W_i]$ and the
-residual $V_i = X_i-{\muv}_i$ are independent, and $V_i\sim\cN(0,\Sxw)$. Since ${\muv}_i$ is a
-function of $W_i$ and $\varepsilon_i$ is independent of $(X_i,U_i)$, $e_i$ is a function of
-$(V_i,\varepsilon_i)$ only, hence independent of ${\muv}_i$; and
-$Y_i = {\muv}_i^\top\betas+V_i^\top\betas+\varepsilon_i = {\muv}_i^\top\betas+e_i$. Therefore
-$Q_\tau(Y_i\mid{\muv}_i) = {\muv}_i^\top\betas+Q_\tau(e_i)$, which is
-\eqref{eq:correct-model} with $\delta_\tau = Q_\tau(V_i^\top\betas+\varepsilon_i)$. For
-\eqref{eq:calib-score}, the first $p$ coordinates vanish because
-$\E[{\muv}_i(\tau-\ind{e_i<\delta_\tau})] = \E[{\muv}_i]\,\E[\tau-\ind{e_i<\delta_\tau}]=0$
-(independence and $\E[X_i]=0$), and the last coordinate is
-$\tau-\Pbb(e_i<\delta_\tau)=0$ by definition of $\delta_\tau$.
+\begin{proof}
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{remark}[Interpretation]
-Theorem~\ref{thm:calib} says the correct repair is to keep the check loss and replace the
-regressor: regress $Y$ on $\muv = \E[X\mid W]$, with an intercept. The intercept is not a
-nuisance but the exact price of the measurement error: the quantile of the regression
-error is shifted by $\delta_\tau = Q_\tau(V^\top\betas+\varepsilon)$, a
-$\Theta(\sigma_u)$-sized constant whenever $\tau\neq1/2$ or the errors are asymmetric
-(it equals $0.166$ at $\sigma_u=0.5$ in the design of Table~\ref{tab:scaling}, where
-$p=10$ and $\norm{\betas}_2^2=20$, and $0.28$ in the scalar design of
-Table~\ref{tab:targets}).
-Note that $\delta_\tau$ is a genuine feature of the conditional law, whereas the shift in
-\S\ref{sec:negative} was an artefact of convolving the loss. Unlike
+Theorem~\ref{thm:calib} prescribes the repair: keep the check loss, replace the regressor by
+$\muv = \E[X\mid W]$, and include an intercept. That intercept is the exact price of the
+measurement error: the regression error's quantile shifts by
+$\delta_\tau = Q_\tau(V^\top\betas+\varepsilon)$, a $\Theta(\sigma_u)$-sized constant
+whenever $\tau\neq1/2$ or the errors are asymmetric; it equals $0.166$ at $\sigma_u=0.5$ in
+the design of Table~S3 of Online Resource~1 ($p=10$, $\norm{\betas}_2^2=20$) and $0.28$ in
+the scalar design of Table~S8 of Online Resource~1. Unlike the shift in \S\ref{sec:negative}, an
+artefact of convolving the loss, $\delta_\tau$ belongs to the conditional law; unlike
 Theorem~\ref{thm:score}, no term of order $\rho$ survives in \eqref{eq:calib-score}.
 \end{remark}
 
@@ -901,13 +645,12 @@ correctly specified.
 \end{proposition}
 
 \begin{proof}
-See Appendix~\ref{app:proofs}; the population first-order condition at $\beta=\betas$ is
-$\E[{\muv}_i(\tau-\ind{e_i<\delta_\tau})] = \E[{\muv}_i]\E[\tau-\ind{e_i<\delta_\tau}]=0$.
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{remark}[Measurement error is paid for in efficiency]
 \label{rem:efficiency}
-The calibrated estimator is unbiased but not free. Its asymptotic variance in
+The calibrated estimator is unbiased but not free: its asymptotic variance in
 Theorem~\ref{thm:lowdim} is
 \[
 \tau(1-\tau)f_e(\delta_\tau)^{-2}\,\E\big[({\muv}_i^\top,1)^\top({\muv}_i^\top,1)\big]^{-1},
@@ -915,15 +658,14 @@ Theorem~\ref{thm:lowdim} is
 against the oracle's
 $\tau(1-\tau)f_\varepsilon(0)^{-2}\E[(X_i^\top,1)^\top(X_i^\top,1)]^{-1}$.
 Two effects inflate it. First, $e_i = V_i^\top\betas+\varepsilon_i$ convolves
-$\varepsilon_i$ with $\cN(0,{\betas}^\top\Sxw\betas)$, which flattens the density at the
-quantile: at $\sigma_u=0.5$ and $\tau=1/2$ we compute $f_e(\delta_\tau)\approx0.166$
-against $f_\varepsilon(0)=0.5$. Second, the calibrated regressor is attenuated,
+$\varepsilon_i$ with $\cN(0,{\betas}^\top\Sxw\betas)$, flattening the density at the
+quantile: at $\sigma_u=0.5$, $\tau=1/2$, $f_e(\delta_\tau)\approx0.166$ against
+$f_\varepsilon(0)=0.5$. Second, the calibrated regressor is attenuated,
 $\E[\muv\muv^\top] = 0.8\,\E[XX^\top]$ in the isotropic case with $\sigma_u=0.5$. The
-predicted ratio of $\ell_2$ errors, the square root of the variance ratio, is therefore
-about $3.4$ for $\tau=1/2$ and $5.6$ for $\tau=0.3$; the observed ratios in
-Table~\ref{tab:scaling} at $n=8000$ are $3.2$ and $6.0$--$6.5$. This is the correct price
-of measurement error, an efficiency loss rather than a bias, and it is the opposite of what
-the smoothed loss pays (a bias floor that no sample size removes).
+predicted $\ell_2$ error ratio is therefore about $3.4$ for $\tau=1/2$ and $5.6$ for
+$\tau=0.3$, against observed ratios of $3.2$ and $6.0$--$6.5$ in
+Table~S3 of Online Resource~1 at $n=8000$. The cost is efficiency, not bias, unlike the
+smoothed loss's bias floor, which no sample size removes.
 \end{remark}
 
 \begin{theorem}[Low-dimensional consistency and asymptotic normality]
@@ -940,14 +682,8 @@ Then $(\hat\beta_n,\hat\delta_n)\to(\betas,\delta_\tau)$ in probability and
 \end{equation}
 \end{theorem}
 
-\begin{proof}[Proof]
-\eqref{eq:correct-model} is a correctly specified linear quantile regression; the
-objective is convex and the standard argument applies: the score \eqref{eq:calib-score} is
-mean-zero with covariance $\tau(1-\tau)\E[({\muv}_i^\top,1)^\top({\muv}_i^\top,1)]$, the
-objective is twice differentiable in a neighbourhood of the truth with Hessian
-$f_e(\delta_\tau)\E[({\muv}_i^\top,1)^\top({\muv}_i^\top,1)]$, and the argmax continuous
-mapping theorem together with the Lindeberg--Feller CLT gives the limit
-\citep{pollard1991}. See Appendix~\ref{app:proofs}.
+\begin{proof}
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{theorem}[High-dimensional $\ell_1$ oracle inequality under known calibration]
@@ -976,40 +712,29 @@ probability at least $1-c_1\exp(-c_2n\lambda^2)$,
 \end{theorem}
 
 \begin{proof}
-This is the case $r=0$ of Theorem~\ref{thm:estimated}, proved in
-Appendix~\ref{app:proofs}; the input that matters is that \eqref{eq:calib-score} makes the score
-exactly unbiased, so the linear term in the basic inequality is
-$O_P(\sqrt{\log p/n})$ with no bias term, and the cone condition, the restricted eigenvalue
-bound and the basic inequality then give the stated rates as in
-\citet[Theorem 2.1]{belloni2011l1}. By contrast, for the smoothed loss the corresponding
-quantity has mean $\Sigma_u\betas\,d(\sigma)$ by Theorem~\ref{thm:score}, so the same
-argument produces a non-vanishing $O(\rho)$ term and no rate; this is the technical content
-of \S\ref{sec:negative}.
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{remark}[Inference]
 Because the calibrated score is exactly mean-zero, the obstruction to debiased inference
-identified for the smoothed loss disappears: the standard debiasing devices
+identified for the smoothed loss disappears: the debiasing devices
 \citep{zhang2014confidence,vandegeer2014asymptotically,javanmard2014hypothesis} and their
-quantile-regression counterparts \citep{bradic2017uniform} can in principle be applied to
-\eqref{eq:l1calib}. Developing that theory is beyond the scope of this paper; the point
-here is that the structural obstacle is removed by conditioning rather than by smoothing.
+quantile-regression counterparts \citep{bradic2017uniform} apply in principle to
+\eqref{eq:l1calib}. That theory is beyond our scope; conditioning, not smoothing, removes the
+obstruction.
 \end{remark}
 
 \subsection{From a known to an estimated calibration}
 \label{sec:open}
 
-Theorems~\ref{thm:lowdim} and \ref{thm:highdim} treat $\Ccal$ as known. In applications
-$\Sigma_x$ must be estimated, and when $p\gg n$ the sample covariance is singular. Writing
-$\hat\Ccal = \hat\Sigma_x(\hat\Sigma_x+\Sigma_u)^{-1}$ we incur the error $\hat\Ccal-\Ccal$,
-which perturbs both the regressor and the score; the calibrated design is a generated
-regressor, and the restricted eigenvalue condition of Theorem~\ref{thm:highdim} must be
-shown to survive the perturbation. This is the difficulty that
-\citet{loh2012highdim} face for mean regression with a noisy design, and we resolve it in
-\S\ref{sec:estimated} under an explicit accuracy condition on $\hat\Sigma_x$ that
-entrywise thresholding satisfies for sparse $\Sigma_x$. The logical order matters here: this
-difficulty is shared by every calibration-based method and is \emph{not} the reason
-smoothed losses fail. Even with a perfect $\Ccal$, the smoothed loss of
+Theorems~\ref{thm:lowdim} and \ref{thm:highdim} treat $\Ccal$ as known, but $\Sigma_x$ must
+be estimated and is singular when $p\gg n$. The error $\hat\Ccal-\Ccal$ in
+$\hat\Ccal = \hat\Sigma_x(\hat\Sigma_x+\Sigma_u)^{-1}$ perturbs the regressor and the score,
+so the restricted eigenvalue condition of Theorem~\ref{thm:highdim} must survive it; this is
+the difficulty \citet{loh2012highdim} face for mean regression with a noisy design, resolved
+in \S\ref{sec:estimated} under an accuracy condition on $\hat\Sigma_x$ that entrywise
+thresholding satisfies for sparse $\Sigma_x$. Every calibration-based method shares it, and
+it is \emph{not} why smoothed losses fail: even with a perfect $\Ccal$, the smoothed loss of
 \S\ref{sec:negative} remains inconsistent.
 
 % ============================================================
@@ -1025,10 +750,10 @@ We now remove the oracle assumption on $\Ccal$. The estimator is
 \qquad {\hat{\muv}}_i = \hat\Ccal W_i ,
 \label{eq:estimated}
 \end{equation}
-with $\hat\Ccal = \hat\Sigma_x(\hat\Sigma_x+\Sigma_u)^{-1}$ and $\hat\Sigma_x$ any estimator
-of $\Sigma_x$. The design error is ${\hat{\muv}}_i - {\muv}_i = (\hat\Ccal-\Ccal)W_i$, and the
-analysis has to control it in the sup-norm of the score, which is what the penalty
-bounds. Throughout this section $Z_n := \max_{i\le n}\|W_i\|_\infty$ and
+with $\hat\Ccal = \hat\Sigma_x(\hat\Sigma_x+\Sigma_u)^{-1}$ for any estimator $\hat\Sigma_x$
+of $\Sigma_x$. The design error ${\hat{\muv}}_i - {\muv}_i = (\hat\Ccal-\Ccal)W_i$ enters the
+sup-norm of the score, which the penalty dominates. Throughout,
+$Z_n := \max_{i\le n}\|W_i\|_\infty$ and
 \begin{equation}
 r_n := \max_{1\le j\le p}\ \big\|(\hat\Ccal-\Ccal)_{j\cdot}\big\|_1
 \qquad\text{(row-wise $\ell_1$ accuracy of the calibration).}
@@ -1078,29 +803,29 @@ See Appendix~\ref{app:proofs}.
 \begin{remark}[Spectral accuracy is not enough]
 \label{rem:spectral-not-enough}
 Lemma~\ref{lem:perturb} gives spectral accuracy from an accurate $\hat\Sigma_x$, but
-Assumption~\ref{ass:calib-acc} is a statement about the \emph{rows} of $\hat\Ccal-\Ccal$,
-and the gap between the two is not a technicality. Plugging $\hat\Ccal$ in perturbs the
-score by $(\hat\Ccal-\Ccal)\,n^{-1}\sum_iW_i\psi_i$, whose mean is
+Assumption~\ref{ass:calib-acc} constrains the \emph{rows} of $\hat\Ccal-\Ccal$. Plugging
+$\hat\Ccal$ in perturbs the
+score by $(\hat\Ccal-\Ccal)\,n^{-1}\sum_iW_i\psi_i$, of mean
 $-(\hat\Ccal-\Ccal)\gamma$ with
 \begin{equation}
 \gamma \;=\; \E[W_i\psi_i] \;=\; f_e(\delta_\tau)\,\Sxw\betas ,
 \label{eq:gamma}
 \end{equation}
-a non-zero vector of order $\rho$ (\S\ref{app:proofs}: condition on $V_i$, apply Stein's
-lemma to $\E[V_i\ind{e_i<\delta_\tau}]$). Thus the plug-in design carries a
-score bias of order $\|(\hat\Ccal-\Ccal)\gamma\|_\infty$, which the penalty must dominate;
-bounding it by $\|\hat\Ccal-\Ccal\|_2\|\gamma\|_2$ costs a factor $\sqrt p$ and would
+a non-zero vector of order $\rho$ (Stein's lemma applied to
+$\E[V_i\ind{e_i<\delta_\tau}]$; \S\ref{app:proofs}). The penalty must dominate the
+resulting score bias
+$\|(\hat\Ccal-\Ccal)\gamma\|_\infty$; bounding it by
+$\|\hat\Ccal-\Ccal\|_2\|\gamma\|_2$ costs a factor $\sqrt p$ and would
 require $\|\hat\Ccal-\Ccal\|_2 = O(\sqrt{\log p/(pn)})$, which no covariance estimator
-delivers in $p\gg n$. Row-wise control, as in Assumption~\ref{ass:calib-acc}, is therefore
-the right notion, and it is what entrywise thresholding provides for a $\Sigma_x$
-that is itself sparse: with $\max_{jk}|(\hat\Sigma_x-\Sigma_x)_{jk}|=O_P(\sqrt{\log p/n})$
+delivers in $p\gg n$. Row-wise control is therefore
+the right notion, and entrywise thresholding provides it for a sparse $\Sigma_x$: with
+$\max_{jk}|(\hat\Sigma_x-\Sigma_x)_{jk}|=O_P(\sqrt{\log p/n})$
 one obtains $r_n=O_P(s_0\sqrt{\log p/n})$ when each row of $\Sigma_x$ has at most $s_0$
-non-zeros and $\Ccal-\Sigma_x$-type products stay sparse, so that
+non-zeros and $\Ccal-\Sigma_x$-type products stay sparse, so
 Assumption~\ref{ass:calib-acc} holds as soon as $s_0$ is bounded. Whether $s_0$ can grow
 with $n$, equivalently whether a bias-corrected design of the
-\citet{loh2012highdim} type is needed, is an open problem that we leave open; \S\ref{sec:hd-est} reports what happens numerically when
-$\Sigma_x$ is banded and $\Ccal$ is dense, which is the regime in which the plug-in is
-least favourable.
+\citet{loh2012highdim} type is needed, is left open; Appendix~C of Online Resource~1 reports the numerics for
+banded $\Sigma_x$ and dense $\Ccal$.
 \end{remark}
 
 \begin{lemma}[Score control under an estimated design]
@@ -1121,30 +846,19 @@ least $1-\epsilon_n-2p\exp(-n\eta^2/2K^2)$,
 \end{split}
 \label{eq:score-control}
 \end{equation}
-The last term is the third-order remainder of the Lipschitz expansion of step (ii) of the
-proof, and the only place where $L$ enters. Writing $\alpha=Z_nr\|\betas\|_1$ for the size of
-the threshold perturbation, it is of order $\alpha^2$, so it is absorbed by the term
+The last term is the third-order remainder of the Lipschitz expansion in the proof
+(Appendix~\ref{app:proofs}), and the only place where $L$ enters. With
+$\alpha=Z_nr\|\betas\|_1$ the size of
+the threshold perturbation it is of order $\alpha^2$, hence absorbed by the term
 $rZ_n\|\betas\|_1$ of the penalty \eqref{eq:lambda-est} exactly when $\alpha$ is bounded,
-which is what Assumption~\ref{ass:small-design} now provides; it is $O(\eta^2)$ once
-$\alpha=O(\eta)$, as in the rate regime of Theorem~\ref{thm:estimated}. No bound below
-$O(1)$ on $\alpha$ follows from the other clauses of that assumption, and this is why the
-rate statement in Theorem~\ref{thm:estimated} carries the extra condition it does.
+which is what Assumption~\ref{ass:small-design} provides; it is $O(\eta^2)$ once
+$\alpha=O(\eta)$, the rate regime of Theorem~\ref{thm:estimated}. No bound below
+$O(1)$ on $\alpha$ follows from the other clauses of that assumption, which is why the
+rate statement in Theorem~\ref{thm:estimated} carries its extra condition.
 \end{lemma}
 
 \begin{proof}
-See Appendix~\ref{app:proofs}. Three ingredients. The oracle score
-$n^{-1}\sum_i{\muv}_i\psi_i^\circ$, with $\psi_i^\circ=\tau-\ind{e_i<\delta_\tau}$, has
-mean exactly zero (Theorem~\ref{thm:calib}) and sub-Gaussian summands, so Hoeffding's
-inequality for sub-Gaussian variables plus a union bound gives
-$\|\cdot\|_\infty\le CK\eta$. Replacing the oracle threshold by the one evaluated at the
-estimated design contributes a mean of order $\bar f\,Z_nr\|\betas\|_1$ plus the Lipschitz
-remainder $L\bar f(Z_nr\|\betas\|_1)^2$, that is, of
-order $r$ rather than $\sqrt r$, because the two indicator differences cancel to first
-order, leaving the
-fluctuation unchanged. Finally the estimated design itself contributes a factor $r$ through
-$(\hat\Ccal-\Ccal)n^{-1}\sum_iW_i\psi_i$, whose mean is
-$-(\hat\Ccal-\Ccal)\gamma$ with $\gamma=f_e(\delta_\tau)\Sxw\betas$ of order $\bar f\rho$ by
-\eqref{eq:gamma}.
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{theorem}[Oracle inequality under an estimated calibration]
@@ -1170,81 +884,17 @@ with the oracle-calibration rates of Theorem~\ref{thm:highdim}.
 \end{theorem}
 
 \begin{proof}
-\emph{Step 1 (the penalty dominates the score).}
-Apply Lemma~\ref{lem:score-control} with the choice
-$\eta\asymp\sqrt{\log(p/\epsilon_n)/n}$. Its
-right-hand side is bounded by $C_0\lambda$ for $\lambda$ as in \eqref{eq:lambda-est}: the
-factor $(1+r)$ on $\eta$ and on $\bar fZ_nr\|\betas\|_1$ is absorbed into $C_0$ because
-$r\to0$, the term $r\bar f\rho$ is the $\rho r$ of \eqref{eq:lambda-est}, and
-Assumption~\ref{ass:small-design} bounds $r(\rho+rZ_n\|\betas\|_1)$ by
-$c_0\sqrt{\log p/n}$; the Lipschitz remainder is $O(\alpha^2)$ with
-$\alpha=Z_nr\|\betas\|_1$, and Assumption~\ref{ass:small-design} bounds $\alpha$ by the
-constant $c_1$, so the remainder is $O(\alpha)$, hence $O(\lambda)$, and is absorbed as well.
-With the bare $\bar f\rho$ removed, every term vanishes as $r\to0$, as it must: at $r=0$ the
-calibration is known and the score is exactly mean-zero
-(Theorem~\ref{thm:calib}). Hence $\|S\|_\infty\le\lambda/2$ on an event of probability at
-least $1-\epsilon_n-2p^{-c}$, which is the condition required for the cone argument below.
-
-\emph{Step 2 (restricted eigenvalue transfers).} For every $\theta\in(0,1)$ and all
-$a,b\in\R$ we have $(a+b)^2\ge(1-\theta)a^2-\frac{1-\theta}{\theta}b^2$; apply this to
-$a={\muv}_i^\top\Delta$, $b=({\hat{\muv}}_i-{\muv}_i)^\top\Delta$ with $\theta=1/4$ and
-average over $i$. Since $|b|\le r\|W_i\|_\infty\|\Delta\|_1\le rZ_n\|\Delta\|_1$ and
-$\Delta$ lies in the cone $\|\Delta\|_1\le4\sqrt s\|\Delta\|_2$,
-$\frac1n\sum_i b_i^2\le r^2Z_n^2\|\Delta\|_1^2\le16r^2Z_n^2s\|\Delta\|_2^2$, so
-\begin{equation*}
-\frac1n\sum_i({\hat{\muv}}_i^\top\Delta)^2
-\;\ge\;\Big(\frac34\kappa-3\cdot16r^2Z_n^2s\Big)\|\Delta\|_2^2
-\;\ge\;\frac{9}{16}\kappa\|\Delta\|_2^2
-\;\ge\;\frac\kappa2\|\Delta\|_2^2
-\end{equation*}
-by Assumption~\ref{ass:small-design}. Equivalently, the transfer holds with constant
-$(\sqrt\kappa-4rZ_n\sqrt s)^2$, which the assumption bounds below by $9\kappa/16$.
-
-\emph{Step 3 (basic inequality and the cone).} Let
-$\Delta=(\hat\beta-\betas,\hat\delta-\delta_\tau)$ and write
-$Q_n(\beta,\delta)=n^{-1}\sum_i\rho_\tau(Y_i-{\hat{\muv}}_i^\top\beta-\delta)$. Comparing
-$Q_n(\hat\beta,\hat\delta)+\lambda\|\hat\beta\|_1$ with the value at $(\betas,\delta_\tau)$
-and using convexity of $\rho_\tau$ together with the subgradient bound of Step 1 gives the
-cone property $\|\Delta_{S^c}\|_1\le3\|\Delta_S\|_1$ exactly as in
-\citet[Lemma 3]{belloni2011l1}. The quadratic term comes from Knight's identity: with
-$v_i={\hat{\muv}}_i^\top\Delta$ and $F_e$ the distribution function of $e_i$, whose
-$\tau$-quantile is $\delta_\tau$,
-\begin{equation*}
-\rho_\tau(e_i-v_i)-\rho_\tau(e_i)
-= -v_i\big(\tau-\ind{e_i<\delta_\tau}\big)+\int_0^{v_i}\big(F_e(\delta_\tau+s)-F_e(\delta_\tau)\big)\,ds ,
-\end{equation*}
-so the loss difference dominates $\frac{\underline f}{2}v_i^2$ up to the linear term and a
-third-order remainder, $\underline f$ being the lower bound on $f_e$ near $\delta_\tau$; the
-resulting self-normalised empirical-process term is absorbed by Young's inequality into
-$\lambda^2s$. Combining the pieces,
-\begin{equation*}
-\frac{\kappa}{2}\|\Delta\|_2^2 \;\le\; \frac1n\sum_{i=1}^n
-\big({\hat{\muv}}_i^\top(\hat\beta-\betas)\big)^2
-\;\le\; \frac{3\lambda}{2}\|\Delta_S\|_1+\lambda^2s ,
-\end{equation*}
-where the first inequality is Step 2 and the second is the basic inequality with
-$\|\Delta_S\|_1\le\sqrt s\|\Delta\|_2$. Solving the resulting quadratic inequality,
-\[
-\|\Delta\|_2\le\frac{6\lambda\sqrt s}{\kappa},
-\qquad
-\|\Delta\|_1\le4\sqrt s\|\Delta\|_2\le\frac{24\lambda s}{\kappa},
-\]
-and substituting back gives the prediction bound. This proves the three displays with
-$C_1=6$, $C_2=24$ and $C_3=18/\kappa$ after absorbing constants. The final statement
-follows because $\lambda\asymp C_0\sqrt{\log p/n}$ when $r\asymp\sqrt{\log p/n}$ and
-$rZ_n\|\betas\|_1\lesssim\sqrt{\log p/n}$, the latter being the condition
-$s\log p\log(np)\ll n$ under sub-Gaussianity of $W$.
+See Appendix~\ref{app:proofs}.
 \end{proof}
 
 \begin{remark}
-Theorem~\ref{thm:estimated} is the high-dimensional analogue of the statement that
-regression calibration is consistent when $\Sigma_x$ is estimated consistently. The plug-in
-penalty \eqref{eq:lambda-est} contains $\rho r$ and $rZ_n\|\betas\|_1$: the design error
-inflates the effective noise, which is visible in the simulations of \S\ref{sec:hd-est}. No
-bias correction of the \citet{loh2012highdim} type is needed here, and the reason is
-specific to our construction: the oracle design $\muv$ has an exactly mean-zero score
-\eqref{eq:calib-score}, so the design error enters only through the perturbation of the
-threshold, not through a bias term.
+Theorem~\ref{thm:estimated} is the high-dimensional analogue of regression calibration
+under a consistent $\hat\Sigma_x$. The plug-in penalty \eqref{eq:lambda-est} carries
+$\rho r$ and $rZ_n\|\betas\|_1$, so the design error inflates the effective noise, as the
+simulations of Appendix~C of Online Resource~1 show. No bias correction of the
+\citet{loh2012highdim} type is needed: the oracle design $\muv$ has an exactly mean-zero
+score \eqref{eq:calib-score}, so the design error enters only through the perturbation of
+the threshold.
 \end{remark}
 
 % ============================================================
@@ -1253,15 +903,12 @@ threshold, not through a bias term.
 % ============================================================
 
 The calibrated score is exactly mean-zero at the truth \eqref{eq:calib-score}, so the
-obstacle that blocks debiasing for the smoothed loss (\S\ref{sec:negative}) is absent, and
-the standard machinery applies in principle. We describe the construction and prove its
-asymptotic normality under a condition, \eqref{eq:debias-condition}, that separates the
-calibrations which work from those which do not.
+obstacle of \S\ref{sec:negative} is absent and standard debiasing applies.
 
 \paragraph{Construction.}
-Let $(\hat\beta,\hat\delta)$ solve \eqref{eq:estimated} and let
-$\hat e_i = Y_i-{\hat{\muv}}_i^\top\hat\beta-\hat\delta$ be the residuals. Define the plug-in
-Hessian and an approximate inverse,
+Let $(\hat\beta,\hat\delta)$ solve \eqref{eq:estimated} with residuals
+$\hat e_i = Y_i-{\hat{\muv}}_i^\top\hat\beta-\hat\delta$, and define the plug-in Hessian and
+an approximate inverse,
 \begin{equation}
 \hat H = \frac1n\sum_{i=1}^n \frac{1}{h}\phi\!\Big(\frac{\hat e_i}{h}\Big)\,
 \binom{{\hat{\muv}}_i}{1}\binom{{\hat{\muv}}_i}{1}^{\!\top},
@@ -1269,8 +916,8 @@ Hessian and an approximate inverse,
 \hat\Theta \approx \hat H^{-1},
 \label{eq:hatH}
 \end{equation}
-where $h\to0$ is a computational bandwidth; the smoothing here is numerical and is
-\emph{not} a measurement-error correction. A debiased estimator of a single coordinate is
+where $h\to0$ is a numerical bandwidth, \emph{not} a measurement-error correction. A
+debiased estimator of a single coordinate is
 \begin{equation}
 \hat b_j = \hat\beta_j
 + \hat\Theta_{j\cdot}\,\frac1n\sum_{i=1}^n\binom{{\hat{\muv}}_i}{1}
@@ -1279,11 +926,8 @@ where $h\to0$ is a computational bandwidth; the smoothing here is numerical and 
 \end{equation}
 with $\hat\Theta_{j\cdot}$ the $j$-th row of $\hat\Theta$, obtained by nodewise
 $\ell_1$-regression as in \citet{vandegeer2014asymptotically} when $p>n$ and by direct
-inversion otherwise; the quantile-regression analogue is that of
-\citet{bradic2017uniform}. Two choices matter and are discussed below: the score in
-\eqref{eq:debias} is the exact indicator rather than a smoothed version of it, and
-$(\hat\beta,\hat\delta)$ should be a \emph{refitted} estimator rather than the penalised
-one. The variance is estimated by the sandwich
+inversion otherwise; the quantile-regression analogue is \citet{bradic2017uniform}. The
+variance uses the sandwich
 \begin{equation}
 \hat\Theta\hat J\hat\Theta^\top/n,
 \qquad
@@ -1293,21 +937,17 @@ one. The variance is estimated by the sandwich
 \end{equation}
 
 \paragraph{What changes relative to the classical case.}
-Two terms appear, both because the design is estimated. First, the score in
-\eqref{eq:debias} is evaluated at $\hat{\muv}$, so its expansion acquires
-$(\hat\Ccal-\Ccal)n^{-1}\sum_iW_i\psi_i$, whose mean $-(\hat\Ccal-\Ccal)\gamma$ is
-non-zero by \eqref{eq:gamma}: the quantity that inflates the penalty threshold in
-Theorem~\ref{thm:estimated} now enters the bias of the debiased estimator. Second, the
-Hessian \eqref{eq:hatH} is itself evaluated at $\hat{\muv}$, so $\hat\Theta$ approximates
-the inverse of a perturbed matrix. Both effects are controlled by the same quantity that
-enters the penalty of Theorem~\ref{thm:estimated}, namely
-$\rho r_n+Z_nr_n\|\betas\|_1$: what is negligible for estimation, where the threshold is
-$\sqrt{\log p/n}$, need not be negligible for inference, where it is $n^{-1/2}$.
+The score \eqref{eq:debias} is evaluated
+at $\hat{\muv}$, so its expansion acquires
+$(\hat\Ccal-\Ccal)n^{-1}\sum_iW_i\psi_i$, whose mean $-(\hat\Ccal-\Ccal)\gamma$ is non-zero
+by \eqref{eq:gamma} and enters the bias; the Hessian \eqref{eq:hatH} is likewise perturbed.
+Both are governed by $\rho r_n+Z_nr_n\|\betas\|_1$, negligible at the estimation threshold
+$\sqrt{\log p/n}$ of Theorem~\ref{thm:estimated}, not at the inference scale $n^{-1/2}$.
 
-\paragraph{Asymptotic normality, under a condition on the calibration.}
-Write ${\tilde{\muv}}_i=({\muv}_i^\top,1)^\top$ and
-${\tilde{\hat{\muv}}}_i=({\hat{\muv}}_i^\top,1)^\top$, let
-$\Delta=\hat\beta-\betas$ and $\Delta_\delta=\hat\delta-\delta_\tau$.
+\paragraph{Asymptotic normality.}
+Write ${\tilde{\muv}}_i=({\muv}_i^\top,1)^\top$,
+${\tilde{\hat{\muv}}}_i=({\hat{\muv}}_i^\top,1)^\top$, $\Delta=\hat\beta-\betas$ and
+$\Delta_\delta=\hat\delta-\delta_\tau$.
 
 \begin{theorem}[Debiased inference under an estimated calibration]
 \label{thm:debias-clt}
@@ -1339,27 +979,14 @@ $\sigma_j^2$ below. Then for every fixed $j$,
 \end{equation}
 \end{theorem}
 
-The proof is in Appendix~\ref{app:proofs}. Its structure is the classical one: the
-debiased estimator is a Newton step, so it equals its linear term
-$\hat\Theta_{j\cdot}n^{-1}\sum_i{\tilde{\hat{\muv}}}_i(\tau-\ind{e_i<\delta_\tau})$ plus a
-remainder; the linear term is a sum of independent, conditionally mean-zero summands, since
-$e_i$ is independent of ${\muv}_i$ with $F_e(\delta_\tau)=\tau$ \eqref{eq:calib-score}, so a
-Lindeberg argument gives the normal limit; and the remainder is controlled by
-\eqref{eq:debias-condition}, whose three pieces are the two design-error terms and the
-second-order term in the expansion of the indicator, with the factor $1+Z_n$ that the
-weighted sum of that expansion produces. The condition is what the estimated
-design costs: a known calibration has $r_n=0$, and the first two clauses then hold
-automatically, leaving a condition on the initial estimator alone, which under the oracle
-inequality of Theorem~\ref{thm:estimated} is satisfied when $s^2(\log p)^{2}=o(\sqrt n)$;
-the refitted estimator used in the simulations is in any case far more accurate than the
-$\ell_1$ bound $s\lambda$ would suggest.
+\eqref{eq:debias-condition} controls the remainder.
+With $r_n=0$ the first two clauses hold automatically, leaving the initial estimator, which
+Theorem~\ref{thm:estimated} satisfies when $s^2(\log p)^{2}=o(\sqrt n)$.
 
-\paragraph{The sample-covariance plug-in does not meet the condition.}
+\paragraph{The sample-covariance plug-in fails the condition.}
 The natural way to obtain $\hat\Ccal$ is the method of moments,
 $\hat\Sigma_x=S_W-\Sigma_u$ with $S_W=n^{-1}\sum_iW_iW_i^\top$ and
-$\hat\Ccal=\hat\Sigma_x(\hat\Sigma_x+\Sigma_u)^{-1}$. Its row-wise accuracy is limited by the
-accuracy of the sample covariance, and that limit is exactly the order that
-\eqref{eq:debias-condition} excludes.
+$\hat\Ccal=\hat\Sigma_x(\hat\Sigma_x+\Sigma_u)^{-1}$.
 
 \begin{proposition}[The plug-in calibration is not accurate enough]
 \label{prop:plugin}
@@ -1382,453 +1009,104 @@ $n$ observations can do better in this respect, since its entries carry errors o
 $n^{-1/2}$ and the row-wise norm aggregates at least $s_0$ of them.
 \end{proposition}
 
-The proof is again in Appendix~\ref{app:proofs}; it is the perturbation identity of
-Lemma~\ref{lem:perturb} followed by a row-wise norm bound. The content is not that the
-constant in \eqref{eq:plugin} is large but that no version of it can be small: the row-wise
-error of a sample-covariance-based calibration is $\Omega_P(\sqrt{\log p/n})$ per estimated
-entry, because the sample covariance itself has that sup-norm error, and $n^{-1/2}$ is the
-scale inference works at. In fixed dimension, $\sqrt{\log p/n}\asymp n^{-1/2}$, so the
-violation is of the order of the standard error and only mildly damaging; as $p$ grows it
-grows like $\sqrt{\log p}$. Table~\ref{tab:plugin} measures what this costs at the design of
-Table~\ref{tab:debias}: with a known calibration, coverage on the signal coordinates is
-$0.979$ at $\sigma_u=0.5$; with the plug-in it falls to $0.944$, and the mean bias of
-$\hat b_j$ rises from $0.002$ to $0.107$, against a mean standard error of $0.25$. At
-$\sigma_u=0.3$, where the calibration error is smaller, coverage moves from $0.981$ to
-$0.970$.
-What restores the theorem is not a better inverse but a better calibration: $\Ccal$ known, or
-estimated from independent data at a rate faster than $n^{-1/2}$, as in a validation study,
-or from replicate measurements with the replicates not used in the regression. The
-application of \S\ref{sec:nhanes} is of the second kind, with two recalls per subject, and
-its intervals should be read with that caveat.
+The proof is again in Appendix~\ref{app:proofs}: Lemma~\ref{lem:perturb} and a row-wise norm
+bound. Any sample-covariance calibration carries row-wise error
+$\Omega_P(\sqrt{\log p/n})$ per estimated entry, and inference lives at the $n^{-1/2}$ scale.
+In fixed dimension $\sqrt{\log p/n}\asymp n^{-1/2}$, so the violation is of the order of the
+standard error; as $p$ grows it grows like $\sqrt{\log p}$.
+Table~\ref{tab:plugin} measures the cost at the design of Table~\ref{tab:debias}: with a
+known calibration, coverage on the signal coordinates is $0.979$ at $\sigma_u=0.5$; with the
+plug-in it falls to $0.944$, and the mean bias of $\hat b_j$ rises from $0.002$ to $0.107$,
+against a mean standard error of $0.25$. At $\sigma_u=0.3$, where the calibration error is
+smaller, coverage moves from $0.981$ to $0.970$. Better calibration, not a better inverse,
+restores the theorem: the condition holds for $\Ccal$ known, or estimated from independent
+data faster than $n^{-1/2}$; the application of \S\ref{sec:nhanes} uses two recalls per
+subject, so its intervals carry that caveat. The penalised estimator's own sandwich intervals
+fail badly ($0.08$--$0.75$) at $p<n$, and debiasing from the $\ell_1$ initial estimator is
+unreliable: acceptable at half the theory-scale penalty ($0.947$ and $0.959$), not at the
+theory scale ($0.246$ and $0.368$). Refitting plus debiasing covers at $0.973$--$0.981$ on the
+support and $0.952$--$0.963$ on the null coordinates. Panel B, at $n=200$, $p=250$,
+$\lambda=0.6\,\lambda_0$, covers at $0.952$ and $0.949$; halving the penalty to $0.4\lambda_0$
+over-selects and support coverage drops to $0.824$ while the null coverage stays at $0.959$.
 
-\emph{First, the initial estimator must be refitted.} One-step debiasing is a Newton step,
-so it is accurate only when the initial bias is small relative to the standard error. At
-the theory-scale penalty $\lambda_0=\sqrt{\log p/n}$ we measured an $\ell_1$ bias of
-$-0.93$ on a coefficient of size $2$, against a standard error of $0.32$, and one-step
-debiasing then overshot to $+0.86$: coverage on the signal coordinates fell to $0.25$ at
-$\sigma_u=0.5$ (Table~\ref{tab:debias}). The correction itself is not at fault: started from
-the true value instead of the $\ell_1$ fit, the same machinery returns a bias of $+0.02$ and
-coverage $0.95$. Refitting by unpenalised
-quantile regression on the selected support removes this bias ($+0.006$ at the same
-$\lambda$), because the selected set has size comparable to $s$ and the refit is
-$\sqrt n$-consistent on it.
+The refitted estimator requires the selected support to contain
+the true support, which we observe but do not prove.
 
-\emph{Second, the score must not be smoothed.} The debiasing correction uses the score
-$S(\beta)=\sum_i\binom{{\muv}_i}{1}\psi_i$ and the Hessian \eqref{eq:hatH}. Using a smoothed
-score $\Phi(e/h)-(1-\tau)$ in both biases the centre by $O(h^2)$, which at the usual
-bandwidth destroyed coverage in our pilot; using the exact indicator
-$\tau-\ind{e_i<0}$ for the score and the Gaussian kernel only for the Hessian removes the
-bias while keeping the Hessian well conditioned.
+The initial estimator must be refitted, since
+one-step debiasing is a Newton step, accurate only when the initial bias is small against the
+standard error; refitting by unpenalised quantile regression on the selected support removes
+that bias. The score must not be smoothed: the exact indicator $\tau-\ind{e_i<0}$ is used for
+the score, with the Gaussian kernel only for the Hessian \eqref{eq:hatH}, which keeps the
+latter well conditioned.
 
-With these two choices the intervals have close to nominal coverage; Table~\ref{tab:debias}
-reports the outcome for $200$ replications at $n=400$, $p=40$, $\sigma_u\in\{0.3,0.5\}$
-(Panel A) and for $50$ replications at $n=200$, $p=250$ (Panel B). The penalised estimator's
-own sandwich intervals fail badly
-($0.08$--$0.75$) at $p<n$, which is the usual consequence of ignoring the penalty bias.
-Debiasing from the $\ell_1$ initial estimator is unreliable: acceptable at half the
-theory-scale penalty ($0.947$ and $0.959$) but not at the theory scale itself
-($0.246$ and $0.368$). Refitting plus debiasing covers at $0.973$--$0.981$ on the support and
-$0.952$--$0.963$ on the null coordinates, with exact support recovery in $99.5\%$ of
-replications at $\lambda_0$.
-
-\paragraph{The case $p>n$.}
-Panel B removes the $p<n$ restriction, which is where a reader of a high-dimensional paper
-will look first. There the plug-in Hessian is singular, $\hat\Theta$ is built row by row
-from \eqref{eq:hatH} by nodewise $\ell_1$ regression, and, because the nodewise problems
-decouple and \eqref{eq:debias} needs only one row per coordinate, we solve them only for
-the coordinates being reported, which makes the computation cheap. At $n=200$, $p=250$ and
-$\lambda=0.6\,\lambda_0$ the intervals cover at $0.952\pm0.016$ on the support and
-$0.949\pm0.007$ on the null coordinates, with a mean length of $0.95$ and exact support
-recovery in $76\%$ of replications (on average $0.04$ signal coordinates missed). The
-nodewise inverse is accurate to machine precision on the coordinates used
-($\max_j|(\hat\Theta\hat H)_{jj}-1|=0$). Two effects degrade this:
-halving the penalty to $0.4\lambda_0$ over-selects ($12.6$ coordinates) and coverage drops
-to $0.824$ on the support while the null coverage stays at $0.959$, i.e.\ the intervals do
-not account for selection variability; and the penalised estimator has no usable sandwich
-interval at all when $p>n$, since $\hat H$ is singular, so Panel B reports only the
-refitted and debiased estimator.
-
-Two caveats remain, and they are different in kind. The first is about the initial
-estimator: the validity of the refitted estimator rests on the selected support containing
-the true support; we observe this ($0.04$ missed coordinates on average) but do not prove
-selection consistency, and Panel B shows that the choice of penalty matters. The second is
-the condition \eqref{eq:debias-condition} of Theorem~\ref{thm:debias-clt}: it holds for a
-known calibration, which is what our implementation uses, and Proposition~\ref{prop:plugin}
-shows that it fails for the sample-covariance plug-in, so the theorem should be read as a
-statement about a calibration that is known or estimated from independent data. The full
-coverage table is reported with the other numerical results in \S\ref{sec:debias-num},
-together with the plug-in comparison.
-
-\paragraph{Where the difficulty comes from.}
-The obstacle here is not the one of \S\ref{sec:negative}. For
-the smoothed loss no debiasing scheme can work, because the estimand is wrong
-(\S\ref{sec:negative} and Table~\ref{tab:coverage}); no amount of computational care
-changes that. For the calibrated estimator the estimand is right and the score is exactly
-unbiased, so the remaining work is a matter of accurately inverting a Hessian and
-controlling a nuisance bandwidth, the kind of problem that
-\citet{vandegeer2014asymptotically} and \citet{he2023smoothed} solve in the absence of
-measurement error.
-
-% ============================================================
 \section{Numerical evidence}
 \label{sec:simu}
 % ============================================================
 
 All experiments use $X_i\sim\cN(0,I_p)$, $U_i\sim\cN(0,\sigma_u^2I_p)$, known
-$\Sigma_u$, and computational smoothing bandwidth $h=0.01$ for the \emph{check} loss
-(bias $O(h^2)\approx10^{-4}$, three orders of magnitude below every effect reported here;
-see Appendix~\ref{app:computation}). Code and raw outputs are listed in
-Appendix~\ref{app:repro}.
+$\Sigma_u$, and smoothing bandwidth $h=0.01$ for the \emph{check} loss, whose bias
+$O(h^2)\approx10^{-4}$ is negligible here (Appendix~\ref{app:computation}).
 
 \subsection{Exact population targets}
 \label{sec:targets}
 
-Table~\ref{tab:targets} reports, for $p=1$ and $n=2\times10^5$, the minimiser of each
-population objective, computed by exact one-dimensional subgradient root-finding (check
-loss) or fine grid search with parabolic refinement (smoothed loss). The smoothed loss
-targets $\bbar$ rather than $\betas$: by Proposition~\ref{prop:exact-target} the population
-minimiser of every fixed-scale form is exactly $\bbar$, and the tabulated Monte-Carlo values
-agree with it to within Monte-Carlo error. This holds for the pilot-based scale and for all
-$\tau$; the adaptive version $\sigma(\beta)$ is displaced further, not less, and its exact
-target is given by Proposition~\ref{prop:exact-target}(iii); and
-the posterior-kernel control of Corollary~\ref{cor:no-conv} is displaced as well, with
-Proposition~\ref{prop:posterior-adaptive} locating it \emph{at} $\bbar$. Its entries agree
-with $\bbar$ to within Monte-Carlo error (at
-most $0.006$, the largest deviation anywhere in the table, against a $\bbar-\betas$ gap of $0.40$ at $\sigma_u=0.5$), so no convolution
-repairs the problem; regression calibration,
-by contrast, recovers $\betas$ to within Monte-Carlo error for every $\tau$, with the
-fitted intercept matching the predicted quantile shift $\delta_\tau$ of
-Theorem~\ref{thm:calib} (Table~\ref{tab:targets_calib}). In the table, column 5 uses the pilot scale $\sigmah$ produced by a
-calibrated first stage and column 6 the posterior kernel; the pilot column is idealised,
-since it uses the true $\Sigma_x$, which favours the smoothed method.
+Table~S8 of Online Resource~1 reports, for $p=1$ and $n=2\times10^5$, the minimiser of each
+population objective. The smoothed loss targets $\bbar$, not $\betas$: by
+Proposition~\ref{prop:exact-target} every fixed-scale form is minimised exactly at $\bbar$,
+and the tabulated values agree to Monte-Carlo error for the pilot-based scale and all
+$\tau$. The adaptive version $\sigma(\beta)$ is displaced further, its exact target given by
+Proposition~\ref{prop:exact-target}(iii), and the posterior-kernel control of
+Corollary~\ref{cor:no-conv} is displaced as well, Proposition~\ref{prop:posterior-adaptive}
+locating it \emph{at} $\bbar$; its entries agree with $\bbar$ to within $0.006$, against a
+$\bbar-\betas$ gap of $0.40$ at $\sigma_u=0.5$. Regression calibration recovers $\betas$ to
+within Monte-Carlo error for every $\tau$, its fitted intercept matching the predicted
+quantile shift $\delta_\tau$ of Theorem~\ref{thm:calib} (Table~S1 of Online Resource~1).
 
-\input{tables/tab_targets.tex}
 
-\input{tables/tab_targets_calib.tex}
-
-\subsection{The score check}
-\label{sec:scorecheck}
-
-Theorem~\ref{thm:score} is a statement about a population mean and can be checked
-directly. Table~\ref{tab:score} reports Monte-Carlo estimates of
-$\E[W_{i1}\psit(r_i^*,\sigma^*)]$ and of the calibrated score
-$\E[{\muv}_{i1}(\tau-\ind{e_i<\delta_\tau})]$ at the truth. The smoothed score is non-zero
-with $t$-statistics in the tens and matches the analytic value $-(\Sigma_u\betas)_1d(\sigma^*)$;
-the calibrated score is indistinguishable from zero. This is the empirical content of the
-distinction between the two sections: one score is biased by $\Theta(\rho)$, the other is
-exactly unbiased.
-
-\input{tables/tab_score.tex}
-
-\subsection{The bias does not vanish: scaling in $n$}
-\label{sec:scaling}
-
-Table~\ref{tab:scaling} and Figure~\ref{fig:scaling} repeat the comparison at
-$p=10$, $s=5$, $\sigma_u=0.5$, unpenalised (so that the floor cannot be attributed to
-shrinkage), with $50$ replications. The smoothed estimator's distance to $\betas$ is flat
-in $n$ and equals $\norm{\bbar-\betas}$ within Monte-Carlo error, while its distance to
-$\bbar$ decays at the $\sqrt{n}$ rate; the calibrated estimator converges at the same
-$\sqrt{n}$ rate as the oracle, offset by the efficiency factor of
-Remark~\ref{rem:efficiency}. This is the finite-sample counterpart of Lemma~\ref{lem:bias}.
-
-\input{tables/tab_scaling.tex}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.95\textwidth]{../figures/fig2_scaling.pdf}
-    \caption{$\ell_2$ error as a function of $n$ ($p=10$, $s=5$,
-    $\sigma_u=0.5$, $50$ replications, unpenalised). Panel (a), at $\tau=1/2$: the smoothed
-    estimator (``convolved'') is flat and sits at the attenuation floor
-    $\norm{\bbar-\betas}$ (dashed line); the calibrated estimator (``RC$+$int'') has the
-    oracle's $\sqrt n$ slope, offset by the efficiency factor of
-    Remark~\ref{rem:efficiency}. Panel (b): the same smoothed estimates measured instead
-    against $\bbar$, for the three quantile levels; the solid curves, which are distances to
-    $\betas$, do not decay, while the dotted curves, which are distances to $\bbar$,
-    decrease at the $\sqrt n$ rate. The three levels coincide to within Monte-Carlo error,
-    as the $\tau$-independence of $\bbar$ requires.}
-    \label{fig:scaling}
-\end{figure}
-
-\subsection{High dimensions}
-\label{sec:highdim-sim}
-
-Table~\ref{tab:highdim} and Figure~\ref{fig:highdim} report the high-dimensional
-comparison at $n=400$, $p=500$, $s=10$, $\tau=1/2$, $\lambda=0.02$, with $30$
-replications and a fixed $\betas$. The smoothed two-stage estimator follows the published
-algorithm of that method, reimplemented in the code accompanying this paper; naive,
-calibrated and oracle
-estimators are fitted with an exact
-linear-programming solver, so no difference can be attributed to optimisation error.
-
-In \emph{total} $\ell_2$ error the smoothed estimator is competitive, and at
-$\sigma_u=0.1$ it matches the oracle ($0.73$ versus $0.75$), because at this $(n,p)$ the
-error is dominated by variance and the smoothed objective, with its pilot scale, is
-strongly convex and hence low-variance. This is a genuine bias--variance trade-off, and it
-is why such estimators look attractive in small samples. The trade-off, however, is with a
-bias that never disappears. The probability limit of the
-smoothed estimator is $\bbar$, at distance $\norm{\bbar-\betas} = 0.06$, $0.52$ and $1.25$
-from $\betas$ at $\sigma_u=0.1,0.3,0.5$; its realised distance to $\bbar$ in this
-experiment is $0.71$, $1.09$ and $1.53$, i.e.\ the bias is buried under estimation noise
-at $n=400$. Table~\ref{tab:scaling} shows what happens when the noise is reduced, and no
-amount of additional data removes the bias. The calibrated estimator is unbiased here as
-well, but visibly less efficient than
-the oracle: median $1.51$ versus $0.75$ at $\sigma_u=0.3$ and $2.10$ versus $0.75$ at
-$\sigma_u=0.5$, in line with the variance inflation predicted in
-Remark~\ref{rem:efficiency}. The convolution $e_i = V_i^\top\betas+\varepsilon_i$ flattens the
-error density at the quantile, and the calibrated regressor is attenuated. At
-this $(n,p)$ the biased smoothed estimator therefore has the smaller total error at all three
-measurement-error levels ($0.73$/$1.24$/$1.83$ versus $0.88$/$1.51$/$2.10$).
-Table~\ref{tab:highdim} is a statement about efficiency in a variance-dominated
-regime, not evidence that the smoothed estimator identifies $\betas$, and this is the
-regime in which a bias floor is hardest to detect by simulation.
-
-\input{tables/tab_highdim.tex}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.95\textwidth]{../figures/fig3_highdim.pdf}
-    \caption{High-dimensional comparison ($n=400$, $p=500$, $s=10$, $\tau=1/2$, $30$
-    replications; medians with interquartile ranges). The smoothed estimator is
-    competitive in total $\ell_2$ error in this variance-dominated regime, but its
-    probability limit is the attenuation target $\bbar$ (dashed line), so its distance to
-    $\betas$ is bounded below by the floor $\norm{\bbar-\betas}$, which no sample size
-    removes; its realised distance to $\bbar$ (dotted line) is $0.71$, $1.09$ and $1.53$ at
-    $\sigma_u=0.1,0.3,0.5$ here, so at this sample size the bias is buried under estimation
-    noise and Table~\ref{tab:scaling} is what reveals it. The calibrated estimator is
-    unbiased for $\betas$ and has the oracle's convergence rate
-    (Table~\ref{tab:scaling}).}
-    \label{fig:highdim}
-\end{figure}
-
-\subsection{Inference}
-\label{sec:coverage}
-
-Theorem~\ref{thm:lowdim} asserts that the calibrated estimator is asymptotically normal
-with the usual quantile-regression sandwich covariance. Table~\ref{tab:coverage} verifies
-this directly, and at the same time makes the cost of the target shift concrete. Wald
-intervals for the calibrated estimator cover $\betas$ at $0.89$--$0.93$ (nominal $90\%$)
-and $0.93$--$0.97$ (nominal $95\%$) across $n$ and $\tau$. Intervals built from the
-smoothed score, using its own correct sandwich covariance, are equally well calibrated, at
-$0.93$--$0.97$ for a nominal $95\%$, but for $\bbar$: their coverage of $\betas$
-is $0.000$ in all twelve cells, i.e.\ not a single one of the $4{,}800$ smoothed intervals
-contained the true coefficient when $\sigma_u=0.5$. This is the operational form of
-Theorem~\ref{thm:score}: the smoothing does not destroy the calibration of the interval, it
-changes the parameter the interval is about. It also explains why no resampling scheme can
-repair inference for the smoothed estimator (Remark~\ref{rem:subsampling}): the problem is not the width of the interval but its centre.
-
-\input{tables/tab_coverage.tex}
-
-\begin{remark}[The naive score, checked]
-Corollary~\ref{cor:same-target} can be checked on the same data. At $\sigma_u=0.5$ the
-Monte-Carlo estimate of $\E[W_i(\tau-\ind{r_i^*<0})]$ is $-0.13086\,(\pm0.00086)$ for
-$\tau=1/2$, against the analytic value $-0.13079$ from \eqref{eq:naive-bias}, which is
-$-\norm{\Sigma_u\betas}_1d_{\mathrm{naive}}$ with
-$d_{\mathrm{naive}}=(\cN(0,\sigma^{*2})*f_\varepsilon)(0)=0.2616$; for
-$\tau=0.3$ and $0.7$ the estimates are $-0.16105$ and $-0.16156$ against $-0.16166$ and
-$-0.16169$, i.e.\ $d_{\mathrm{naive}}=0.3234$ for the asymmetric Laplace law used at those
-levels. The two constants differ because the error laws differ in scale, not in shape: at
-$\tau=1/2$ we generate Laplace$(0,1)$, whose density at the quantile is $1/2$, whereas for
-$\tau\neq1/2$ we generate $\varepsilon=(1-\tau)E_1-\tau E_2$ with $E_j\sim\mathrm{Exp}(1)$,
-whose density at the quantile is $1$. All other quantities reported below are free of that
-scale. The naive and the smoothed score are therefore biased by the same mechanism
-and to the same order, which is why their population targets coincide
-(Table~\ref{tab:targets}).
-\end{remark}
-
-\subsection{Estimated calibration in high dimensions}
-\label{sec:hd-est}
-
-Table~\ref{tab:hdc} tests the chain of \S\ref{sec:estimated} in a design where the
-plug-in is least favourable on paper: $\Sigma_x$ is banded Toeplitz with row sparsity
-$11$, so $\Ccal=\Sigma_x(\Sigma_x+\Sigma_u)^{-1}$ is \emph{dense}, and $\hat\Sigma_x$ is
-obtained by Ledoit--Wolf shrinkage followed by entrywise hard thresholding.
-
-The calibration matrix is estimated accurately: $\|\hat\Ccal-\Ccal\|_2$ is
-$0.005$, $0.039$ and $0.088$ at $\sigma_u=0.1,0.3,0.5$, one to two orders of
-magnitude below the scale of the coefficients. Consequently the plug-in
-estimator is statistically indistinguishable from the oracle-calibration estimator
-(differences of at most $0.02$ in $\ell_2$ error, within one standard error at every
-$\sigma_u$), while both improve substantially on the naive estimator once the
-attenuation matters: at $\sigma_u=0.5$, $1.564$ versus $1.808$ with the oracle at $1.545$.
-The sup-norm score is the quantity the proof turns on, and estimating the
-calibration does not inflate it: $\|n^{-1}\sum_i{\hat{\muv}}_i\psi_i\|_\infty$ equals
-$0.0831$, $0.0793$, $0.0732$ against $0.0832$, $0.0793$, $0.0734$ for the oracle design,
-all below the theoretical scale $\sqrt{\log p/n}=0.1246$. In this design, therefore, the
-sufficient condition of Assumption~\ref{ass:calib-acc} is satisfied with room to spare,
-even though Lemma~\ref{lem:perturb} alone would only certify the spectral norm.
-
-Theorem~\ref{thm:estimated} is conditional on
-row-wise accuracy of $\hat\Ccal$; we have not proved that thresholding delivers it for
-growing row sparsity, and Remark~\ref{rem:spectral-not-enough} explains why the spectral
-norm alone cannot be enough. What Table~\ref{tab:hdc} shows is that the gap between the
-provable condition and what the plug-in actually needs is not vacuous in the
-banded-$\Sigma_x$ designs that arise in practice, and it identifies the quantity that a
-sharper theory, or a bias-corrected design, would have to control: the sup-norm score.
-
-\input{tables/tab_hdc.tex}
-
-\subsection{Efficiency of the calibrated estimator}
-\label{sec:efficiency}
-
-Remark~\ref{rem:efficiency} quantified the price of measurement error as
-an efficiency loss: $f_e(\delta_\tau)<f_\varepsilon(0)$ because $e_i$ convolves
-$\varepsilon_i$ with $V_i^\top\betas$, and the calibrated regressor is attenuated. It is
-natural to ask whether that loss can be bought back. One route is available in principle
-and cheap: in the location-shift model every quantile level estimates the same $\betas$, so
-the estimators $\hat\beta_{\tau_1},\dots,\hat\beta_{\tau_K}$ can be combined. Their joint
-asymptotic covariance is, in units of $\E[\muv\muv^\top]^{-1}$,
-\begin{equation}
-C_{kl} = \frac{\tau_k\wedge\tau_l-\tau_k\tau_l}{f_kf_l},
-\qquad f_k = f_e\big(Q_{\tau_k}(e)\big),
-\label{eq:gls}
-\end{equation}
-so the GLS combination has variance $(1^\top C^{-1}1)^{-1}$ against $C_{\tau_0\tau_0}$ for
-the single level $\tau_0$. Table~\ref{tab:gls} evaluates the ratio. For Laplace errors it
-is exactly $1$: the median is already the most efficient quantile and combining adds
-nothing. For Gaussian and uniform errors the gain is real, up to a $30\%$ reduction in
-variance (a $16\%$ reduction in standard error) with seven levels.
-
-\input{tables/tab_gls.tex}
-
-Two conclusions. First, the part of the efficiency loss caused by the flattened density
-$f_e$ is \emph{not} recoverable by reweighting quantile moments: all of them share the same
-$f_e$, so the loss appears in every $C_{kk}$ and cancels in the ratio
-\eqref{eq:gls}. Second, what is recoverable is the part caused by looking at a single
-quantile of an error distribution whose density is not concentrated there, and the
-recovery is free of any modelling beyond the location-shift structure. A simulation with
-$K=7$ levels and weights estimated by kernel density confirms the direction for Gaussian
-errors (ratio $0.90$ at $n=1000$, against an asymptotic optimum of $0.80$ that requires
-accurate weights); for Laplace errors the same implementation returned $0.91$, which the
-theory says cannot be a genuine gain, since the oracle design moved in the opposite
-direction; we therefore report it as an artefact of estimated weights rather than an
-improvement. The remaining route to efficiency is to use more information than
-$(Y,\muv)$: conditioning on $(Y,W)$ rather than $W$ alone, as in the conditional
-estimating equations of \citet{wei2009quantile}, does that, at the cost of
-modelling the quantile process. Carrying that construction into $p\gg n$ is open.
 
 \subsection{Debiasing coverage}
 \label{sec:debias-num}
 
-Table~\ref{tab:debias} collects the coverage study described in \S\ref{sec:debiasing}: at
-$p<n$ the refitted and debiased estimator covers at $0.973$--$0.981$ (nominal $95\%$) where
-the penalised estimator's own sandwich intervals cover at $0.08$--$0.75$; debiasing the
-penalised fit without refitting recovers the nominal level at half the theory-scale penalty
-($0.947$ and $0.959$) but not at the theory scale itself ($0.246$ and $0.368$), which is the
-penalty-bias effect of \S\ref{sec:debiasing}; and at $p>n$,
-where the plug-in Hessian is singular and $\hat\Theta$ must be built by nodewise
-regression, coverage is $0.952\pm0.016$ on the support and $0.949\pm0.007$ on the null
+At $p<n$ the refitted and debiased estimator covers at $0.973$--$0.981$ (nominal $95\%$), the
+penalised fit's own sandwich intervals at $0.08$--$0.75$. Debiasing without refitting
+recovers the nominal level at half the theory scale ($0.947$ and $0.959$) but not at the
+theory scale ($0.246$ and $0.368$), the penalty-bias effect of \S\ref{sec:debiasing}. At
+$p>n$ coverage is $0.952\pm0.016$ on the support and $0.949\pm0.007$ on the null
 coordinates at $\lambda=0.6\lambda_0$, degrading to $0.824$ when the penalty is halved and
-the support is over-selected. In the table, coverage is averaged over the signal
-coordinates, one column per interval, and the null coverage and mean length of the
-refit$+$deb.\ interval are reported alongside it; the support column reports the mean number
-of selected coordinates, followed in parentheses by the fraction of replications in which
-the selected set is exactly the true support and, in Panel~B, the mean number of missed
-signal coordinates.
+the support is over-selected.
 
 \input{tables/tab_debias.tex}
 
-Table~\ref{tab:plugin} isolates the cost of estimating the calibration, which is the
-condition of Theorem~\ref{thm:debias-clt} rather than an implementation detail. Both rows use
-the same estimator and the same replications; only the calibration matrix differs, the known
-$\Ccal$ against the method-of-moments plug-in $\hat\Ccal=I-\Sigma_uS_W^{-1}$. In Panel A the
-plug-in loses $3.5$ points of coverage at $\sigma_u=0.5$, its bias is $0.107$ against a
-standard error of $0.25$, and the row-wise calibration error is $r_n=0.536$, five times the
-theory scale $\sqrt{\log p/n}=0.096$. Panel B varies the dimension at the fixed ratio
-$n=4p$, where the penalised fit is still stable ($n\ge400$): the known-calibration intervals
-hold the nominal level, $0.984$ at $p=100$ and $p=200$, while the plug-in intervals fall to
-$0.728$ and $0.640$, with a bias of $0.8$ on a coefficient of size $2$. Proposition
-\ref{prop:plugin} shows that this is not a feature of this particular estimator of $\Sigma_x$.
+Table~\ref{tab:plugin} tests the condition of Theorem~\ref{thm:debias-clt}. In Panel A the
+plug-in loses $3.5$ points of coverage at $\sigma_u=0.5$, with bias $0.107$ against a
+standard error of $0.25$ and row-wise calibration error $r_n=0.536$, five times the
+theory scale $\sqrt{\log p/n}=0.096$. In Panel B, at the fixed ratio $n=4p$ ($n\ge400$),
+the known-calibration intervals hold the nominal level, $0.984$ at $p=100$ and $p=200$,
+while the plug-in intervals fall to $0.728$ and $0.640$, with a bias of $0.8$ on a
+coefficient of size $2$.
 
 \input{tables/tab_plugin.tex}
 
-\subsection{Real data: dietary intake and body mass index}
+\subsection{Real data: NHANES 2017--2018}
 \label{sec:nhanes}
 
-Our numerical work so far adds measurement error by construction. Here we report an
-application in which the measurement-error covariance is estimated from genuine replicate
-measurements. NHANES 2017--2018 records two 24-hour dietary recalls for each participant;
-the same quantity is therefore measured twice, and under the classical model the pair
-identifies both
-\begin{equation}
-\Sigma_x = \mathrm{Cov}(R_1,R_2),
-\qquad
-\Sigma_u = \tfrac12\,\mathrm{Var}(R_1-R_2),
-\label{eq:replicates}
-\end{equation}
-with no assumption on $\Sigma_u$ beyond the model itself. We take the $24$ nutrient totals
-reported in both recalls (log scale, $\log(1+\cdot)$), the response is body mass index, and
-we restrict to adults aged $20+$ with two reliable recalls and complete records
-($n=3649$).
-
-Two features of the raw design matter. The nutrients are strongly
-collinear (total fat and monounsaturated fat correlate at $0.97$, total fat and
-saturated fat at $0.93$, protein and phosphorus at $0.90$), so $\hat\Sigma_x$ has
-condition number $2\times10^4$ and $\hat\Ccal$ is numerically explosive: this is the
-ill-conditioning that \S\ref{sec:estimated} warns about, appearing in real data. We
-therefore remove the near-duplicates (total, mono- and poly-unsaturated fat; phosphorus;
-potassium; moisture), which leaves $p=18$ nutrients with $\mathrm{cond}(\hat\Sigma_x+\Sigma_u)
-= 585$. Regularising $\hat\Sigma_x$ instead (banding or thresholding \citep{bickel2008},
-linear shrinkage \citep{ledoit2004}) would also control the conditioning, but it changes
-$\hat\Ccal$ and therefore the target, so we prefer to prune the near-duplicates and report
-the conditioning rather than silently estimate a different calibration. Second, the
-estimated reliabilities
-$(\hat\Sigma_x)_{jj}/((\hat\Sigma_x)_{jj}+(\hat\Sigma_u)_{jj})$ average $0.417$: a single
-24-hour recall carries more measurement variance than signal, which is the well-documented
-behaviour of dietary recalls and makes this a demanding test of the correction.
-
-Table~\ref{tab:nhanes} reports the results. The naive coefficients are attenuated by
-roughly a factor of six, the median ratio of naive to calibrated coefficients being
-$0.156$, and the attenuation is \emph{worse} than the mean reliability of
-$0.417$ would suggest for a single covariate, because the collinearity of the nutrients
-compounds it. The correction changes magnitudes substantially (energy: $3.2$ to $22.7$;
-carbohydrate: $-1.7$ to $-12.3$) and it changes conclusions: ten of the eighteen
-coefficients have debiased intervals excluding zero, against nine for the naive analysis at
-the same level, but the sets are not nested, and the intervals are wide: for example,
-saturated fat moves from $-0.65$ to $-6.21$ with an interval $[-11.7,0.7]$ that still
-contains zero, so the correction enlarges the estimate without establishing it.
-
-We describe this as an illustration rather than a validation, and list what it does not
-establish. The truth is unknown, so nothing here checks accuracy; the outcome (body mass
-index) is itself measured with error, though far less than the exposures; the two recalls
-are not independent draws, since day-of-week and under-reporting effects are well
-documented, so \eqref{eq:replicates} is at best a working approximation, and our $\hat\Sigma_x$ does
-have one slightly negative eigenvalue; survey weights are not used; and the near-duplicate
-nutrients had to be removed before the calibration could be computed at all, which is
-itself a finding for applied work.
-
-\input{tables/tab_nhanes.tex}
+An application to NHANES 2017--2018 is reported in Online Resource~1 (Table~S9). Two
+24-hour dietary recalls per participant identify $\Sigma_x$ and $\Sigma_u$ from the
+replicate pair alone, with no assumption beyond the classical model; the reliabilities of
+the $18$ nutrients that survive the removal of near-duplicates average $0.417$. The naive
+coefficients are attenuated by a factor of six (median ratio $0.156$), and the correction
+changes magnitudes, energy moving from $3.2$ to $22.7$, and conclusions: saturated fat
+moves from $-0.65$ to $-6.21$ and its interval still contains zero. The truth is unknown here, so the application is an illustration rather than a validation.
 
 \subsection{The population losses, drawn}
 \label{sec:curves}
 
-Figure~\ref{fig:loss} plots the population objectives as functions of a scalar
-coefficient. Four of them are distinct and panel (b) repeats one of them, the smoothed loss,
-as a reference curve, so five curves are drawn in total. Each curve carries a dot at its
-minimiser, and the grey dotted vertical lines mark $\bbar=1.6$ and $\betas=2$. The smoothed
-loss is minimised at $\bbar$ rather than at $\betas$; the true risk and the check loss
-evaluated at the calibrated regressor are both minimised at $\betas$, the second exactly,
-because the calibrated residual has a constant conditional $\tau$-quantile
-(Theorem~\ref{thm:calib}); and convolving the calibrated loss with the posterior kernel at
-its self-consistent scale is displaced to $\bbar$ again
-(Proposition~\ref{prop:posterior-adaptive}), which is the visual form of ``convolution is
-not the right operator''. Both curves minimised at $\bbar$ do so within $10^{-6}$ of $1.6$
-and both minimised at $\betas$ within $10^{-6}$ of $2$: unlike the tabulated Monte-Carlo
-objectives, the figure is drawn from the exact population losses, so no simulation error
-enters (Appendix~\ref{app:repro}).
-\begin{remark}
-The two minima in panel (b) are the two outcomes that matter. The objective is minimised at
-$\betas$ when the estimator regresses on the calibrated regressor without convolving the
-loss, and it is minimised at $\bbar$ when the check loss is convolved, even though the
-kernel used is the smaller posterior covariance $\Sxw$ rather than $\Sigma_u$. Changing the
-kernel therefore moves the minimum from one wrong value to another and never to $\betas$,
-which is Corollary~\ref{cor:no-conv} and Proposition~\ref{prop:posterior-adaptive} read side
-by side. The reduction in scale is what makes the posterior variant look closer to the truth
-than the $\Sigma_u$ one; it does not make either of them consistent.
-\end{remark}
+Figure~\ref{fig:loss} plots the population objectives against a scalar coefficient. The
+four minima sit within $10^{-6}$ of $1.6$ or $2$ (Appendix~\ref{app:repro}).
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.95\textwidth]{../figures/fig1_loss_curves.pdf}
+    \includegraphics[width=0.82\textwidth]{../figures/fig1_loss_curves.pdf}
     \caption{Population objectives in the scalar case ($\sigma_u=0.5$, $\tau=1/2$,
     $\betas=2$, $\bbar=1.6$), computed by quadrature rather than simulated, in excess of
     each curve's own minimum. The grey dotted vertical lines mark $\bbar=1.6$ and
@@ -1849,59 +1127,40 @@ than the $\Sigma_u$ one; it does not make either of them consistent.
 \label{sec:discussion}
 % ============================================================
 
-\paragraph{The general lesson.}
-Correcting for measurement error means removing the error, not averaging over it. For
-squared loss the two coincide, because the mean is convolution-equivariant and adding
-independent noise to the residual does not move the minimiser. For the check loss they do
-not: convolution shifts the $\tau$-quantile, and the shift is a function of $\beta$ itself,
-which is what turns a variance problem into a target shift. The corrected-score toolkit
-\citep{stefanski1989,nakamura1990} was designed for losses that are correctable in this
-sense; the check loss is not among them.
-
 \paragraph{Consequences for practice.}
-(i) Any procedure that reports estimates from \eqref{eq:loss} with a fixed or pilot-based
-scale is estimating $\bbar$, and should say so; comparisons against an oracle fitted on
-clean $X$ will then show a gap that grows with $\sigma_u$ and with $\norm{\betas}$,
-as \eqref{eq:attn} predicts and Proposition~\ref{prop:exact-target} makes exact. (ii)
-Resampling-based intervals for such estimators cover
-$\bbar$, not $\betas$. (iii) If the goal is $\betas$, calibrate the regressor and use the
-ordinary check loss with an intercept; the extra cost is a single intercept and the
-requirement that $\Sigma_x$ (hence $\Ccal$) be available or estimable. (iv) In small samples
-the smoothed estimator's low variance can make its \emph{total} $\ell_2$ error competitive
-with, or even smaller than, that of an unbiased calibrated estimator
-(Table~\ref{tab:highdim}). That is a legitimate bias--variance trade-off, but it is a
-finite-sample property only: the bias does not shrink, so the advantage disappears as $n$
-grows (Table~\ref{tab:scaling}), and any interval reported for the smoothed estimator
-refers to $\bbar$.
+(i) A procedure that reports estimates from \eqref{eq:loss} with a fixed or pilot-based
+scale targets $\bbar$ and should say so. (ii) Resampling-based intervals for such
+estimators, the smoothed one included, cover $\bbar$, not $\betas$. (iii) For $\betas$,
+calibrate the regressor and use the ordinary check loss with an intercept; the cost is that
+intercept and an estimable $\Sigma_x$ (hence $\Ccal$). (iv) In small samples the smoothed
+estimator's low variance can make its \emph{total} $\ell_2$ error competitive with, or
+below, that of an unbiased calibrated estimator (Table~S4 of Online Resource~1), but the
+advantage is finite-sample only: the bias does not shrink, and it vanishes as $n$ grows
+(Table~S3 of Online Resource~1).
 
 \paragraph{Limitations.}
-The calibration identity of Theorem~\ref{thm:calib} is Gaussian: it uses the linearity of
-$\E[X\mid W]$ and the independence of the conditional mean and residual, both of which fail
-for non-Gaussian $X$ or $U$, where $\E[X\mid W]$ is a non-linear function of $W$ and must
-itself be estimated. The high-dimensional oracle inequality of
-Theorem~\ref{thm:estimated} is conditional on row-wise accuracy of $\hat\Ccal$, which we do
-not establish for growing row sparsity
-(Remark~\ref{rem:spectral-not-enough}); the asymptotic normality of the debiased estimator,
-Theorem~\ref{thm:debias-clt}, is conditional on the design-error part of the penalty being
-$o_P(n^{-1/2})$, which a known calibration satisfies and which
-Proposition~\ref{prop:plugin} shows the sample-covariance plug-in does not; and the $p>n$
-implementation depends on the selected support being close to
-the truth. Misspecification of $\Sigma_u$ affects $\Ccal$ but, by
-Corollary~\ref{cor:no-conv}, cannot be repaired by convolution either. Finally, the
-application of \S\ref{sec:nhanes} estimates $\Sigma_u$ from genuine replicates but cannot
-check accuracy, since the truth is unknown there; the simulations in
-\S\ref{sec:targets}--\S\ref{sec:debias-num}, which do have a known truth, add the
-measurement error by construction instead.
+The calibration identity of Theorem~\ref{thm:calib} is Gaussian: it needs linearity of
+$\E[X\mid W]$ and independence of conditional mean and residual, both of which fail for
+non-Gaussian $X$ or $U$.
+The oracle inequality of Theorem~\ref{thm:estimated} needs row-wise accuracy of
+$\hat\Ccal$, which we do not establish for growing row sparsity
+(Remark~\ref{rem:spectral-not-enough}); the debiased estimator's asymptotic normality,
+Theorem~\ref{thm:debias-clt}, needs the design-error penalty term to be
+$o_P(n^{-1/2})$, which a known calibration achieves but the sample-covariance plug-in does
+not (Proposition~\ref{prop:plugin}); and the $p>n$ implementation needs the selected
+support close to the truth. Misspecification of $\Sigma_u$ affects $\Ccal$ but, by
+Corollary~\ref{cor:no-conv}, cannot be repaired by convolution. \S\ref{sec:nhanes}
+estimates $\Sigma_u$ from genuine replicates but cannot check it, the truth being
+unknown.
 
 \paragraph{Future work.}
-Three directions follow directly. First, estimating $\Ccal$ when $p\gg n$ well enough for
-\eqref{eq:debias-condition}, which by Proposition~\ref{prop:plugin} means finding
-information about $\Sigma_x$ beyond the $n$ observations at hand, and showing that the
-calibrated restricted eigenvalue condition survives the perturbation. Second,
-semiparametric calibration when $X\mid W$ is not Gaussian, together with the corresponding
-$\delta_\tau$. Third, a bias-corrected debiasing that removes the first-order effect of
-estimating $\Ccal$, which would make the plug-in usable without independent data; conformal
-methods \citep{romano2019conformalized} are a natural complement.
+First, estimating $\Ccal$ when $p\gg n$ well enough for
+\eqref{eq:debias-condition}: by Proposition~\ref{prop:plugin}, finding information about
+$\Sigma_x$ beyond the $n$ observations, and showing the calibrated restricted eigenvalue
+condition survives the perturbation. Second, semiparametric calibration when $X\mid W$ is
+not Gaussian, with the corresponding $\delta_\tau$. Third, a bias-corrected debiasing
+removing the first-order effect of estimating $\Ccal$, making the plug-in usable without
+independent data; conformal methods \citep{romano2019conformalized} complement it.
 
 % ============================================================
 \appendix
@@ -2230,6 +1489,214 @@ of $\hat b_j$ equals it: the design terms are what the condition rules out, and
 Table~\ref{tab:plugin} measures how much of them shows up as bias in the experiment there.
 \end{proof}
 
+\begin{proof}[Proof of Theorem~\ref{thm:score}]
+[Proof]
+Condition on $\varepsilon_i=e$. The map
+$z\mapsto h(z) = \Phi((e-z)/\sigma)-(1-\tau)$ is Lipschitz, so Stein's lemma for
+$(U_{ij},U_i^\top\betas)$ gives
+$\E[U_{ij}h(U_i^\top\betas)] = (\Sigma_u\betas)_j\,\E[h'(U_i^\top\betas)]
+= -(\Sigma_u\betas)_j\,\E[\phi((e-U_i^\top\betas)/\sigma)]/\sigma$.
+Since $U_i^\top\betas\sim\cN(0,\sigma^{*2})$, this is $-(\Sigma_u\betas)_j g(e)$, the
+density of $e+\cN(0,\sigma^{*2}+\sigma^2)$ at $0$, so integrating over $e$ gives
+$\E[U_{ij}\psit(r_i^*,\sigma)] = -(\Sigma_u\betas)_j d(\sigma)$ with
+$d(\sigma) = \E[g(\varepsilon_i)]$. As $\psit(r_i^*,\sigma)$ depends only on
+$(\varepsilon_i,U_i)$ and $\E[X_i]=0$, $\E[X_{ij}\psit(r_i^*,\sigma)] = 0$, and
+$W_i = X_i+U_i$ gives \eqref{eq:score-bias}. Positivity follows from
+$f_\varepsilon(0)>0$ and continuity.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:kernel-class}]
+With $\psi_G(r) = F_G(r)-(1-\tau)$ and $h(z) := F_G(\varepsilon_i-z)-(1-\tau)$, so
+$h'(z) = -g(\varepsilon_i-z)$, conditioning on $\varepsilon_i$ and applying Stein's lemma
+to $(U_{ij},U_i^\top\betas)$ gives
+$\E[U_{ij}\psi_G(r_i^*)] = -(\Sigma_u\betas)_j\E[g(\varepsilon_i-U_i^\top\betas)]
+= -(\Sigma_u\betas)_j D_G$, and $\E[X_{ij}\psi_G(r_i^*)]=0$ as before. Positivity of
+$D_G$ follows from $g(0)>0$ and continuity; for $G=\cN(0,\sigma^2)$, $g(x)=\phi(x/\sigma)/\sigma$
+gives $D_G = \E[\phi((\varepsilon_i-Z_i)/\sigma)]/\sigma = d(\sigma)$ by the proof of
+Theorem~\ref{thm:score}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:adaptive}]
+Differentiation under the expectation is valid ($\psit,\phi$ bounded,
+$\E\|W_i\|<\infty$). At $\beta=\betas$ the first term is
+$\Sigma_u\betas\,d_M$ by Theorem~\ref{thm:score} with $\sigma=s_M$. For the second,
+conditioning on $\varepsilon_i$ and using $U_i^\top\betas\sim\cN(0,\sigma^{*2})$,
+\[
+\E\big[\phi((\varepsilon_i-U_i^\top\betas)/s_M)\big]
+= \int\phi\Big(\frac{\varepsilon_i-z}{s_M}\Big)\frac{1}{\sigma^*}\phi\Big(\frac{z}{\sigma^*}\Big)dz
+= s_M\,\phi_{\sqrt{\sigma^{*2}+s_M^{2}}}(\varepsilon_i),
+\]
+the convolution of $\cN(0,s_M^{2})$ and $\cN(0,\sigma^{*2})$; integrating over
+$\varepsilon_i$ and using symmetry gives $\E[\phi(r_i^*/s_M)] = s_M\,d_M$. Multiplying by
+$M\betas/s_M$ and adding the first term gives \eqref{eq:adaptive}.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:target}]
+By the mean value theorem in its integral form,
+$\nabla L(\betas+v) = g+Hv+R(v)$ with
+$\|R(v)\|\le\frac\Lambda2\|v\|^2$ for $\|v\|\le\eta$. Since $0=\nabla L(\bbar_\sigma)$,
+\[
+\bbar_\sigma-\betas = -H^{-1}g - H^{-1}R(\bbar_\sigma-\betas),
+\]
+so with $u = \|\bbar_\sigma-\betas\|$ and
+$m=\|H^{-1}g\|\le\|g\|/\kappa$, $u \le m+\frac{\Lambda}{2\kappa}u^2$. Hypothesis (iii)
+gives $\frac{2\Lambda}{\kappa}m\le\frac14$, so $u\le2m$ and substituting back gives the
+first bound. Strict convexity on $B(\betas,\eta)$ gives uniqueness.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:no-conv}]
+The computation of Theorem~\ref{thm:score} uses only $W = X+U$ with
+$U\sim\cN(0,\Sigma_u)$, so replacing $\Sigma_u$ by $\Sigma_k$ is the same calculation, and
+$\E[X\psit]=0$ is unchanged. Displacement follows from Lemma~\ref{lem:bias} with
+$\Sigma_k$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:posterior-adaptive}]
+Write $\xi_i=X_i-\Ccal W_i$, so $\E[\xi_i\mid W_i]=0$ and
+$\mathrm{Var}(\xi_i\mid W_i)=\Sxw$, and let $Z\sim\cN(0,1)$ be
+independent of $(X_i,U_i,\varepsilon_i)$. Since $\rht(r,\sigma)=\E[\rho_\tau(r-\sigma Z)]$,
+\begin{equation}
+Y_i-{\muv}_i^\top\beta
+=(\Ccal W_i)^\top(\betas-\beta)+{\betas}^\top\xi_i+\varepsilon_i,
+\qquad
+L_{\mathrm{cal}}(\beta)=\E\big[\rho_\tau\big(\varepsilon_i+G_i(\beta)\big)\big],
+\label{eq:cal-gauss}
+\end{equation}
+where $G_i(\beta)\sim\cN(0,\varsigma^2(\beta))$ is independent of $\varepsilon_i$ and
+\begin{equation}
+\varsigma^2(\beta)=(\betas-\beta)^\top\Ccal(\Sigma_x+\Sigma_u)\Ccal^\top(\betas-\beta)
++{\betas}^\top\Sxw\betas+\beta^\top\Sxw\beta .
+\label{eq:cal-scale}
+\end{equation}
+Indeed, conditional on $W_i$ the term ${\betas}^\top\xi_i-\sigma_{\Sxw}(\beta)Z$ is centred
+Gaussian with variance ${\betas}^\top\Sxw\betas+\beta^\top\Sxw\beta$ irrespective of $W_i$,
+hence independent of $(\Ccal W_i)^\top(\betas-\beta)$, itself centred Gaussian with
+covariance $\Ccal(\Sigma_x+\Sigma_u)\Ccal^\top$. For $N\sim\cN(0,1)$ independent of
+$\varepsilon_i$,
+\[
+\frac{\partial}{\partial\sigma}\E\big[\rho_\tau(\varepsilon_i+\sigma N)\big]
+=\E\big[\psit(\varepsilon_i+\sigma N)N\big]
+=\E\big[\phi(\varepsilon_i/\sigma)\big]>0,
+\]
+using $\E[N\ind{N<c}]=-\phi(c)$; so \eqref{eq:cal-gauss} is
+strictly increasing in $\varsigma(\beta)$, and minimising $L_{\mathrm{cal}}$ is the same as
+minimising $\varsigma^2$. Finally
+$\Ccal(\Sigma_x+\Sigma_u)\Ccal^\top=\Sigma_x(\Sigma_x+\Sigma_u)^{-1}\Sigma_x
+=\Sigma_x-\Sxw$, so \eqref{eq:cal-scale} has gradient $2\Sigma_x(\beta-\bbar)$, which
+vanishes only at $\bbar$, and $\Sigma_x\succ0$.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:same-target}]
+For $Z\sim\cN(0,\sigma^{*2})$ and $U_i^\top\betas$ jointly Gaussian with
+$U_{ij}$, $\E[U_{ij}\ind{U_i^\top\betas>\varepsilon_i}]
+= (\Sigma_u\betas)_j\,\phi_{\sigma^*}(\varepsilon_i)$
+by the conditional-expectation formula for jointly Gaussian variables
+($\E[U_{ij}\mid U_i^\top\betas=z] = (\Sigma_u\betas)_j z/\sigma^{*2}$ and
+$\E[Z\ind{Z>\varepsilon}] = \sigma^{*2}\phi_{\sigma^*}(\varepsilon)$). Hence
+$\E[U_{ij}(\tau-\ind{r_i^*<0})] = -(\Sigma_u\betas)_j\E[\phi_{\sigma^*}(\varepsilon_i)]
+= -(\Sigma_u\betas)_j(\cN(0,\sigma^{*2})*f_\varepsilon)(0)$,
+while $\E[X_{ij}(\tau-\ind{r_i^*<0})]=0$ as before, and
+Proposition~\ref{prop:target} with $d_{\mathrm{naive}}$ in place of $d(\sigma)$ gives the
+target statement.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:exact-target}]
+Write the residual at a candidate $\beta$ as
+$\varepsilon_i+X_i^\top(\betas-\beta)-U_i^\top\beta-Z\sigma$, where $Z\equiv0$ and
+$\sigma=0$ for the naive risk and $Z\sim\cN(0,1)$ is independent of everything for the
+smoothed ones, with $\sigma$ replaced by $\sigma_M(\beta)$ in case (iii). Its
+non-$\varepsilon$ part is centred Gaussian, $(X_i,U_i,Z)$ being Gaussian with
+$\E[X_i]=\E[U_i]=0$, with variance
+$s^2(\beta)=(\betas-\beta)^\top\Sigma_x(\betas-\beta)+\beta^\top\Sigma_u\beta+\sigma^2$ in
+cases (i)--(ii) and $\beta^\top(\Sigma_u+M)\beta$ in place of $\beta^\top\Sigma_u\beta+\sigma^2$
+in case (iii), independent of $\varepsilon_i$. The risk
+$\E[\rho_\tau(\varepsilon_i+s(\beta)Z_0)]$ depends on $\beta$ only through $s(\beta)$, and
+$s\mapsto\E[\rho_\tau(\varepsilon_i+sZ_0)]$ is strictly increasing by the proof of
+Proposition~\ref{prop:posterior-adaptive}, so the risk is a strictly increasing function of
+$s^2(\beta)$ and shares its minimiser, unique because $s^2$ is a strictly convex quadratic
+with gradient $2\big[(\Sigma_x+\Sigma_u+M)\beta-\Sigma_x\betas\big]$ vanishing exactly at
+the values stated.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:calib}]
+[Proof]
+For jointly Gaussian vectors, ${\muv}_i=\E[X_i\mid W_i]$ and $V_i = X_i-{\muv}_i$ are
+independent with $V_i\sim\cN(0,\Sxw)$. Since ${\muv}_i$ is a function of $W_i$ and
+$\varepsilon_i$ is independent of $(X_i,U_i)$, $e_i$ depends on $(V_i,\varepsilon_i)$ alone
+and so is independent of ${\muv}_i$; hence $Y_i = {\muv}_i^\top\betas+e_i$ and
+$Q_\tau(Y_i\mid{\muv}_i) = {\muv}_i^\top\betas+Q_\tau(e_i)$, which is
+\eqref{eq:correct-model} with $\delta_\tau = Q_\tau(V_i^\top\betas+\varepsilon_i)$. For
+\eqref{eq:calib-score}, the first $p$ coordinates vanish because
+$\E[{\muv}_i(\tau-\ind{e_i<\delta_\tau})] = \E[{\muv}_i]\,\E[\tau-\ind{e_i<\delta_\tau}]=0$
+(independence and $\E[X_i]=0$), and the last coordinate is
+$\tau-\Pbb(e_i<\delta_\tau)=0$ by definition of $\delta_\tau$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:estimated}]
+\emph{Step 1 (the penalty dominates the score).}
+Apply Lemma~\ref{lem:score-control} with
+$\eta\asymp\sqrt{\log(p/\epsilon_n)/n}$. Its
+right-hand side is bounded by $C_0\lambda$ for $\lambda$ as in \eqref{eq:lambda-est}: the
+factor $(1+r)$ on $\eta$ and on $\bar fZ_nr\|\betas\|_1$ is absorbed into $C_0$ because
+$r\to0$; $r\bar f\rho$ is the $\rho r$ of \eqref{eq:lambda-est}; and
+Assumption~\ref{ass:small-design} bounds $r(\rho+rZ_n\|\betas\|_1)$ by
+$c_0\sqrt{\log p/n}$ and the Lipschitz remainder $O(\alpha^2)$,
+$\alpha=Z_nr\|\betas\|_1\le c_1$, by $O(\alpha)$, so both are absorbed.
+Every term vanishes as $r\to0$, as it must: at $r=0$ the score is mean-zero
+(Theorem~\ref{thm:calib}). Hence $\|S\|_\infty\le\lambda/2$ with probability at
+least $1-\epsilon_n-2p^{-c}$, as the cone argument below requires.
+
+\emph{Step 2 (restricted eigenvalue transfers).} For $\theta\in(0,1)$ and all
+$a,b\in\R$, $(a+b)^2\ge(1-\theta)a^2-\frac{1-\theta}{\theta}b^2$; apply this to
+$a={\muv}_i^\top\Delta$, $b=({\hat{\muv}}_i-{\muv}_i)^\top\Delta$ with $\theta=1/4$ and
+average over $i$. Since $|b|\le r\|W_i\|_\infty\|\Delta\|_1\le rZ_n\|\Delta\|_1$ and
+$\|\Delta\|_1\le4\sqrt s\|\Delta\|_2$ on the cone,
+$\frac1n\sum_i b_i^2\le r^2Z_n^2\|\Delta\|_1^2\le16r^2Z_n^2s\|\Delta\|_2^2$, so
+\begin{equation*}
+\frac1n\sum_i({\hat{\muv}}_i^\top\Delta)^2
+\;\ge\;\Big(\frac34\kappa-3\cdot16r^2Z_n^2s\Big)\|\Delta\|_2^2
+\;\ge\;\frac{9}{16}\kappa\|\Delta\|_2^2
+\;\ge\;\frac\kappa2\|\Delta\|_2^2
+\end{equation*}
+by Assumption~\ref{ass:small-design}, so the transfer constant
+$(\sqrt\kappa-4rZ_n\sqrt s)^2$ is at least $9\kappa/16$.
+
+\emph{Step 3 (basic inequality and the cone).} Let
+$\Delta=(\hat\beta-\betas,\hat\delta-\delta_\tau)$ and
+$Q_n(\beta,\delta)=n^{-1}\sum_i\rho_\tau(Y_i-{\hat{\muv}}_i^\top\beta-\delta)$. Comparing
+$Q_n(\hat\beta,\hat\delta)+\lambda\|\hat\beta\|_1$ with the value at $(\betas,\delta_\tau)$,
+convexity of $\rho_\tau$ and the subgradient bound of Step 1 give the
+cone property $\|\Delta_{S^c}\|_1\le3\|\Delta_S\|_1$ exactly as in
+\citet[Lemma 3]{belloni2011l1}. Knight's identity, with
+$v_i={\hat{\muv}}_i^\top\Delta$ and $F_e$ the distribution function of $e_i$, whose
+$\tau$-quantile is $\delta_\tau$, gives
+\begin{equation*}
+\rho_\tau(e_i-v_i)-\rho_\tau(e_i)
+= -v_i\big(\tau-\ind{e_i<\delta_\tau}\big)+\int_0^{v_i}\big(F_e(\delta_\tau+s)-F_e(\delta_\tau)\big)\,ds ,
+\end{equation*}
+so the loss difference dominates $\frac{\underline f}{2}v_i^2$ up to the linear term and a
+third-order remainder ($\underline f$ bounds $f_e$ from below near $\delta_\tau$), and
+Young's inequality absorbs the self-normalised empirical process into
+$\lambda^2s$. Combining the pieces,
+\begin{equation*}
+\frac{\kappa}{2}\|\Delta\|_2^2 \;\le\; \frac1n\sum_{i=1}^n
+\big({\hat{\muv}}_i^\top(\hat\beta-\betas)\big)^2
+\;\le\; \frac{3\lambda}{2}\|\Delta_S\|_1+\lambda^2s ,
+\end{equation*}
+the first inequality by Step 2, the second by the basic inequality with
+$\|\Delta_S\|_1\le\sqrt s\|\Delta\|_2$. Solving the resulting quadratic inequality,
+\[
+\|\Delta\|_2\le\frac{6\lambda\sqrt s}{\kappa},
+\qquad
+\|\Delta\|_1\le4\sqrt s\|\Delta\|_2\le\frac{24\lambda s}{\kappa},
+\]
+and substituting back gives the prediction bound, proving the three displays with
+$C_1=6$, $C_2=24$ and $C_3=18/\kappa$ after absorbing constants. The final statement
+follows because $\lambda\asymp C_0\sqrt{\log p/n}$ when $r\asymp\sqrt{\log p/n}$ and
+$rZ_n\|\betas\|_1\lesssim\sqrt{\log p/n}$, the latter being the condition
+$s\log p\log(np)\ll n$ under sub-Gaussianity of $W$.
+\end{proof}
+
 \section{Computation}
 \label{app:computation}
 
@@ -2243,6 +1710,280 @@ optimiser: the unpenalised scalar quantile problem is solved by exact subgradien
 root-finding (the subgradient is monotone and available in $O(\log n)$ from sorted arrays),
 and the intercept version by profiling over the slope with the intercept equal to the
 empirical $\tau$-quantile of the residuals, which is exact by partial minimisation.
+
+\section{Supplementary numerical results}
+\label{app:numerics}
+
+This appendix collects the numerical studies that support the theory but are
+not needed for the argument of the paper.
+
+\subsection{Population targets of the calibration-based estimators}
+\label{sec:targets-calib-si}
+
+Table~\ref{tab:targets_calib} reports the population targets of the
+calibration-based estimators, on the same designs as Table~\ref{tab:targets}.
+
+\input{tables/tab_targets_calib.tex}
+
+\subsection{The score check}
+\label{sec:scorecheck}
+
+Theorem~\ref{thm:score} is a statement about a population mean and can be checked
+directly. Table~\ref{tab:score} reports Monte-Carlo estimates of
+$\E[W_{i1}\psit(r_i^*,\sigma^*)]$ and of the calibrated score
+$\E[{\muv}_{i1}(\tau-\ind{e_i<\delta_\tau})]$ at the truth. The smoothed score is non-zero
+with $t$-statistics in the tens and matches the analytic value $-(\Sigma_u\betas)_1d(\sigma^*)$;
+the calibrated score is indistinguishable from zero. This is the empirical content of the
+distinction between the two sections: one score is biased by $\Theta(\rho)$, the other is
+exactly unbiased.
+
+\input{tables/tab_score.tex}
+
+\subsection{The bias does not vanish: scaling in $n$}
+\label{sec:scaling}
+
+Table~\ref{tab:scaling} and Figure~\ref{fig:scaling} repeat the comparison at
+$p=10$, $s=5$, $\sigma_u=0.5$, unpenalised (so that the floor cannot be attributed to
+shrinkage), with $50$ replications. The smoothed estimator's distance to $\betas$ is flat
+in $n$ and equals $\norm{\bbar-\betas}$ within Monte-Carlo error, while its distance to
+$\bbar$ decays at the $\sqrt{n}$ rate; the calibrated estimator converges at the same
+$\sqrt{n}$ rate as the oracle, offset by the efficiency factor of
+Remark~\ref{rem:efficiency}. This is the finite-sample counterpart of Lemma~\ref{lem:bias}.
+
+\input{tables/tab_scaling.tex}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.95\textwidth]{../figures/fig2_scaling.pdf}
+    \caption{$\ell_2$ error as a function of $n$ ($p=10$, $s=5$,
+    $\sigma_u=0.5$, $50$ replications, unpenalised). Panel (a), at $\tau=1/2$: the smoothed
+    estimator (``convolved'') is flat and sits at the attenuation floor
+    $\norm{\bbar-\betas}$ (dashed line); the calibrated estimator (``RC$+$int'') has the
+    oracle's $\sqrt n$ slope, offset by the efficiency factor of
+    Remark~\ref{rem:efficiency}. Panel (b): the same smoothed estimates measured instead
+    against $\bbar$, for the three quantile levels; the solid curves, which are distances to
+    $\betas$, do not decay, while the dotted curves, which are distances to $\bbar$,
+    decrease at the $\sqrt n$ rate. The three levels coincide to within Monte-Carlo error,
+    as the $\tau$-independence of $\bbar$ requires.}
+    \label{fig:scaling}
+\end{figure}
+
+\subsection{High dimensions}
+\label{sec:highdim-sim}
+
+Table~\ref{tab:highdim} and Figure~\ref{fig:highdim} report the high-dimensional
+comparison at $n=400$, $p=500$, $s=10$, $\tau=1/2$, $\lambda=0.02$, with $30$
+replications and a fixed $\betas$. The smoothed two-stage estimator follows the published
+algorithm of that method, reimplemented in the code accompanying this paper; naive,
+calibrated and oracle
+estimators are fitted with an exact
+linear-programming solver, so no difference can be attributed to optimisation error.
+
+In \emph{total} $\ell_2$ error the smoothed estimator is competitive, and at
+$\sigma_u=0.1$ it matches the oracle ($0.73$ versus $0.75$), because at this $(n,p)$ the
+error is dominated by variance and the smoothed objective, with its pilot scale, is
+strongly convex and hence low-variance. This is a genuine bias--variance trade-off, and it
+is why such estimators look attractive in small samples. The trade-off, however, is with a
+bias that never disappears. The probability limit of the
+smoothed estimator is $\bbar$, at distance $\norm{\bbar-\betas} = 0.06$, $0.52$ and $1.25$
+from $\betas$ at $\sigma_u=0.1,0.3,0.5$; its realised distance to $\bbar$ in this
+experiment is $0.71$, $1.09$ and $1.53$, i.e.\ the bias is buried under estimation noise
+at $n=400$. Table~\ref{tab:scaling} shows what happens when the noise is reduced, and no
+amount of additional data removes the bias. The calibrated estimator is unbiased here as
+well, but visibly less efficient than
+the oracle: median $1.51$ versus $0.75$ at $\sigma_u=0.3$ and $2.10$ versus $0.75$ at
+$\sigma_u=0.5$, in line with the variance inflation predicted in
+Remark~\ref{rem:efficiency}. The convolution $e_i = V_i^\top\betas+\varepsilon_i$ flattens the
+error density at the quantile, and the calibrated regressor is attenuated. At
+this $(n,p)$ the biased smoothed estimator therefore has the smaller total error at all three
+measurement-error levels ($0.73$/$1.24$/$1.83$ versus $0.88$/$1.51$/$2.10$).
+Table~\ref{tab:highdim} is a statement about efficiency in a variance-dominated
+regime, not evidence that the smoothed estimator identifies $\betas$, and this is the
+regime in which a bias floor is hardest to detect by simulation.
+
+\input{tables/tab_highdim.tex}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.95\textwidth]{../figures/fig3_highdim.pdf}
+    \caption{High-dimensional comparison ($n=400$, $p=500$, $s=10$, $\tau=1/2$, $30$
+    replications; medians with interquartile ranges). The smoothed estimator is
+    competitive in total $\ell_2$ error in this variance-dominated regime, but its
+    probability limit is the attenuation target $\bbar$ (dashed line), so its distance to
+    $\betas$ is bounded below by the floor $\norm{\bbar-\betas}$, which no sample size
+    removes; its realised distance to $\bbar$ (dotted line) is $0.71$, $1.09$ and $1.53$ at
+    $\sigma_u=0.1,0.3,0.5$ here, so at this sample size the bias is buried under estimation
+    noise and Table~\ref{tab:scaling} is what reveals it. The calibrated estimator is
+    unbiased for $\betas$ and has the oracle's convergence rate
+    (Table~\ref{tab:scaling}).}
+    \label{fig:highdim}
+\end{figure}
+
+\subsection{Inference}
+\label{sec:coverage}
+
+Theorem~\ref{thm:lowdim} asserts that the calibrated estimator is asymptotically normal
+with the usual quantile-regression sandwich covariance. Table~\ref{tab:coverage} verifies
+this directly, and at the same time makes the cost of the target shift concrete. Wald
+intervals for the calibrated estimator cover $\betas$ at $0.89$--$0.93$ (nominal $90\%$)
+and $0.93$--$0.97$ (nominal $95\%$) across $n$ and $\tau$. Intervals built from the
+smoothed score, using its own correct sandwich covariance, are equally well calibrated, at
+$0.93$--$0.97$ for a nominal $95\%$, but for $\bbar$: their coverage of $\betas$
+is $0.000$ in all twelve cells, i.e.\ not a single one of the $4{,}800$ smoothed intervals
+contained the true coefficient when $\sigma_u=0.5$. This is the operational form of
+Theorem~\ref{thm:score}: the smoothing does not destroy the calibration of the interval, it
+changes the parameter the interval is about. It also explains why no resampling scheme can
+repair inference for the smoothed estimator (Remark~\ref{rem:subsampling}): the problem is not the width of the interval but its centre.
+
+\input{tables/tab_coverage.tex}
+
+\begin{remark}[The naive score, checked]
+Corollary~\ref{cor:same-target} can be checked on the same data. At $\sigma_u=0.5$ the
+Monte-Carlo estimate of $\E[W_i(\tau-\ind{r_i^*<0})]$ is $-0.13086\,(\pm0.00086)$ for
+$\tau=1/2$, against the analytic value $-0.13079$ from \eqref{eq:naive-bias}, which is
+$-\norm{\Sigma_u\betas}_1d_{\mathrm{naive}}$ with
+$d_{\mathrm{naive}}=(\cN(0,\sigma^{*2})*f_\varepsilon)(0)=0.2616$; for
+$\tau=0.3$ and $0.7$ the estimates are $-0.16105$ and $-0.16156$ against $-0.16166$ and
+$-0.16169$, i.e.\ $d_{\mathrm{naive}}=0.3234$ for the asymmetric Laplace law used at those
+levels. The two constants differ because the error laws differ in scale, not in shape: at
+$\tau=1/2$ we generate Laplace$(0,1)$, whose density at the quantile is $1/2$, whereas for
+$\tau\neq1/2$ we generate $\varepsilon=(1-\tau)E_1-\tau E_2$ with $E_j\sim\mathrm{Exp}(1)$,
+whose density at the quantile is $1$. All other quantities reported below are free of that
+scale. The naive and the smoothed score are therefore biased by the same mechanism
+and to the same order, which is why their population targets coincide
+(Table~\ref{tab:targets}).
+\end{remark}
+
+\subsection{Estimated calibration in high dimensions}
+\label{sec:hd-est}
+
+Table~\ref{tab:hdc} tests the chain of \S\ref{sec:estimated} in a design where the
+plug-in is least favourable on paper: $\Sigma_x$ is banded Toeplitz with row sparsity
+$11$, so $\Ccal=\Sigma_x(\Sigma_x+\Sigma_u)^{-1}$ is \emph{dense}, and $\hat\Sigma_x$ is
+obtained by Ledoit--Wolf shrinkage followed by entrywise hard thresholding.
+
+The calibration matrix is estimated accurately: $\|\hat\Ccal-\Ccal\|_2$ is
+$0.005$, $0.039$ and $0.088$ at $\sigma_u=0.1,0.3,0.5$, one to two orders of
+magnitude below the scale of the coefficients. Consequently the plug-in
+estimator is statistically indistinguishable from the oracle-calibration estimator
+(differences of at most $0.02$ in $\ell_2$ error, within one standard error at every
+$\sigma_u$), while both improve substantially on the naive estimator once the
+attenuation matters: at $\sigma_u=0.5$, $1.564$ versus $1.808$ with the oracle at $1.545$.
+The sup-norm score is the quantity the proof turns on, and estimating the
+calibration does not inflate it: $\|n^{-1}\sum_i{\hat{\muv}}_i\psi_i\|_\infty$ equals
+$0.0831$, $0.0793$, $0.0732$ against $0.0832$, $0.0793$, $0.0734$ for the oracle design,
+all below the theoretical scale $\sqrt{\log p/n}=0.1246$. The nodewise inverse is exact on
+the reported coordinates, $\max_j|(\hat\Theta\hat H)_{jj}-1|=0$ to machine precision. In this
+design, therefore, the
+sufficient condition of Assumption~\ref{ass:calib-acc} is satisfied with room to spare,
+even though Lemma~\ref{lem:perturb} alone would only certify the spectral norm.
+
+Theorem~\ref{thm:estimated} is conditional on
+row-wise accuracy of $\hat\Ccal$; we have not proved that thresholding delivers it for
+growing row sparsity, and Remark~\ref{rem:spectral-not-enough} explains why the spectral
+norm alone cannot be enough. What Table~\ref{tab:hdc} shows is that the gap between the
+provable condition and what the plug-in actually needs is not vacuous in the
+banded-$\Sigma_x$ designs that arise in practice, and it identifies the quantity that a
+sharper theory, or a bias-corrected design, would have to control: the sup-norm score.
+
+\input{tables/tab_hdc.tex}
+
+\subsection{Efficiency of the calibrated estimator}
+\label{sec:efficiency}
+
+Remark~\ref{rem:efficiency} quantified the price of measurement error as
+an efficiency loss: $f_e(\delta_\tau)<f_\varepsilon(0)$ because $e_i$ convolves
+$\varepsilon_i$ with $V_i^\top\betas$, and the calibrated regressor is attenuated. It is
+natural to ask whether that loss can be bought back. One route is available in principle
+and cheap: in the location-shift model every quantile level estimates the same $\betas$, so
+the estimators $\hat\beta_{\tau_1},\dots,\hat\beta_{\tau_K}$ can be combined. Their joint
+asymptotic covariance is, in units of $\E[\muv\muv^\top]^{-1}$,
+\begin{equation}
+C_{kl} = \frac{\tau_k\wedge\tau_l-\tau_k\tau_l}{f_kf_l},
+\qquad f_k = f_e\big(Q_{\tau_k}(e)\big),
+\label{eq:gls}
+\end{equation}
+so the GLS combination has variance $(1^\top C^{-1}1)^{-1}$ against $C_{\tau_0\tau_0}$ for
+the single level $\tau_0$. Table~\ref{tab:gls} evaluates the ratio. For Laplace errors it
+is exactly $1$: the median is already the most efficient quantile and combining adds
+nothing. For Gaussian and uniform errors the gain is real, up to a $30\%$ reduction in
+variance (a $16\%$ reduction in standard error) with seven levels.
+
+\input{tables/tab_gls.tex}
+
+Two conclusions. First, the part of the efficiency loss caused by the flattened density
+$f_e$ is \emph{not} recoverable by reweighting quantile moments: all of them share the same
+$f_e$, so the loss appears in every $C_{kk}$ and cancels in the ratio
+\eqref{eq:gls}. Second, what is recoverable is the part caused by looking at a single
+quantile of an error distribution whose density is not concentrated there, and the
+recovery is free of any modelling beyond the location-shift structure. A simulation with
+$K=7$ levels and weights estimated by kernel density confirms the direction for Gaussian
+errors (ratio $0.90$ at $n=1000$, against an asymptotic optimum of $0.80$ that requires
+accurate weights); for Laplace errors the same implementation returned $0.91$, which the
+theory says cannot be a genuine gain, since the oracle design moved in the opposite
+direction; we therefore report it as an artefact of estimated weights rather than an
+improvement. The remaining route to efficiency is to use more information than
+$(Y,\muv)$: conditioning on $(Y,W)$ rather than $W$ alone, as in the conditional
+estimating equations of \citet{wei2009quantile}, does that, at the cost of
+modelling the quantile process. Carrying that construction into $p\gg n$ is open.
+
+\subsection{Population targets of the estimators fitted on the raw $W$}
+\label{sec:targets-si}
+
+Table~\ref{tab:targets} reports the exact population targets plotted in Figure~\ref{fig:loss},
+for $p=1$ and $N=2\times10^5$: the minimiser of each population objective, computed without an
+optimiser (subgradient root-finding for the check loss, grid search with parabolic refinement
+for the smoothed loss).
+
+\input{tables/tab_targets.tex}
+
+\subsection{Real data: dietary intake and body mass index}
+\label{sec:nhanes-si}
+
+Here the measurement-error covariance is estimated from replicates.
+NHANES 2017--2018 records two 24-hour dietary recalls for each participant, so the same
+quantity is measured twice, and under the classical model the pair identifies both
+\begin{equation}
+\Sigma_x = \mathrm{Cov}(R_1,R_2),
+\qquad
+\Sigma_u = \tfrac12\,\mathrm{Var}(R_1-R_2),
+\label{eq:replicates}
+\end{equation}
+with no assumption on $\Sigma_u$ beyond the model itself. We take the $24$ nutrient totals
+reported in both recalls, body mass index as the response, and adults aged $20+$ with two
+reliable recalls and complete records ($n=3649$).
+
+The nutrients are strongly collinear (total fat and monounsaturated fat correlate at
+$0.97$, total fat and saturated fat at $0.93$, protein and phosphorus at $0.90$), so
+$\hat\Sigma_x$ has condition number $2\times10^4$ and $\hat\Ccal$ is numerically explosive,
+the ill-conditioning that \S\ref{sec:estimated} warns about. We remove the near-duplicates
+(total, mono- and poly-unsaturated fat; phosphorus; potassium; moisture), leaving $p=18$
+nutrients with $\mathrm{cond}(\hat\Sigma_x+\Sigma_u)
+= 585$. Regularising $\hat\Sigma_x$ instead (banding or thresholding \citep{bickel2008},
+linear shrinkage \citep{ledoit2004}) would control the conditioning but change $\hat\Ccal$
+and hence the target, so we prune rather than estimate a different calibration. The
+estimated reliabilities $(\hat\Sigma_x)_{jj}/((\hat\Sigma_x)_{jj}+(\hat\Sigma_u)_{jj})$
+average $0.417$: a single 24-hour recall carries more measurement variance than signal.
+
+Table~\ref{tab:nhanes} reports the results. The naive coefficients are attenuated by
+roughly a factor of six, the median ratio of naive to calibrated coefficients being
+$0.156$; collinearity makes the attenuation \emph{worse} than the mean reliability of
+$0.417$ would suggest for a single covariate. The correction
+changes magnitudes (energy: $3.2$ to $22.7$; carbohydrate: $-1.7$ to $-12.3$) and
+conclusions: ten of the eighteen coefficients have debiased intervals excluding zero,
+against nine for the naive analysis at the same level, but the sets are not nested. The
+intervals are wide: saturated fat moves from $-0.65$ to $-6.21$, its interval
+$[-11.7,0.7]$ still containing zero, so the correction enlarges the estimate without
+establishing it.
+
+This is an illustration, not a validation. The truth is unknown, so nothing here checks
+accuracy; the outcome is itself measured with error; the two recalls are not independent
+draws, so \eqref{eq:replicates} is at best a working
+approximation, and our $\hat\Sigma_x$ does have one slightly negative eigenvalue; survey
+weights are not used; and the near-duplicates had to be removed before the
+calibration could be computed at all.
+
+\input{tables/tab_nhanes.tex}
 
 \section{Reproducibility}
 \label{app:repro}

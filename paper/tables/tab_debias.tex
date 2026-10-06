@@ -1,8 +1,8 @@
 \begin{table}[ht]
 \centering
-\footnotesize
+\scriptsize
 \setlength{\tabcolsep}{4pt}
-\caption{Debiased inference for the calibrated estimator, nominal $95\%$ intervals. Panel A ($n=400>p=40$, $R=200$): three intervals for the calibrated estimator, all counted on the $s=5$ signal coordinates: the penalised fit with its own sandwich interval (``$\ell_1$''), the one-step debiased interval \eqref{eq:debias} (``deb.''), and the interval obtained by refitting unpenalised quantile regression on the selected support and then debiasing (``refit$+$deb.''). The null coverage and the mean length in each row belong to the refit$+$deb.\ interval, as does the support column, which gives the mean number of coordinates selected, with the fraction of replications in which the selected set is exactly the true support in parentheses. Panel B ($n=200<p=250$, $R=50$): the plug-in Hessian is singular, so $\hat\Theta$ is built nodewise and the penalised estimator, which admits no usable interval, is omitted; the support column then also reports the mean number of missed signal coordinates.}
+\caption{Debiased inference for the calibrated estimator, nominal $95\%$ intervals, counted on the $s=5$ signal coordinates. Panel A ($n=400>p=40$, $R=200$): the penalised fit with its sandwich interval (``$\ell_1$''), the one-step debiased interval \eqref{eq:debias} (``deb.''), and the interval obtained by refitting unpenalised quantile regression on the selected support and then debiasing (``refit$+$deb.''). The coverage, length and support columns belong to the refit$+$deb.\ interval; the support entry is the mean number of selected coordinates, with the fraction of replications recovering the true support exactly in parentheses. Panel B ($n=200<p=250$, $R=50$): the plug-in Hessian is singular, so $\hat\Theta$ is built nodewise, the penalised estimator is omitted, and the support column also reports the mean number of missed signal coordinates.}
 \label{tab:debias}
 \begin{tabular}{lccccccc}
 \toprule

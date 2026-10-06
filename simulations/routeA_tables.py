@@ -40,8 +40,9 @@ def table_targets():
             r"fixed-scale smoothed loss, and exactly "
             r"$(\Sigma_x+\Sigma_u+M)^{-1}\Sigma_x\betas$ for the adaptive scale with "
             r"kernel $M$; the tabulated Monte-Carlo values agree with those exact values "
-            r"to within $0.006$, which is also the size of their deviation from $\bbar$ in "
-            r"the posterior-kernel column (Proposition~\ref{prop:posterior-adaptive}). "
+            r"to within $0.006$, the largest deviation over the table (the posterior-kernel "
+            r"column is within $0.004$ of $\bbar$ "
+            r"(Proposition~\ref{prop:posterior-adaptive}). "
             r"Column 5 uses the pilot scale $\sigmah$ from a calibrated Stage~1 "
             r"(idealised: the true $\Sigma_x$ is used, which favours the smoothed "
             r"method).}",
@@ -126,7 +127,7 @@ def table_scaling():
             r"$\norm{\hat\beta-\betas}_2$). The smoothed estimator is flat in $n$ at the "
             r"attenuation distance $\norm{\bbar-\betas}$, while its distance to $\bbar$ "
             r"decays; the calibrated estimator tracks the oracle up to the efficiency "
-            r"factor of the remark following Theorem~\ref{thm:lowdim}.}",
+            r"factor of Remark~\ref{rem:efficiency}.}",
             r"\label{tab:scaling}",
             r"\begin{tabular}{cccccccc}", r"\toprule",
             r"$\tau$ & $n$ & smoothed & smoothed$\,\to\bbar$ & naive & RC & RC$+$int & "
@@ -301,21 +302,20 @@ def table_debias():
     keys = [k for k in res if k != "_meta"]
     keys.sort(key=lambda z: (float(z.split("_")[0][2:]), -float(z.split("lam")[1])))
     caption = (r"\caption{Debiased inference for the calibrated estimator, nominal $95\%$ "
-               r"intervals. Panel A ($n=400>p=40$, $R=__RA__$): three intervals for the "
-               r"calibrated estimator, all counted on the $s=5$ signal coordinates: the "
-               r"penalised fit with its own sandwich interval (``$\ell_1$''), the one-step "
-               r"debiased interval \eqref{eq:debias} (``deb.''), and the interval obtained by "
-               r"refitting unpenalised quantile regression on the selected support and then "
-               r"debiasing (``refit$+$deb.''). The null coverage and the mean length in each "
-               r"row belong to the refit$+$deb.\ interval, as does the support column, which "
-               r"gives the mean number of coordinates selected, with the fraction of "
-               r"replications in which the selected set is exactly the true support in "
-               r"parentheses. Panel B ($n=200<p=250$, $R=__RB__$): the plug-in Hessian is "
-               r"singular, so $\hat\Theta$ is built nodewise and the penalised estimator, "
-               r"which admits no usable interval, is omitted; the support column then also "
-               r"reports the mean number of missed signal coordinates.}"
+               r"intervals, counted on the $s=5$ signal coordinates. Panel A "
+               r"($n=400>p=40$, $R=__RA__$): the penalised fit with its sandwich interval "
+               r"(``$\ell_1$''), the one-step debiased interval \eqref{eq:debias} "
+               r"(``deb.''), and the interval obtained by refitting unpenalised quantile "
+               r"regression on the selected support and then debiasing "
+               r"(``refit$+$deb.''). The coverage, length and support columns belong to the "
+               r"refit$+$deb.\ interval; the support entry is the mean number of selected "
+               r"coordinates, with the fraction of replications recovering the true support "
+               r"exactly in parentheses. Panel B ($n=200<p=250$, $R=__RB__$): the plug-in "
+               r"Hessian is singular, so $\hat\Theta$ is built nodewise, the penalised "
+               r"estimator is omitted, and the support column also reports the mean number of "
+               r"missed signal coordinates.}"
                ).replace("__RA__", str(meta["R"])).replace("__RB__", str(pg_R))
-    body = [r"\begin{table}[ht]", r"\centering", r"\footnotesize",
+    body = [r"\begin{table}[ht]", r"\centering", r"\scriptsize",
             r"\setlength{\tabcolsep}{4pt}",
             caption,
             r"\label{tab:debias}",
@@ -367,19 +367,17 @@ def table_plugin():
     Z95 = 1.959963984540054
     caption = (r"\caption{What estimating the calibration costs, nominal $95\%$ intervals: "
                r"coverage of the refitted and debiased estimator on the $s=5$ signal "
-               r"coordinates, with the calibration known (as everywhere else in this paper) "
-               r"and with the method-of-moments plug-in $\hat\Ccal=I-\Sigma_uS_W^{-1}$. The "
-               r"bias is the mean of $\hat b_j-\beta^*_j$ over signal coordinates and "
-               r"replications, the length is the mean interval length, and "
+               r"coordinates, with the calibration known and with the method-of-moments "
+               r"plug-in $\hat\Ccal=I-\Sigma_uS_W^{-1}$. The bias is the mean of "
+               r"$\hat b_j-\beta^*_j$ over signal coordinates and replications, the length is "
+               r"the mean interval length, and "
                r"$r_n=\max_j\|(\hat\Ccal-\Ccal)_{j\cdot}\|_1$ is the row-wise calibration "
                r"error. Panel A varies $\sigma_u$ at $n=400$, $p=40$, $R=200$; Panel B varies "
-               r"$p$ at the fixed ratio $n=4p$ ($\sigma_u=0.5$, $R=100$), where the "
-               r"known-calibration intervals stay at the nominal level while the plug-in "
-               r"intervals do not. Proposition~\ref{prop:plugin} says why the plug-in cannot "
-               r"close this gap: its row-wise error is of the order of the sample "
-               r"covariance's, which is the order at which the bias stops being negligible "
-               r"relative to the standard error.}").replace("__R__", str(R))
-    body = [r"\begin{table}[ht]", r"\centering", r"\footnotesize",
+               r"$p$ at the fixed ratio $n=4p$ ($\sigma_u=0.5$, $R=100$). "
+               r"Proposition~\ref{prop:plugin} explains the gap: the plug-in's row-wise error "
+               r"is of the order at which the bias stops being negligible relative to the "
+               r"standard error.}").replace("__R__", str(R))
+    body = [r"\begin{table}[ht]", r"\centering", r"\scriptsize",
             r"\setlength{\tabcolsep}{5pt}",
             caption,
             r"\label{tab:plugin}",

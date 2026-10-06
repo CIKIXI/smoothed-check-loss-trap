@@ -57,7 +57,7 @@ worst_adaptive = max(abs(r["conv_adaptive"] - exact[(r["sigma_u"], r["tau"])]["a
                      for r in tg)
 worst_naive = max(abs(r["naive_qr"] - exact[(r["sigma_u"], r["tau"])]["naive"]) for r in tg)
 claim("Prop 3.13: fixed-scale MC targets equal beta_bar exactly",
-      "targets $\\bbar$ rather than $\\betas$", worst_fixed < 6e-3,
+      "targets $\\bbar$, not $\\betas$", worst_fixed < 6e-3,
       f"max |MC - beta_bar| = {worst_fixed:.4f}")
 claim("Prop 3.13: adaptive MC targets equal beta*/(1+2 sigma_u^2)",
       "$(\\Sigma_x+\\Sigma_u+M)^{-1}\\Sigma_x\\betas$", worst_adaptive < 6e-3,
@@ -280,7 +280,7 @@ claim("Thm 3.4 (general M): MC gradient matches (Sigma_u+M)beta* d_M",
 # scale sqrt(b' Sigma_{x|w} b) is exactly beta_bar; the tables and the figure must agree.
 dev_pk = max(abs(r["conv_posterior_kernel"] - r["beta_bar"]) for r in tg)
 claim("Table 1: posterior-kernel column equals beta_bar within 0.005 (text: 0.006)",
-      "Its entries agree\nwith $\\bbar$ to within Monte-Carlo error", dev_pk <= 0.005,
+      "agree with $\\bbar$ to within $0.006$", dev_pk <= 0.005,
       f"max |entry - beta_bar| = {dev_pk:.4f}")
 
 # The text and the caption now quote one number for the table, 0.006; check it is an upper
