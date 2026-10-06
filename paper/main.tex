@@ -9,6 +9,7 @@
 \usepackage{graphicx}
 \usepackage[round,authoryear]{natbib}
 \usepackage{booktabs}
+\usepackage{url}   % long URLs in the code-availability statement need breakable links
 \usepackage{multirow}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -2072,12 +2073,12 @@ make the linear term small: the argument fails at its first step, not at its con
 
 \begin{proof}[Proof of Theorem~\ref{thm:debias-clt}]
 Write ${\tilde{\muv}}_i=({\muv}_i^\top,1)^\top$ and
-${\tilde{\hat{\muv}}}_i=({\hat{\muv}}_i^\top,1)^\top$, let
+${\tilde{\hat{\muv}}}_i=({\hat{\muv}}_i^\top,1)^\top$. Let
 $\hat S=n^{-1}\sum_i{\tilde{\hat{\muv}}}_i\psi_i$ with
 $\psi_i=\tau-\ind{Y_i-{\hat{\muv}}_i^\top\hat\beta-\hat\delta<0}$, and write
 $\psi_i^\circ=\tau-\ind{e_i<\delta_\tau}$,
 $S^\circ=n^{-1}\sum_i{\tilde{\muv}}_i\psi_i^\circ$,
-$\Delta=\hat\beta-\betas$, $\Delta_\delta=\hat\delta-\delta_\tau$.
+$\Delta=\hat\beta-\betas$, and $\Delta_\delta=\hat\delta-\delta_\tau$.
 
 \emph{Step 1 (decomposition).} By \eqref{eq:debias},
 $\hat b_j-\beta^*_j=\hat\Theta_{j\cdot}\hat S+\Delta_j$, and
@@ -2304,8 +2305,8 @@ Appendix~\ref{app:repro}, which are self-contained Python files. Each table and 
 generated directly from the saved JSON output of those scripts, so the numbers reported
 here cannot drift from the code that produced them. The scripts, their saved output and the
 independent verification scripts are archived in a version-controlled repository and on
-Zenodo, at \texttt{https://doi.org/10.5281/zenodo.23175827} (repository:
-\texttt{https://github.com/CIKIXI/smoothed-check-loss-trap}). All data are publicly available: the
+Zenodo, at \url{https://doi.org/10.5281/zenodo.23175827} (repository:
+\url{https://github.com/CIKIXI/smoothed-check-loss-trap}). All data are publicly available: the
 simulation designs use synthetic Gaussian covariates and known Gaussian measurement error,
 so they need no external data, and the application in \S\ref{sec:nhanes} uses the NHANES
 2017--2018 public-use demographic, body-measure and two 24-hour dietary-recall files. No
