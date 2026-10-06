@@ -11,9 +11,9 @@ abstract: >-
   error in quantile regression. Includes the exact population targets of the convolved,
   naive and calibrated estimators; the low-dimensional scaling and high-dimensional
   comparison studies; the coverage study for the calibrated estimator; the debiasing
-  experiments for p<n and p>n (including the known-calibration versus sample-covariance
-  plug-in comparison); the NHANES 2017-2018 application; and the scripts that generate every
-  table and vector figure of the manuscript.
+  experiments for p smaller than n and p larger than n (including the known-calibration versus
+  sample-covariance plug-in comparison); the NHANES 2017-2018 application; and the scripts that
+  generate every table and vector figure of the manuscript.
 license: MIT
 version: "1.0.0"
 date-released: "2026-10-06"
