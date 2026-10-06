@@ -157,17 +157,16 @@ it cannot remove it.
 
 This observation has sharp consequences, and they are what the paper establishes.
 
-\begin{enumerate}
-\item \textbf{The smoothed score is biased at $\betas$, for every scale}
-(Theorem~\ref{thm:score}). We compute the population score exactly:
+\paragraph{The smoothed score is biased at $\betas$, for every scale
+(Theorem~\ref{thm:score}).} We compute the population score exactly:
 $\E[W\psit(r_i^*,\sigma)] = -(\Sigma_u\betas)\,d(\sigma)$ where $d(\sigma) =
 (\cN(0,\sigma^{*2}+\sigma^2)*f_\varepsilon)(0)>0$ and $\sigma^{*2} =
 {\betas}^\top\Sigma_u\betas$. The bias is of order $\|\Sigma_u\betas\|$ and does not vanish
 with $n$, and it cannot be tuned away, because the identity holds simultaneously for
 all $\sigma>0$. This includes the scale produced by any pilot estimate.
 
-\item \textbf{The population target is displaced} (Lemma~\ref{lem:bias} and
-Proposition~\ref{prop:target}). Since the loss is convex in $\beta$ for fixed $\sigma$, a
+\paragraph{The population target is displaced (Lemma~\ref{lem:bias} and
+Proposition~\ref{prop:target}).} Since the loss is convex in $\beta$ for fixed $\sigma$, a
 non-zero gradient at $\betas$ means $\betas$ is not a minimiser; the mean value theorem
 gives the explicit lower bound $\|\bbar-\betas\| \ge
 \|\Sigma_u\betas\|\,d(\sigma)\,\sigma / (\lambda_{\max}(\Sigma_x+\Sigma_u)\phi(0))$,
@@ -179,7 +178,7 @@ $\bbar = (\Sigma_x+\Sigma_u)^{-1}\Sigma_x\betas$, which, as we also show
 regression on $W$ targets. Smoothing therefore changes the finite-sample behaviour of the
 estimator but not the estimand: it cannot remove attenuation.
 
-\item \textbf{No convolution can repair it} (Corollary~\ref{cor:no-conv}). Replacing
+\paragraph{No convolution can repair it (Corollary~\ref{cor:no-conv}).} Replacing
 $\Sigma_u$ by any other kernel covariance $\Sigma_k \succ 0$ in \eqref{eq:identity}
 leaves the score $\E[W\psit] = -(\Sigma_k\betas)\,d_k$ non-zero whenever
 $\Sigma_k\betas \neq 0$. In particular the tempting repair of convolving with the
@@ -191,8 +190,8 @@ structural: the $\tau$-quantile functional is not equivariant under convolution,
 the mean functional is. Convolution-based corrections therefore work for squared loss and
 fail for the check loss.
 
-\item \textbf{The correct operation is conditioning, not convolving}
-(Theorem~\ref{thm:calib}). Condition on the observed covariate. Under a Gaussian design
+\paragraph{The correct operation is conditioning, not convolving
+(Theorem~\ref{thm:calib}).} Condition on the observed covariate. Under a Gaussian design
 the calibrated covariate $\muv = \Ccal W$ with $\Ccal = \Sigma_x(\Sigma_x+\Sigma_u)^{-1}$
 satisfies $Y = \muv^\top\betas + e$ where $e$ is independent of $\muv$ and
 $Q_\tau(e\mid\muv) = \delta_\tau$ is a constant. Hence an ordinary quantile regression of
@@ -204,7 +203,7 @@ smoothed loss.
 Theorem~\ref{thm:lowdim} gives consistency and asymptotic normality in fixed dimension and
 Theorem~\ref{thm:highdim} the $\ell_1$ oracle inequality when the calibration is known.
 
-\item \textbf{The oracle calibration can be estimated} (Theorem~\ref{thm:estimated}).
+\paragraph{The oracle calibration can be estimated (Theorem~\ref{thm:estimated}).}
 In $p\gg n$ the calibration matrix $\Ccal$ must itself be estimated. We give a
 perturbation lemma for $\hat\Ccal=\hat\Sigma_x(\hat\Sigma_x+\Sigma_u)^{-1}$, show that the
 restricted eigenvalue condition transfers to the estimated design, and control the
@@ -214,8 +213,8 @@ Remark~\ref{rem:spectral-not-enough} explains why spectral accuracy alone is pro
 enough, and \S\ref{sec:hd-est} shows numerically that in banded designs the plug-in is
 indistinguishable from the oracle.
 
-\item \textbf{Debiased inference becomes available, under a condition we can state}
-(\S\ref{sec:debiasing}). Because \eqref{eq:calib-score} holds exactly, the standard
+\paragraph{Debiased inference becomes available, under a condition we can state
+(\S\ref{sec:debiasing}).} Because \eqref{eq:calib-score} holds exactly, the standard
 debiasing construction applies to the calibrated estimator, and we prove its asymptotic
 normality, with the oracle-calibration variance, under an explicit condition on the accuracy
 of the calibration: the design-error part of the penalty must be $o_P(n^{-1/2})$. A known
@@ -229,7 +228,6 @@ score rather than a smoothed one. With both, coverage is $0.973$--$0.981$ in our
 simulations, against the penalised estimator's own $0.08$--$0.75$
 (Table~\ref{tab:debias}), while the plug-in calibration loses the nominal level at
 $\sigma_u=0.5$ (Table~\ref{tab:plugin}).
-\end{enumerate}
 
 Section~\ref{sec:setup} fixes notation and records the identity
 \eqref{eq:identity}. Section~\ref{sec:negative} contains the negative results for the
@@ -741,16 +739,14 @@ $U_i\sim\cN(0,\Sigma_u)$ independent, $\E[X_i]=0$, and $\varepsilon_i$ independe
 $(X_i,U_i)$ with $\E|\varepsilon_i|<\infty$; no density is required. Write
 $\Sigma_\star(M)=\Sigma_x+\Sigma_u+M$, which is positive definite whenever $\Sigma_x\succ0$,
 so that uniqueness below never needs $\Sigma_u$ or $M$ to be non-singular. Fix
-$\tau\in(0,1)$. Then, uniquely,
-\begin{enumerate}
-\item[(i)] the naive check-loss risk $\E[\rho_\tau(Y_i-\beta^\top W_i)]$ is minimised at
-$\bbar=(\Sigma_x+\Sigma_u)^{-1}\Sigma_x\betas$;
-\item[(ii)] the fixed-scale smoothed loss $\E[\rht(Y_i-\beta^\top W_i,\sigma)]$ has the same
-minimiser $\bbar$ for \emph{every} $\sigma>0$: no bandwidth moves the target;
-\item[(iii)] for any $M\succeq0$ the adaptive-scale smoothed loss with
+$\tau\in(0,1)$. Then, uniquely, (i) the naive check-loss risk
+$\E[\rho_\tau(Y_i-\beta^\top W_i)]$ is minimised at
+$\bbar=(\Sigma_x+\Sigma_u)^{-1}\Sigma_x\betas$; (ii) the fixed-scale smoothed loss
+$\E[\rht(Y_i-\beta^\top W_i,\sigma)]$ has the same
+minimiser $\bbar$ for \emph{every} $\sigma>0$, so no bandwidth moves the target; and
+(iii) for any $M\succeq0$ the adaptive-scale smoothed loss with
 $\sigma_M(\beta)=\sqrt{\beta^\top M\beta}$ is minimised at
 $(\Sigma_x+\Sigma_u+M)^{-1}\Sigma_x\betas$.
-\end{enumerate}
 \end{proposition}
 
 \begin{proof}
@@ -2252,49 +2248,54 @@ empirical $\tau$-quantile of the residuals, which is exact by partial minimisati
 \label{app:repro}
 
 \sloppy
-\begin{itemize}
-\item \texttt{simulations/routeA\_lib.py} --- solvers (damped Newton for the smoothed loss and
-Frobenius-norm helpers), data generators; \texttt{routeA\_targets.py}: the exact
+\texttt{simulations/routeA\_\allowbreak lib.py} holds the solvers (damped Newton for the smoothed loss and
+Frobenius-norm helpers) and the data generators; \texttt{routeA\_\allowbreak targets.py} computes the exact
 population targets of Table~\ref{tab:targets}, computed without any optimiser
 (subgradient root-finding, profiling, grid search).
-\item \texttt{routeA\_experiments.py}: the score check, the scaling study and the
+
+\texttt{routeA\_\allowbreak experiments.py}: the score check, the scaling study and the
 high-dimensional comparison (Tables~\ref{tab:score}--\ref{tab:highdim});
-\texttt{routeA\_inference.py}: the coverage study of Table~\ref{tab:coverage} and the
+\texttt{routeA\_\allowbreak inference.py}: the coverage study of Table~\ref{tab:coverage} and the
 naive-score check.
-\item \texttt{hdc\_experiments.py}: estimated calibration in high dimensions
-(Table~\ref{tab:hdc}); \texttt{hdc\_gls\_theory.py}: the closed-form GLS gains of
+
+\texttt{hdc\_\allowbreak experiments.py}: estimated calibration in high dimensions
+(Table~\ref{tab:hdc}); \texttt{hdc\_\allowbreak gls\_\allowbreak theory.py}: the closed-form GLS gains of
 Table~\ref{tab:gls}.
-\item \texttt{hdc\_debias\_final.py} ($p<n$) and \texttt{hdc\_pgtn.py} ($p>n$, nodewise
-inverse) --- the debiasing study of Table~\ref{tab:debias};
-\texttt{hdc\_debias\_diag.py} and \texttt{hdc\_debias\_fix.py}: the diagnostics that
+
+\texttt{hdc\_\allowbreak debias\_\allowbreak final.py} ($p<n$) and \texttt{hdc\_\allowbreak pgtn.py} ($p>n$, nodewise
+inverse) produce the debiasing study of Table~\ref{tab:debias};
+\texttt{hdc\_\allowbreak debias\_\allowbreak diag.py} and \texttt{hdc\_\allowbreak debias\_\allowbreak fix.py} contain the diagnostics that
 identified the $\ell_1$ initial bias as the cause of the pilot failure.
-\item \texttt{routeA\_tables.py} and \texttt{routeA\_figures.py}: generate every table
+
+\texttt{routeA\_\allowbreak tables.py} and \texttt{routeA\_\allowbreak figures.py}: generate every table
 and figure of this paper directly from the saved JSON results, so that the numbers in the
 text cannot drift from the code. The population curves of Figure~\ref{fig:loss} are
 evaluated by Gauss-Laguerre quadrature in the Laplace error density, using the Gaussian
 reduction of \eqref{eq:cal-gauss}, and their minimisers are located by one-dimensional
 bounded optimisation of the quadrature, so no simulation error enters that figure.
-\item \texttt{nhanes\_realdata.py}: the application of \S\ref{sec:nhanes}: merges the
+
+\texttt{nhanes\_\allowbreak realdata.py}: the application of \S\ref{sec:nhanes}: merges the
 four NHANES public-use files, estimates $\Sigma_x$ and $\Sigma_u$ from the two dietary
 recalls, prunes near-duplicate nutrients, and fits the naive, calibrated and debiased
 estimators (Table~\ref{tab:nhanes}).
-\item \texttt{consistency\_audit.py}: re-derives every number typed by hand in the text
+
+\texttt{consistency\_\allowbreak audit.py}: re-derives every number typed by hand in the text
 from the JSON results and the closed-form expressions, and checks it against the
 manuscript; it covers all tables, the Monte-Carlo verification of
 Theorem~\ref{thm:adaptive}, the numerical claims attached to
 Proposition~\ref{prop:posterior-adaptive}, and the real-data numbers of
 \S\ref{sec:nhanes}.
-\item \texttt{review/}: the independent checks of the smoothed loss's target
-(\texttt{verify\_corrected\_target.py}), of the calibration repair
-(\texttt{verify\_rc\_fix.py}), of Proposition~\ref{prop:posterior-adaptive}
-(\texttt{verify\_posterior\_adaptive.py}, which verifies the Gaussian reduction
+
+\texttt{review/}: the independent checks of the smoothed loss's target
+(\texttt{verify\_\allowbreak corrected\_\allowbreak target.py}), of the calibration repair
+(\texttt{verify\_\allowbreak rc\_\allowbreak fix.py}), of Proposition~\ref{prop:posterior-adaptive}
+(\texttt{verify\_\allowbreak posterior\_\allowbreak adaptive.py}, which verifies the Gaussian reduction
 \eqref{eq:cal-gauss}, the monotonicity in $\varsigma$ and the location of the minimiser in
 nine scalar cells and in a matrix case where $\Sigma_x$ and $\Sigma_u$ do not commute), of
 the quadrature used for Figure~\ref{fig:loss} against a direct simulation of the model
-(\texttt{verify\_fig1\_exact\_curves.py}), of the determinism of the debiasing study
-(\texttt{verify\_debias\_determinism.py}), and the reference audit
-(\texttt{reference\_audit.md}).
-\end{itemize}
+(\texttt{verify\_\allowbreak fig1\_\allowbreak exact\_\allowbreak curves.py}), of the determinism of the debiasing study
+(\texttt{verify\_\allowbreak debias\_\allowbreak determinism.py}), and the reference audit
+(\texttt{reference\_\allowbreak audit.md}).
 \fussy
 
 \section*{Code and data availability}

@@ -73,6 +73,11 @@ PREAMBLE_HEAD = r"""%% Submission to TEST (Springer, for the Spanish Society of 
 %% Research), built from paper/main.tex by simulations/build_test.py -- do not edit by hand.
 \documentclass[pdflatex,sn-basic]{sn-jnl}% author-year references, TEST's convention
 
+%%%% Page geometry. The class sets a binding offset that shifts the text block
+%%%% sideways on facing pages; for a PDF that is read on screen we centre it, so
+%%%% that consecutive pages line up. Text width and height are unchanged.
+\geometry{twoside=false,hcentering=true,bindingoffset=0pt}
+
 %%%% Standard packages
 \usepackage{graphicx}
 \usepackage{multirow}
@@ -148,6 +153,7 @@ smoothed check loss, errors-in-variables, debiased inference}
 
 SI_FRONTMATTER = r"""%% Supplementary material for the TEST submission, built by simulations/build_test.py.
 \documentclass[pdflatex,sn-basic]{sn-jnl}
+\geometry{twoside=false,hcentering=true,bindingoffset=0pt}% same centred block as the paper
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{amsthm}

@@ -53,6 +53,44 @@ def body_block(doc):
     return left, right, lefts, rights
 
 
+def alignment_report(doc):
+    """The body-text block must sit at the same place on every page.
+
+    A binding offset in the document class moves the block sideways on facing pages,
+    which is invisible in print but shows up as a horizontal jump when the PDF is read
+    one page at a time. The modal left edge is computed over each parity separately
+    (so lists, tables and the bibliography, which are indented or hanging, cannot mask
+    a shift), and any page whose content starts left of the block is reported.
+    """
+    per_parity = {0: Counter(), 1: Counter()}
+    mins = []
+    for pno, page in enumerate(doc, start=1):
+        rows = []
+        for blk in page.get_text("dict")["blocks"]:
+            if blk.get("type") != 0:
+                continue
+            for line in blk["lines"]:
+                for span in line["spans"]:
+                    if span["text"].strip():
+                        rows.append((span["bbox"][0], span["bbox"][2]))
+        if not rows:
+            continue
+        for x0, _x1 in rows:
+            per_parity[pno % 2][round(x0, 1)] += 1
+        mins.append((pno, round(min(r[0] for r in rows), 1), round(max(r[1] for r in rows), 1)))
+
+    def modal(counter):
+        return max(counter.items(), key=lambda kv: kv[1])[0] if counter else None
+
+    odd, even = modal(per_parity[1]), modal(per_parity[0])
+    body = odd if odd is not None else even
+    out = [p for p in mins if body is not None and p[1] < body - 1.0]
+    return dict(odd=odd, even=even, body_left=body,
+                spread=round(abs((odd or 0) - (even or 0)), 1),
+                left_of_block=out,
+                right_max=max([m[2] for m in mins], default=None))
+
+
 def pdf_report(pdf):
     doc = fitz.open(pdf)
     left, right, lefts, rights = body_block(doc)
@@ -84,7 +122,8 @@ def pdf_report(pdf):
     return dict(pages=doc.page_count, body_left=left, body_right=common_right,
                 page_width=round(doc[0].rect.width, 1),
                 overflow=sorted(offenders, key=lambda t: -t[1])[:15],
-                n_overflow=len(offenders), wide_images=wide)
+                n_overflow=len(offenders), wide_images=wide,
+                align=alignment_report(doc))
 
 
 # ------------------------------------------------------------------ captions
@@ -131,6 +170,13 @@ def main():
         pr = pdf_report(pdf)
         print(f"  pdf: {pr['pages']} pages, page width {pr['page_width']}pt, "
               f"body text block x = [{pr['body_left']}, {pr['body_right']}]")
+        al = pr["align"]
+        print(f"  alignment: modal left edge odd pages {al['odd']}, even pages {al['even']} "
+              f"(spread {al['spread']}pt); body block {al['body_left']}")
+        if al["left_of_block"]:
+            print(f"     content left of the block on pages {al['left_of_block']}")
+        else:
+            print("     no page starts left of the block; facing pages line up")
         print(f"  spans past the body block: {pr['n_overflow']}")
         for pno, over, t in pr["overflow"]:
             print(f"     p{pno:>3}  +{over:5.2f}pt  {t}")
@@ -148,7 +194,7 @@ def main():
               f"file={str(c['file']):<32} {c['head'][:52]}")
     print("=" * 100)
     files = []
-    for root in ("submission_AoS/source/figures",):
+    for root in ("submission_TEST/source/figures",):
         if not os.path.isdir(root):
             continue
         for f in sorted(os.listdir(root)):
