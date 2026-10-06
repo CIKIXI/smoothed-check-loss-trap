@@ -5,7 +5,7 @@ Regression with Measurement Error*
 Journal: TEST (Springer, for the Spanish Society of Statistics and Operations Research)
 Author: Kaixu Cai, School of Mathematics and Statistics, Guangxi Normal University
 Manuscript ID: to be added when the submission number is assigned
-Archived release: https://doi.org/10.5281/zenodo.XXXXXXX
+Archived release: https://doi.org/10.5281/zenodo.23175827
 Repository: https://github.com/CIKIXI/smoothed-check-loss-trap
 
 This repository contains the Python code, the saved results and the verification scripts behind
@@ -27,8 +27,8 @@ which prints a pass/fail table.
 ```
 simulations/        the experiments and the table/figure generators, plus their JSON output
 review/             independent checks of the theory and of the reported numbers
-paper/              manuscript sources (main.tex, tables/, references.bib) and the two
-                    document classes the builds need (imsart for AoS, sn-jnl for TEST)
+paper/              manuscript sources (main.tex, tables/, references.bib); the TEST
+                    document class lives in test_template/
 figures/            the three vector figures, as produced by simulations/routeA_figures.py
 data/nhanes/        put the four NHANES 2017-2018 files here (see Section 5)
 docs/               how to publish this repository and mint the Zenodo DOI
@@ -51,7 +51,7 @@ requirements.txt    Python packages
 | Figures 1-3 | `simulations/routeA_figures.py` | seconds, vector PDF |
 | all LaTeX tables | `simulations/routeA_tables.py` | seconds, reads the JSON results |
 | the numeric audit | `simulations/consistency_audit.py` | ~1 min |
-| the manuscripts | `simulations/build_submission.py` (AoS), `simulations/build_test.py` (TEST) | ~1 min each |
+| the manuscript | `simulations/build_test.py --si all` (TEST layout and supplement) | ~1 min |
 
 Every experiment writes its raw output to `simulations/*.json`; those files are committed, so
 the tables and figures can be regenerated without re-running the experiments.
@@ -80,9 +80,8 @@ python simulations/routeA_tables.py              # paper/tables/*.tex
 python simulations/routeA_figures.py             # figures/*.pdf
 python simulations/consistency_audit.py          # expect: 66/66 claims consistent
 
-# optional: rebuild the manuscripts
+# optional: rebuild the manuscript
 python simulations/build_test.py --si all        # TEST layout -> submission_TEST/
-python simulations/build_submission.py           # AoS layout  -> submission_AoS/
 ```
 
 About 45 minutes in total on a laptop. The random seeds are fixed, so repeated runs reproduce
@@ -120,4 +119,4 @@ Code released under the MIT licence (`LICENSE`); the NHANES files are public-use
 distributed by the US CDC and are not covered by it.
 
 If you use this code or these results, please cite the archived release
-(`CITATION.cff`), https://doi.org/10.5281/zenodo.XXXXXXX.
+(`CITATION.cff`), https://doi.org/10.5281/zenodo.23175827.

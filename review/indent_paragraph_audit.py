@@ -1,4 +1,4 @@
-"""
+﻿"""
 Direct measurement: take the first sentence of every paragraph in the source, locate it in
 the compiled PDF, and report whether the paragraph starts indented or flush.
 
@@ -11,7 +11,7 @@ import re
 import fitz
 
 DOCS = [("development", "paper/main.tex", "paper/main.pdf"),
-        ("AoS", "submission_AoS/source/main_aos.tex", "submission_AoS/main_aos.pdf")]
+        ("TEST", "submission_TEST/source/main_test.tex", "submission_TEST/main_test.pdf")]
 
 
 def norm(s):
@@ -86,3 +86,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

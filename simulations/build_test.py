@@ -197,7 +197,7 @@ body-measure and two 24-hour dietary-recall files, archived by the US Centers fo
 Control and Prevention at \texttt{https://wwwn.cdc.gov/nchs/nhanes/}.
 \item Code availability: The scripts that produce every table and figure, together with their
 saved output and the verification scripts, are archived in a version-controlled repository and
-on Zenodo: \texttt{https://doi.org/10.5281/zenodo.XXXXXXX} (repository:
+on Zenodo: \texttt{https://doi.org/10.5281/zenodo.23175827} (repository:
 \texttt{https://github.com/CIKIXI/smoothed-check-loss-trap}).
 \item Authors' contributions: Kaixu Cai is the sole author and carried out all parts of the
 work.

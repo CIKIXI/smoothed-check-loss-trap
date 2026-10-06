@@ -7,7 +7,7 @@ The manuscript's Declarations will state:
 
 > Code availability: The scripts that produce every table and figure, together with their saved
 > output and the verification scripts, are archived in a version-controlled repository and on
-> Zenodo: https://doi.org/10.5281/zenodo.XXXXXXX (repository:
+> Zenodo: https://doi.org/10.5281/zenodo.23175827 (repository:
 > https://github.com/CIKIXI/smoothed-check-loss-trap).
 
 `XXXXXXX` is a placeholder and **must be replaced before submission**; a placeholder is no

@@ -13,8 +13,10 @@ from collections import Counter
 import fitz
 
 PAPERS = [("development", "paper/main.pdf", "paper/main.log", "paper/main.tex"),
-          ("AoS", "submission_AoS/main_aos.pdf", "review/aos_build.log",
-           "submission_AoS/source/main_aos.tex")]
+          ("TEST", "submission_TEST/main_test.pdf", "review/test_build.log",
+           "submission_TEST/source/main_test.tex"),
+          ("TEST supplement", "submission_TEST/supplementary.pdf",
+           "review/test_supplementary_build.log", "submission_TEST/source/supplementary.tex")]
 
 
 # ------------------------------------------------------------------ LaTeX log

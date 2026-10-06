@@ -31,13 +31,13 @@ OUT = os.path.join(ROOT, "code_release")
 GITHUB_ACCOUNT = "CIKIXI"
 REPO_NAME = "smoothed-check-loss-trap"
 REPO_URL = f"https://github.com/{GITHUB_ACCOUNT}/{REPO_NAME}"
-DOI_PLACEHOLDER = "10.5281/zenodo.XXXXXXX"
+DOI = "10.5281/zenodo.23175827"          # concept DOI, minted 2026-10-06
 
 SCRIPTS = [
     "routeA_lib.py", "routeA_targets.py", "routeA_experiments.py", "routeA_inference.py",
     "hdc_experiments.py", "hdc_gls_theory.py", "hdc_debias.py", "hdc_debias_final.py",
     "hdc_pgtn.py", "hdc_debias_diag.py", "hdc_debias_fix.py", "nhanes_realdata.py",
-    "routeA_tables.py", "routeA_figures.py", "consistency_audit.py", "build_submission.py",
+    "routeA_tables.py", "routeA_figures.py", "consistency_audit.py",
     "build_test.py", "make_code_release.py", "set_zenodo_doi.py",
 ]
 
@@ -59,7 +59,7 @@ Regression with Measurement Error*
 Journal: TEST (Springer, for the Spanish Society of Statistics and Operations Research)
 Author: Kaixu Cai, School of Mathematics and Statistics, Guangxi Normal University
 Manuscript ID: to be added when the submission number is assigned
-Archived release: https://doi.org/10.5281/zenodo.XXXXXXX
+Archived release: https://doi.org/10.5281/zenodo.23175827
 Repository: https://github.com/CIKIXI/smoothed-check-loss-trap
 
 This repository contains the Python code, the saved results and the verification scripts behind
@@ -81,8 +81,8 @@ which prints a pass/fail table.
 ```
 simulations/        the experiments and the table/figure generators, plus their JSON output
 review/             independent checks of the theory and of the reported numbers
-paper/              manuscript sources (main.tex, tables/, references.bib) and the two
-                    document classes the builds need (imsart for AoS, sn-jnl for TEST)
+paper/              manuscript sources (main.tex, tables/, references.bib); the TEST
+                    document class lives in test_template/
 figures/            the three vector figures, as produced by simulations/routeA_figures.py
 data/nhanes/        put the four NHANES 2017-2018 files here (see Section 5)
 docs/               how to publish this repository and mint the Zenodo DOI
@@ -105,7 +105,7 @@ requirements.txt    Python packages
 | Figures 1-3 | `simulations/routeA_figures.py` | seconds, vector PDF |
 | all LaTeX tables | `simulations/routeA_tables.py` | seconds, reads the JSON results |
 | the numeric audit | `simulations/consistency_audit.py` | ~1 min |
-| the manuscripts | `simulations/build_submission.py` (AoS), `simulations/build_test.py` (TEST) | ~1 min each |
+| the manuscript | `simulations/build_test.py --si all` (TEST layout and supplement) | ~1 min |
 
 Every experiment writes its raw output to `simulations/*.json`; those files are committed, so
 the tables and figures can be regenerated without re-running the experiments.
@@ -134,9 +134,8 @@ python simulations/routeA_tables.py              # paper/tables/*.tex
 python simulations/routeA_figures.py             # figures/*.pdf
 python simulations/consistency_audit.py          # expect: 66/66 claims consistent
 
-# optional: rebuild the manuscripts
+# optional: rebuild the manuscript
 python simulations/build_test.py --si all        # TEST layout -> submission_TEST/
-python simulations/build_submission.py           # AoS layout  -> submission_AoS/
 ```
 
 About 45 minutes in total on a laptop. The random seeds are fixed, so repeated runs reproduce
@@ -174,7 +173,7 @@ Code released under the MIT licence (`LICENSE`); the NHANES files are public-use
 distributed by the US CDC and are not covered by it.
 
 If you use this code or these results, please cite the archived release
-(`CITATION.cff`), https://doi.org/10.5281/zenodo.XXXXXXX.
+(`CITATION.cff`), https://doi.org/10.5281/zenodo.23175827.
 """
 
 LICENSE = """MIT License
@@ -290,7 +289,7 @@ repository on GitHub and minting the DOI.
    git push origin v1.0.0
    ```
 
-5. Check on GitHub: 99 files, and the tag `v1.0.0` listed under **Releases / Tags**.
+5. Check on GitHub: 92 files, and the tag `v1.0.0` listed under **Releases / Tags**.
 
 If the repository name or account differs, point the remote at the real one first:
 
@@ -334,7 +333,7 @@ keep only the repository link, run it with `none` instead of a DOI.
 - [ ] Both URLs resolve in a private/incognito window: the GitHub repository and the Zenodo
       record (they must be genuinely public).
 - [ ] The Zenodo record contains the scripts **and** the saved `simulations/*.json` results.
-- [ ] The repository shows 99 files and the tag `v1.0.0`.
+- [ ] The repository shows 92 files and the tag `v1.0.0`.
 - [ ] `XXXXXXX` no longer appears in `paper/main.tex` or `simulations/build_test.py`.
 - [ ] `submission_TEST/main_test.pdf` was rebuilt after the DOI change and shows the DOI in
       the Declarations.
@@ -350,7 +349,7 @@ The manuscript's Declarations will state:
 
 > Code availability: The scripts that produce every table and figure, together with their saved
 > output and the verification scripts, are archived in a version-controlled repository and on
-> Zenodo: https://doi.org/10.5281/zenodo.XXXXXXX (repository:
+> Zenodo: https://doi.org/10.5281/zenodo.23175827 (repository:
 > https://github.com/CIKIXI/smoothed-check-loss-trap).
 
 `XXXXXXX` is a placeholder and **must be replaced before submission**; a placeholder is no
@@ -435,21 +434,15 @@ def main():
     # builds run from the release as well
     paper_out = os.path.join(OUT, "paper")
     os.makedirs(os.path.join(paper_out, "tables"), exist_ok=True)
-    os.makedirs(os.path.join(paper_out, "texclass"), exist_ok=True)
     os.makedirs(os.path.join(OUT, "figures"), exist_ok=True)
     os.makedirs(os.path.join(OUT, "test_template"), exist_ok=True)
-    for name in ("main.tex", "references.bib", "cover_letter.tex", "cover_letter_test.tex"):
+    for name in ("main.tex", "references.bib", "cover_letter_test.tex"):
         p = os.path.join(ROOT, "paper", name)
         if os.path.exists(p):
             shutil.copyfile(p, os.path.join(paper_out, name))
     for name in os.listdir(os.path.join(ROOT, "paper", "tables")):
         shutil.copyfile(os.path.join(ROOT, "paper", "tables", name),
                         os.path.join(paper_out, "tables", name))
-    for name in ("imsart.cls", "imsart.sty", "spr-ims-nameyear.bst", "spr-ims-number.bst",
-                 "grfext.sty", "textcase.sty"):
-        p = os.path.join(ROOT, "paper", "texclass", name)
-        if os.path.exists(p):
-            shutil.copyfile(p, os.path.join(paper_out, "texclass", name))
     for name in ("sn-jnl.cls", "sn-basic.bst"):
         p = os.path.join(ROOT, "test_template", name)
         if os.path.exists(p):

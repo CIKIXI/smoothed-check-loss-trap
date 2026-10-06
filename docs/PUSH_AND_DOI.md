@@ -28,7 +28,7 @@ repository on GitHub and minting the DOI.
    git push origin v1.0.0
    ```
 
-5. Check on GitHub: 99 files, and the tag `v1.0.0` listed under **Releases / Tags**.
+5. Check on GitHub: 92 files, and the tag `v1.0.0` listed under **Releases / Tags**.
 
 If the repository name or account differs, point the remote at the real one first:
 
@@ -72,7 +72,7 @@ keep only the repository link, run it with `none` instead of a DOI.
 - [ ] Both URLs resolve in a private/incognito window: the GitHub repository and the Zenodo
       record (they must be genuinely public).
 - [ ] The Zenodo record contains the scripts **and** the saved `simulations/*.json` results.
-- [ ] The repository shows 99 files and the tag `v1.0.0`.
+- [ ] The repository shows 92 files and the tag `v1.0.0`.
 - [ ] `XXXXXXX` no longer appears in `paper/main.tex` or `simulations/build_test.py`.
 - [ ] `submission_TEST/main_test.pdf` was rebuilt after the DOI change and shows the DOI in
       the Declarations.
