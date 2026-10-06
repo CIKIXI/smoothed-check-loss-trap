@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this code or these results, please cite the archived release."
+title: "Code and results for: The Smoothed-Check-Loss Trap: Why Convolution-Based Corrections Fail in Quantile Regression with Measurement Error"
+type: software
+authors:
+  - family-names: Cai
+    given-names: Kaixu
+    affiliation: "School of Mathematics and Statistics, Guangxi Normal University, Guilin, China"
+abstract: >-
+  Python code, saved results and verification scripts for a study of covariate measurement
+  error in quantile regression. Includes the exact population targets of the convolved,
+  naive and calibrated estimators; the low-dimensional scaling and high-dimensional
+  comparison studies; the coverage study for the calibrated estimator; the debiasing
+  experiments for p<n and p>n (including the known-calibration versus sample-covariance
+  plug-in comparison); the NHANES 2017-2018 application; and the scripts that generate every
+  table and vector figure of the manuscript.
+license: MIT
+version: "1.0.0"
+date-released: "2026-10-06"
+repository-code: "https://github.com/CIKIXI/smoothed-check-loss-trap"
+keywords:
+  - measurement error
+  - quantile regression
+  - regression calibration
+  - high-dimensional inference
+  - debiased inference
+  - reproducibility

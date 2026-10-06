@@ -1,0 +1,195 @@
+{
+ "meta": {
+  "n": 3649,
+  "p": 18,
+  "tau": 0.5,
+  "mean_reliability": 0.4171087307122772,
+  "n_sig_naive": 9,
+  "n_sig_debiased": 10,
+  "median_ratio": 0.15622964446325266,
+  "norm_diff": 31.963133712456273,
+  "norm_cal": 37.2493519970487,
+  "cond_x_full": 20736.514673814534,
+  "cond_full": 2913.1606725032584,
+  "cond_pruned": 585.3267021727252,
+  "n_dropped": 6,
+  "dropped": [
+   "moisture",
+   "mono fat",
+   "phosphorus",
+   "poly fat",
+   "potassium",
+   "total fat"
+  ],
+  "top_corr": [
+   0.9716075421732002,
+   0.9333564316030306,
+   0.9025164074755141
+  ],
+  "min_eig_x": -0.003227942794120989
+ },
+ "rows": [
+  {
+   "nutrient": "energy",
+   "reliability": 0.4490313620222011,
+   "naive": 3.2000124747987733,
+   "calibrated": 22.74871484448967,
+   "ci_lo": 7.179915423977286,
+   "ci_hi": 34.70285895855168,
+   "significant": true
+  },
+  {
+   "nutrient": "protein",
+   "reliability": 0.39700361089256464,
+   "naive": 1.2499022658134535,
+   "calibrated": 14.657132070986911,
+   "ci_lo": 3.029666510399837,
+   "ci_hi": 26.30322565190069,
+   "significant": true
+  },
+  {
+   "nutrient": "carbohydrate",
+   "reliability": 0.46185146926417503,
+   "naive": -1.6798103079776332,
+   "calibrated": -12.25340782923664,
+   "ci_lo": -23.274761487025003,
+   "ci_hi": -0.8980387893319612,
+   "significant": true
+  },
+  {
+   "nutrient": "total sugars",
+   "reliability": 0.4673045122150386,
+   "naive": 0.11237036506763427,
+   "calibrated": 0.3596563962288276,
+   "ci_lo": -4.739181707905185,
+   "ci_hi": 5.926770646156295,
+   "significant": false
+  },
+  {
+   "nutrient": "fibre",
+   "reliability": 0.4438356273817658,
+   "naive": -0.3012809155773894,
+   "calibrated": 0.8071173893088959,
+   "ci_lo": -3.147851436079015,
+   "ci_hi": 4.7604641857250956,
+   "significant": false
+  },
+  {
+   "nutrient": "saturated fat",
+   "reliability": 0.3983908713490642,
+   "naive": -0.6506397838479537,
+   "calibrated": -6.205855195030192,
+   "ci_lo": -11.739817093207957,
+   "ci_hi": 0.7136080909770959,
+   "significant": false
+  },
+  {
+   "nutrient": "cholesterol",
+   "reliability": 0.3332796401035208,
+   "naive": 0.024204023230502313,
+   "calibrated": -2.121658181549782,
+   "ci_lo": -5.095142023792878,
+   "ci_hi": 0.5189466306780552,
+   "significant": false
+  },
+  {
+   "nutrient": "sodium",
+   "reliability": 0.386246969878518,
+   "naive": 0.5739765147574,
+   "calibrated": -2.750277731388234,
+   "ci_lo": -8.890858587259437,
+   "ci_hi": 4.321321697926321,
+   "significant": false
+  },
+  {
+   "nutrient": "calcium",
+   "reliability": 0.39376447450302215,
+   "naive": 1.3855190485502065,
+   "calibrated": 8.578556746125816,
+   "ci_lo": 4.138382851725923,
+   "ci_hi": 11.95287954631872,
+   "significant": true
+  },
+  {
+   "nutrient": "magnesium",
+   "reliability": 0.48648607658217957,
+   "naive": -2.1390629716181797,
+   "calibrated": -10.283202142325807,
+   "ci_lo": -15.954095417325226,
+   "ci_hi": -4.275991110263975,
+   "significant": true
+  },
+  {
+   "nutrient": "iron",
+   "reliability": 0.39326044268617827,
+   "naive": 1.6100784655926499,
+   "calibrated": 6.814246785501435,
+   "ci_lo": 0.739053607927695,
+   "ci_hi": 12.701890242185666,
+   "significant": true
+  },
+  {
+   "nutrient": "zinc",
+   "reliability": 0.39384858640576215,
+   "naive": -2.051244631250513,
+   "calibrated": -13.588926861637193,
+   "ci_lo": -20.459130877076376,
+   "ci_hi": -4.631197712601251,
+   "significant": true
+  },
+  {
+   "nutrient": "vitamin C",
+   "reliability": 0.34096602009174765,
+   "naive": -0.14434308819299577,
+   "calibrated": -0.3706845180013369,
+   "ci_lo": -2.178716479880578,
+   "ci_hi": 1.5622889810556642,
+   "significant": false
+  },
+  {
+   "nutrient": "vitamin D",
+   "reliability": 0.31758466717145417,
+   "naive": -1.0664148423673507,
+   "calibrated": -2.837432225195762,
+   "ci_lo": -5.542018084981507,
+   "ci_hi": 0.24080543495777995,
+   "significant": false
+  },
+  {
+   "nutrient": "folate",
+   "reliability": 0.35971004015966795,
+   "naive": -1.4839908654354048,
+   "calibrated": -5.697191143579285,
+   "ci_lo": -10.80318435992938,
+   "ci_hi": -1.1603534891664946,
+   "significant": true
+  },
+  {
+   "nutrient": "vitamin B12",
+   "reliability": 0.36174111140772774,
+   "naive": 0.9266464937280527,
+   "calibrated": 0.9841732493739113,
+   "ci_lo": -2.657730866436392,
+   "ci_hi": 4.525636403631252,
+   "significant": false
+  },
+  {
+   "nutrient": "alcohol",
+   "reliability": 0.5192124594269066,
+   "naive": -0.322628396804912,
+   "calibrated": -1.24224601571958,
+   "ci_lo": -1.8025809007675255,
+   "ci_hi": -0.502367222241012,
+   "significant": true
+  },
+  {
+   "nutrient": "caffeine",
+   "reliability": 0.6044392112794954,
+   "naive": 0.022987451500651252,
+   "calibrated": 0.29465205504564496,
+   "ci_lo": 0.001171568303135806,
+   "ci_hi": 0.5934335068929155,
+   "significant": true
+  }
+ ]
+}

@@ -1,0 +1,362 @@
+[
+ {
+  "check": "rho_tilde(0.7,0.5,tau=0.5) = E_Z[rho_tau(r-sZ)]",
+  "passed": true,
+  "claimed": 0.3683340713542327,
+  "computed": 0.3682564395528841,
+  "tol": 0.003,
+  "detail": ""
+ },
+ {
+  "check": "rho_tilde(-1.3,0.8,tau=0.3) = E_Z[rho_tau(r-sZ)]",
+  "passed": true,
+  "claimed": 0.9275249512646826,
+  "computed": 0.9276349715591992,
+  "tol": 0.003,
+  "detail": ""
+ },
+ {
+  "check": "rho_tilde(2.0,0.4,tau=0.7) = E_Z[rho_tau(r-sZ)]",
+  "passed": true,
+  "claimed": 1.400000021384662,
+  "computed": 1.39993723901765,
+  "tol": 0.003,
+  "detail": ""
+ },
+ {
+  "check": "d/dr rho_tilde = Phi(r/s)-(1-tau)",
+  "passed": true,
+  "claimed": 0.1475074624530771,
+  "computed": 0.14750746146707794,
+  "tol": 1e-05,
+  "detail": ""
+ },
+ {
+  "check": "d^2/dr^2 rho_tilde = phi(r/s)/s",
+  "passed": true,
+  "claimed": 0.5324133425372538,
+  "computed": 0.5324133356410243,
+  "tol": 0.0001,
+  "detail": ""
+ },
+ {
+  "check": "tau=0.3, sigma=0.5: W-coordinate 1",
+  "passed": true,
+  "claimed": 0.15326437964224127,
+  "computed": 0.15312092509178865,
+  "tol": 0.002,
+  "detail": "d(sigma)=0.278663"
+ },
+ {
+  "check": "tau=0.3, sigma=0.5: W-coordinate 2",
+  "passed": true,
+  "claimed": 0.07802550236332283,
+  "computed": 0.07829972852355284,
+  "tol": 0.001,
+  "detail": ""
+ },
+ {
+  "check": "tau=0.3, sigma=0.5: E[X psi]=0",
+  "passed": true,
+  "claimed": 0.0,
+  "computed": 0.00018913773022555635,
+  "tol": 0.002,
+  "detail": ""
+ },
+ {
+  "check": "tau=0.3, sigma=1.0: W-coordinate 1",
+  "passed": true,
+  "claimed": 0.13029891861267487,
+  "computed": 0.13033356211537578,
+  "tol": 0.002,
+  "detail": "d(sigma)=0.236907"
+ },
+ {
+  "check": "tau=0.3, sigma=1.0: W-coordinate 2",
+  "passed": true,
+  "claimed": 0.06633399493008903,
+  "computed": 0.06628510692850627,
+  "tol": 0.001,
+  "detail": ""
+ },
+ {
+  "check": "tau=0.3, sigma=1.0: E[X psi]=0",
+  "passed": true,
+  "claimed": 0.0,
+  "computed": 6.429668807908497e-05,
+  "tol": 0.002,
+  "detail": ""
+ },
+ {
+  "check": "tau=0.5, sigma=0.5: W-coordinate 1",
+  "passed": true,
+  "claimed": 0.1287236386013781,
+  "computed": 0.12916886209127262,
+  "tol": 0.002,
+  "detail": "d(sigma)=0.234043"
+ },
+ {
+  "check": "tau=0.5, sigma=0.5: W-coordinate 2",
+  "passed": true,
+  "claimed": 0.0655320341970652,
+  "computed": 0.06531306497318051,
+  "tol": 0.001,
+  "detail": ""
+ },
+ {
+  "check": "tau=0.5, sigma=0.5: E[X psi]=0",
+  "passed": true,
+  "claimed": 0.0,
+  "computed": 0.000562357715033346,
+  "tol": 0.002,
+  "detail": ""
+ },
+ {
+  "check": "tau=0.5, sigma=1.0: W-coordinate 1",
+  "passed": true,
+  "claimed": 0.113345264245602,
+  "computed": 0.11325246571934044,
+  "tol": 0.002,
+  "detail": "d(sigma)=0.206082"
+ },
+ {
+  "check": "tau=0.5, sigma=1.0: W-coordinate 2",
+  "passed": true,
+  "claimed": 0.057703043615942834,
+  "computed": 0.05762302912520396,
+  "tol": 0.001,
+  "detail": ""
+ },
+ {
+  "check": "tau=0.5, sigma=1.0: E[X psi]=0",
+  "passed": true,
+  "claimed": 0.0,
+  "computed": 0.00010429166882503359,
+  "tol": 0.002,
+  "detail": ""
+ },
+ {
+  "check": "tau=0.7, sigma=0.5: W-coordinate 1",
+  "passed": true,
+  "claimed": 0.15326437964224127,
+  "computed": 0.1536045826927479,
+  "tol": 0.002,
+  "detail": "d(sigma)=0.278663"
+ },
+ {
+  "check": "tau=0.7, sigma=0.5: W-coordinate 2",
+  "passed": true,
+  "claimed": 0.07802550236332283,
+  "computed": 0.07841557318600104,
+  "tol": 0.001,
+  "detail": ""
+ },
+ {
+  "check": "tau=0.7, sigma=0.5: E[X psi]=0",
+  "passed": true,
+  "claimed": 0.0,
+  "computed": 0.0004100762772531945,
+  "tol": 0.002,
+  "detail": ""
+ },
+ {
+  "check": "tau=0.7, sigma=1.0: W-coordinate 1",
+  "passed": true,
+  "claimed": 0.13029891861267487,
+  "computed": 0.1304367039029202,
+  "tol": 0.002,
+  "detail": "d(sigma)=0.236907"
+ },
+ {
+  "check": "tau=0.7, sigma=1.0: W-coordinate 2",
+  "passed": true,
+  "claimed": 0.06633399493008903,
+  "computed": 0.06613713300890432,
+  "tol": 0.001,
+  "detail": ""
+ },
+ {
+  "check": "tau=0.7, sigma=1.0: E[X psi]=0",
+  "passed": true,
+  "claimed": 0.0,
+  "computed": 0.00015339912397620802,
+  "tol": 0.002,
+  "detail": ""
+ },
+ {
+  "check": "Laplace kernel (scale 0.7): coordinate 1",
+  "passed": false,
+  "claimed": 0.27508434297009454,
+  "computed": 0.11685802978375305,
+  "tol": 0.008,
+  "detail": "D_G=0.500153"
+ },
+ {
+  "check": "Laplace kernel (scale 0.7): coordinate 2",
+  "passed": false,
+  "claimed": 0.14004293823932087,
+  "computed": 0.0588387268429213,
+  "tol": 0.005,
+  "detail": ""
+ },
+ {
+  "check": "uniform kernel on [-1,1]: coordinate 1",
+  "passed": false,
+  "claimed": 0.27503299017952026,
+  "computed": 0.1263781211924257,
+  "tol": 0.008,
+  "detail": "D_G=0.500060"
+ },
+ {
+  "check": "uniform kernel on [-1,1]: coordinate 2",
+  "passed": false,
+  "claimed": 0.14001679500048303,
+  "computed": 0.06357010023033577,
+  "tol": 0.005,
+  "detail": ""
+ },
+ {
+  "check": "triangular kernel: coordinate 1",
+  "passed": false,
+  "claimed": 0.1844235530884962,
+  "computed": 0.0009604334910077455,
+  "tol": 0.008,
+  "detail": "D_G=0.335316"
+ },
+ {
+  "check": "triangular kernel: coordinate 2",
+  "passed": false,
+  "claimed": 0.09388835429959806,
+  "computed": 0.0002711926178704922,
+  "tol": 0.005,
+  "detail": ""
+ },
+ {
+  "check": "naive score, coordinate 1",
+  "passed": true,
+  "claimed": 0.13571018621906203,
+  "computed": 0.13568612292707005,
+  "tol": 0.004,
+  "detail": "d_naive=0.246746"
+ },
+ {
+  "check": "naive score, coordinate 2",
+  "passed": true,
+  "claimed": 0.06908882207515885,
+  "computed": 0.06890617398988731,
+  "tol": 0.003,
+  "detail": ""
+ },
+ {
+  "check": "adaptive gradient, coordinate 1",
+  "passed": true,
+  "claimed": 0.2326299584832015,
+  "computed": 0.2324454165563405,
+  "tol": 0.006,
+  "detail": "d_M=0.189902, s_M=1.2698"
+ },
+ {
+  "check": "adaptive gradient, coordinate 2",
+  "passed": true,
+  "claimed": 0.15287111557467525,
+  "computed": 0.15278425870465265,
+  "tol": 0.006,
+  "detail": ""
+ },
+ {
+  "check": "M = Sigma_u: gradient = 2 Sigma_u beta* d(sigma*)",
+  "passed": true,
+  "claimed": 0.21914200954955382,
+  "computed": 0.21914200954955382,
+  "tol": 1e-09,
+  "detail": ""
+ },
+ {
+  "check": "bias bound at sigma=0.3",
+  "passed": true,
+  "claimed": 0.14552462691695334,
+  "computed": 1.5,
+  "tol": 0.0,
+  "detail": ""
+ },
+ {
+  "check": "bias bound at sigma=0.5",
+  "passed": true,
+  "claimed": 0.23466349973207035,
+  "computed": 1.5,
+  "tol": 0.0,
+  "detail": ""
+ },
+ {
+  "check": "bias bound at sigma=0.8",
+  "passed": true,
+  "claimed": 0.34976669019997203,
+  "computed": 1.5,
+  "tol": 0.0,
+  "detail": ""
+ },
+ {
+  "check": "bias bound at sigma=1.0",
+  "passed": true,
+  "claimed": 0.41325737331425183,
+  "computed": 1.5,
+  "tol": 0.0,
+  "detail": ""
+ },
+ {
+  "check": "Remark 3.8: deviation below 0.4% for sigma_u <= 0.5",
+  "passed": false,
+  "claimed": 0.004,
+  "computed": 0.49875,
+  "tol": 0.004,
+  "detail": ""
+ },
+ {
+  "check": "Theorem 4.1: e uncorrelated with mu_W (and with mu_W^2)",
+  "passed": true,
+  "claimed": 0.0,
+  "computed": 0.0003860438523778574,
+  "tol": 0.005,
+  "detail": ""
+ },
+ {
+  "check": "Theorem 4.1: median of e constant across mu_W deciles",
+  "passed": false,
+  "claimed": 0.0,
+  "computed": 0.013410977143802905,
+  "tol": 0.01,
+  "detail": "overall median -0.0015"
+ },
+ {
+  "check": "sigma_u=0.3: population argmin equals beta_bar",
+  "passed": true,
+  "claimed": 1.8348623853211008,
+  "computed": 1.8344474345256108,
+  "tol": 0.002,
+  "detail": ""
+ },
+ {
+  "check": "sigma_u=0.5: population argmin equals beta_bar",
+  "passed": true,
+  "claimed": 1.6,
+  "computed": 1.6005395344276274,
+  "tol": 0.002,
+  "detail": ""
+ },
+ {
+  "check": "efficiency: predicted ratio > 1 (calibration costs variance)",
+  "passed": true,
+  "claimed": 1.0,
+  "computed": 5.098213880911024,
+  "tol": 0.0,
+  "detail": "qualitative check"
+ },
+ {
+  "check": "Hessian by finite differences of the smoothed score",
+  "passed": true,
+  "claimed": 0.20501729993692475,
+  "computed": 0.20501729954080714,
+  "tol": 0.02,
+  "detail": ""
+ }
+]

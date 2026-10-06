@@ -1,0 +1,77 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.35\baselineskip}
+\setlength{\emergencystretch}{1em}
+
+\begin{document}
+
+Kaixu Cai\\
+School of Mathematics and Statistics\\
+Guangxi Normal University\\
+Guilin 541006, China\\
+\texttt{1006282498@qq.com}
+
+\bigskip
+Dear Editor,
+
+I am submitting the manuscript ``The Smoothed-Check-Loss Trap: Why Convolution-Based
+Corrections Fail in Quantile Regression with Measurement Error'' for consideration as a
+research article in the \emph{Annals of Statistics}.
+
+The paper concerns quantile regression when the covariates are measured with classical
+additive error, $W=X+U$. Corrected scores and weighted corrections are available in fixed
+dimension, and penalised versions of them have been proposed for the case $p>n$ that motivates
+the literature. What has not been settled is the shortcut that is common in applied work all
+the same: convolve the check loss with the measurement error distribution and read the result
+as a corrected score. The first half of the paper shows that this shortcut cannot work, for the
+whole class of kernels rather than for one kernel or one bandwidth. For any kernel with
+positive density at zero the population score at the truth is $-(\Sigma_u\beta^*)d$; if the
+bandwidth is allowed to depend on $\beta$ through any $M\succeq0$ the score becomes
+$(\Sigma_u+M)\beta^*d_M$, which for the self-consistent choice $M=\Sigma_u$ is exactly twice
+the fixed-scale score. Under the Gaussian design the fixed-scale smoothed loss is minimised
+exactly at the attenuated value $\bar\beta=(\Sigma_x+\Sigma_u)^{-1}\Sigma_x\beta^*$, whatever
+the bandwidth, so smoothing changes the finite-sample behaviour but not the parameter being
+estimated. The smoothed and the naive estimator share that target.
+
+The second half gives the repair and the theory that comes with it. Conditioning on $W$
+(regression calibration) produces a regressor $\mu_W=CW$ such that
+$Y=\mu_W^\top\beta^*+e$, with $e$ independent of $\mu_W$ and with a constant conditional
+$\tau$-quantile, so an ordinary quantile regression of $Y$ on $(\mu_W,1)$ is correctly
+specified and its score is exactly mean-zero. That is what makes debiased inference available
+here and unavailable for the smoothed loss, whose score cannot be centred at any scale. I give
+$\ell_1$ oracle inequalities in $p>n$, first for a known calibration and then for an estimated
+one; the second case needs a perturbation bound for $\hat C$, a sup-norm bound for the score
+and a transfer of the restricted eigenvalue condition, and I state that row-wise accuracy of
+$\hat C$ is assumed rather than proved. I then prove that the debiased estimator is
+asymptotically normal with the oracle-calibration variance, under an explicit condition on the
+calibration: a known calibration meets it, the sample-covariance plug-in provably does not, and
+the simulations measure the coverage that costs. The method is applied to NHANES 2017--2018,
+where the measurement error covariance is estimated from two 24-hour dietary recalls rather
+than assumed, and where the correction changes the nutrient coefficients several times over.
+
+The two halves belong together: without the negative result the natural response to
+measurement error in a quantile regression is to smooth, and the estimand moves with no warning
+in the output. Readers working on measurement error, on high-dimensional quantile regression
+and on debiased inference should each find something here.
+
+The manuscript is original, is not under consideration elsewhere and has not been published
+before. I am the sole author and I approve the submission. There is no funding to acknowledge
+and no conflict of interest. All proofs are in the appendices, and every table and figure comes
+from the saved output of the scripts listed in Appendix~C, which can be supplied as
+supplementary material.
+
+Thank you for considering the paper.
+
+\medskip
+Sincerely,
+
+\medskip
+Kaixu Cai
+
+\end{document}

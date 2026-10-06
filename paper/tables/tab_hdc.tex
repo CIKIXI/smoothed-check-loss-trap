@@ -1,0 +1,16 @@
+\begin{table}[ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\caption{Estimated calibration in high dimensions ($n=400$, $p=500$, $s=10$, $\tau=0.5$, $R=30$ replications, banded $\Sigma_x$, $\hat\Sigma_x$ from thresholded Ledoit--Wolf shrinkage). $\hat\Ccal$ is computed from the estimated $\hat\Sigma_x$; the oracle column uses the true $\Ccal$. The sup-norm scores are evaluated at the truth, $\|n^{-1}\sum_i{\hat\muv}_i\psi_i\|_\infty$, with the theoretical scale $\sqrt{\log p/n} = 0.1246$.}
+\label{tab:hdc}
+\begin{tabular}{lccccc}
+\toprule
+$\sigma_u$ & $\|\hat\Ccal-\Ccal\|_2$ & naive & oracle $\Ccal$ & estimated $\hat\Ccal$ & sup-norm score (oracle / estimated) \\
+\midrule
+0.1 & 0.0051 & 0.822 & 0.816 & 0.815 & 0.0832 / 0.0831 \\
+0.3 & 0.0393 & 1.269 & 1.183 & 1.184 & 0.0793 / 0.0792 \\
+0.5 & 0.0882 & 1.808 & 1.545 & 1.564 & 0.0734 / 0.0732 \\
+\bottomrule
+\end{tabular}
+\end{table}

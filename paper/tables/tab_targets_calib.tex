@@ -1,0 +1,23 @@
+\begin{table}[ht]
+\centering
+\footnotesize
+\caption{Population targets of the calibration-based estimators (same designs as Table~\ref{tab:targets}). ``RC'' regresses $Y$ on $\muv=\Ccal W$; ``RC$+$int'' adds an intercept. Both recover $\betas$ within Monte-Carlo error, and the fitted intercept agrees with the predicted quantile shift $\delta_\tau$ of Theorem~\ref{thm:calib}. For reference the exact value $\betas=2$ and the oracle fit on the clean $X$ are shown.}
+\label{tab:targets_calib}
+\begin{tabular}{lcccccc}
+\toprule
+$\sigma_u$ & $\tau$ & RC & RC$+$int & fitted intercept & predicted $\delta_\tau$ & oracle \\
+\midrule
+0.1 & 0.3 & 1.998 & 1.998 & -0.0173 & -0.0166 & 1.998 \\
+0.1 & 0.5 & 2.002 & 2.002 & +0.0059 & +0.0001 & 2.001 \\
+0.1 & 0.7 & 1.999 & 1.999 & +0.0159 & +0.0170 & 1.999 \\
+\midrule
+0.3 & 0.3 & 1.997 & 1.997 & -0.1108 & -0.1110 & 1.997 \\
+0.3 & 0.5 & 2.005 & 2.005 & +0.0030 & +0.0004 & 2.001 \\
+0.3 & 0.7 & 1.999 & 2.001 & +0.1135 & +0.1118 & 1.998 \\
+\midrule
+0.5 & 0.3 & 2.000 & 2.003 & -0.2294 & -0.2293 & 2.000 \\
+0.5 & 0.5 & 1.996 & 1.996 & -0.0034 & -0.0010 & 2.003 \\
+0.5 & 0.7 & 2.002 & 2.003 & +0.2269 & +0.2286 & 2.000 \\
+\bottomrule
+\end{tabular}
+\end{table}

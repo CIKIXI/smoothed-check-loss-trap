@@ -1,0 +1,24 @@
+\begin{table}[ht]
+\centering
+\footnotesize
+\caption{Exact population targets of the estimators fitted on the raw $W$ (scalar case, $X\sim\cN(0,1)$, $N=2\times10^5$; each entry is the minimiser of a population objective, computed without an optimiser). $\betas=2$; $\bbar=\Sigma_x(\Sigma_x+\Sigma_u)^{-1}\betas$ is the attenuation target. By Proposition~\ref{prop:exact-target} the population minimiser is exactly $\bbar$ for naive quantile regression and for every fixed-scale smoothed loss, and exactly $(\Sigma_x+\Sigma_u+M)^{-1}\Sigma_x\betas$ for the adaptive scale with kernel $M$; the tabulated Monte-Carlo values agree with those exact values to within $0.006$, the largest deviation over the table (the posterior-kernel column is within $0.004$ of $\bbar$ (Proposition~\ref{prop:posterior-adaptive}). Column 5 uses the pilot scale $\sigmah$ from a calibrated Stage~1 (idealised: the true $\Sigma_x$ is used, which favours the smoothed method).}
+\label{tab:targets}
+\begin{tabular}{llcccccc}
+\toprule
+$\sigma_u$ & $\tau$ & $\bbar$ & smoothed & smoothed & smoothed & smoothed & naive \\
+ & & & (fixed $\sigma$) & (pilot $\sigmah$) & (adaptive) & (post.\ kernel) & \\
+\midrule
+0.1 & 0.3 & 1.980 & 1.979 & 1.979 & 1.960 & 1.979 & 1.978 \\
+0.1 & 0.5 & 1.980 & 1.982 & 1.982 & 1.963 & 1.982 & 1.982 \\
+0.1 & 0.7 & 1.980 & 1.979 & 1.979 & 1.960 & 1.980 & 1.979 \\
+\midrule
+0.3 & 0.3 & 1.835 & 1.831 & 1.831 & 1.692 & 1.832 & 1.832 \\
+0.3 & 0.5 & 1.835 & 1.840 & 1.840 & 1.699 & 1.839 & 1.840 \\
+0.3 & 0.7 & 1.835 & 1.834 & 1.834 & 1.693 & 1.832 & 1.834 \\
+\midrule
+0.5 & 0.3 & 1.600 & 1.599 & 1.599 & 1.333 & 1.599 & 1.600 \\
+0.5 & 0.5 & 1.600 & 1.600 & 1.599 & 1.333 & 1.599 & 1.597 \\
+0.5 & 0.7 & 1.600 & 1.601 & 1.601 & 1.334 & 1.600 & 1.602 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,13 @@
+{
+ "sigma_u": 0.5,
+ "tau": 0.5,
+ "beta_star": 2.0,
+ "beta_bar": 1.6,
+ "sigma_hat": 0.8,
+ "Sxw": 0.2,
+ "method": "quadrature",
+ "argmin_smoothed": 1.5999999770350124,
+ "argmin_true_risk": 1.9999998976366515,
+ "argmin_rc": 1.9999999999999998,
+ "argmin_control_posterior": 1.6000000003281345
+}

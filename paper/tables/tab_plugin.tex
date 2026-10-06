@@ -1,0 +1,25 @@
+\begin{table}[ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{What estimating the calibration costs, nominal $95\%$ intervals: coverage of the refitted and debiased estimator on the $s=5$ signal coordinates, with the calibration known (as everywhere else in this paper) and with the method-of-moments plug-in $\hat\Ccal=I-\Sigma_uS_W^{-1}$. The bias is the mean of $\hat b_j-\beta^*_j$ over signal coordinates and replications, the length is the mean interval length, and $r_n=\max_j\|(\hat\Ccal-\Ccal)_{j\cdot}\|_1$ is the row-wise calibration error. Panel A varies $\sigma_u$ at $n=400$, $p=40$, $R=200$; Panel B varies $p$ at the fixed ratio $n=4p$ ($\sigma_u=0.5$, $R=100$), where the known-calibration intervals stay at the nominal level while the plug-in intervals do not. Proposition~\ref{prop:plugin} says why the plug-in cannot close this gap: its row-wise error is of the order of the sample covariance's, which is the order at which the bias stops being negligible relative to the standard error.}
+\label{tab:plugin}
+\begin{tabular}{llccccc}
+\toprule
+& & & coverage & & mean & \\
+setting & calibration & coverage & s.e. & bias & length & $r_n$ \\
+\midrule
+\multicolumn{7}{l}{\emph{Panel A: $n=400$, $p=40$, $R=200$}}\\
+$\sigma_u=0.3$ & known $\Ccal$ & 0.981 & 0.004 & +0.002 & 0.615 & -- \\
+$\sigma_u=0.3$ & plug-in $\hat\Ccal$ & 0.970 & 0.006 & +0.032 & 0.632 & 0.222 \\
+$\sigma_u=0.5$ & known $\Ccal$ & 0.979 & 0.004 & +0.002 & 0.892 & -- \\
+$\sigma_u=0.5$ & plug-in $\hat\Ccal$ & 0.944 & 0.007 & +0.107 & 0.975 & 0.536 \\
+\midrule
+\multicolumn{7}{l}{\emph{Panel B: $n=4p$, $s=5$, $\sigma_u=0.5$, $R=100$}}\\
+$p=100$, $n=400$ & known $\Ccal$ & 0.984 & -- & -0.007 & 1.538 & -- \\
+$p=100$, $n=400$ & plug-in $\hat\Ccal$ & 0.728 & -- & +0.828 & 2.453 & 1.749 \\
+$p=200$, $n=800$ & known $\Ccal$ & 0.984 & -- & -0.001 & 1.310 & -- \\
+$p=200$, $n=800$ & plug-in $\hat\Ccal$ & 0.640 & -- & +0.826 & 2.023 & 2.275 \\
+\bottomrule
+\end{tabular}
+\end{table}

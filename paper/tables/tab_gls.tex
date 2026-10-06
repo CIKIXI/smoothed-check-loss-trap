@@ -1,0 +1,15 @@
+\begin{table}[ht]
+\centering
+\small
+\caption{Theoretical gain from combining quantile levels in the location-shift model: ratio of the GLS variance \eqref{eq:gls} to the variance of the single level $\tau=1/2$, computed from the closed form. The levels combined are $\{0.40,0.50,0.60\}$ (3), $\{0.35,0.40,\dots,0.65\}$ in steps of $0.05$ (7) and $\{0.1,0.2,\dots,0.9\}$ (9), each set containing $\tau=1/2$. A value of $1$ means combining levels recovers nothing.}
+\label{tab:gls}
+\begin{tabular}{lccc}
+\toprule
+error distribution & 3 levels & 7 levels & 9 levels \\
+\midrule
+Laplace & 1.0000 & 1.0000 & 1.0000 \\
+Gaussian & 0.8494 & 0.7977 & 0.6638 \\
+Uniform & 0.8000 & 0.7000 & 0.2000 \\
+\bottomrule
+\end{tabular}
+\end{table}

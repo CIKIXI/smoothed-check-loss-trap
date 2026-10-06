@@ -1,0 +1,24 @@
+\begin{table}[ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\caption{Debiased inference for the calibrated estimator, nominal $95\%$ intervals. Panel A ($n=400>p=40$, $R=200$): three intervals for the calibrated estimator, all counted on the $s=5$ signal coordinates: the penalised fit with its own sandwich interval (``$\ell_1$''), the one-step debiased interval \eqref{eq:debias} (``deb.''), and the interval obtained by refitting unpenalised quantile regression on the selected support and then debiasing (``refit$+$deb.''). The null coverage and the mean length in each row belong to the refit$+$deb.\ interval, as does the support column, which gives the mean number of coordinates selected, with the fraction of replications in which the selected set is exactly the true support in parentheses. Panel B ($n=200<p=250$, $R=50$): the plug-in Hessian is singular, so $\hat\Theta$ is built nodewise and the penalised estimator, which admits no usable interval, is omitted; the support column then also reports the mean number of missed signal coordinates.}
+\label{tab:debias}
+\begin{tabular}{lccccccc}
+\toprule
+& & \multicolumn{3}{c}{coverage, signal} & \multicolumn{2}{c}{refit$+$deb.} & \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-7}
+setting & $\lambda$ & $\ell_1$ & deb. & refit$+$deb. & null & length & support \\
+\midrule
+\multicolumn{8}{l}{\emph{Panel A: $n=400$, $p=40$, $R=200$, $\lambda_0=0.0960$}}\\
+$\sigma_u=0.3$ & 1$\times\lambda_0$ & 0.135 & 0.368 & \textbf{0.981} & 0.955 & 0.615 & 5.00 (0.995) \\
+$\sigma_u=0.3$ & 0.5$\times\lambda_0$ & 0.745 & 0.959 & \textbf{0.973} & 0.963 & 0.598 & 6.60 (0.195) \\
+$\sigma_u=0.5$ & 1$\times\lambda_0$ & 0.081 & 0.246 & \textbf{0.979} & 0.952 & 0.892 & 5.00 (0.995) \\
+$\sigma_u=0.5$ & 0.5$\times\lambda_0$ & 0.704 & 0.947 & \textbf{0.980} & 0.958 & 0.871 & 6.04 (0.360) \\
+\midrule
+\multicolumn{8}{l}{\emph{Panel B: $n=200$, $p=250$, $s=5$, $R=50$, $\sigma_u=0.5$, $\lambda_0=0.1662$; nodewise inverse}}\\
+refit$+$deb. & 0.6$\times\lambda_0$ & \multicolumn{3}{c}{\textbf{0.952}$\pm$0.016} & 0.949 & 0.948 & 5.20 (0.76, 0.04) \\
+refit$+$deb. & 0.4$\times\lambda_0$ & \multicolumn{3}{c}{\textbf{0.824}$\pm$0.024} & 0.959 & 0.815 & 12.62 (0.02, 0.00) \\
+\bottomrule
+\end{tabular}
+\end{table}

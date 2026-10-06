@@ -1,0 +1,2144 @@
+{
+ "rows": [
+  {
+   "key": "belloni2011l1",
+   "type": "article",
+   "submitted": {
+    "key": "belloni2011l1",
+    "type": "article",
+    "author": "Belloni, A. and Chernozhukov, V",
+    "title": "$ell_1$-penalized quantile regression in high-dimensional sparse models",
+    "journal": "The Annals of Statistics",
+    "volume": "39",
+    "number": "1",
+    "pages": "82-130",
+    "year": "2011",
+    "doi": "10.1214/10-AOS827"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "\u21131-penalized quantile regression in high-dimensional sparse models",
+    "container": "The Annals of Statistics",
+    "year": 2011,
+    "years": {
+     "issued": 2011,
+     "published-print": 2011,
+     "published-online": null,
+     "published": 2011,
+     "created": 2010,
+     "journal-issue.published-print": null
+    },
+    "volume": "39",
+    "issue": "1",
+    "page": null,
+    "first_author": "Belloni",
+    "doi": "10.1214/10-aos827",
+    "publisher": "Institute of Mathematical Statistics",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "\u21131-penalized quantile regression in high-dimensional sparse models",
+     "container": "The Annals of Statistics",
+     "year": 2011,
+     "years": {
+      "issued": 2011,
+      "published-print": 2011,
+      "published-online": null,
+      "published": 2011,
+      "created": 2010,
+      "journal-issue.published-print": null
+     },
+     "volume": "39",
+     "issue": "1",
+     "page": null,
+     "first_author": "Belloni",
+     "doi": "10.1214/10-aos827",
+     "publisher": "Institute of Mathematical Statistics",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "bickel2008",
+   "type": "article",
+   "submitted": {
+    "key": "bickel2008",
+    "type": "article",
+    "author": "Bickel, P. J. and Levina, E",
+    "title": "Regularized estimation of large covariance matrices",
+    "journal": "The Annals of Statistics",
+    "volume": "36",
+    "number": "1",
+    "pages": "199-227",
+    "year": "2008",
+    "doi": "10.1214/009053607000000758"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Regularized estimation of large covariance matrices",
+    "container": "The Annals of Statistics",
+    "year": 2008,
+    "years": {
+     "issued": 2008,
+     "published-print": 2008,
+     "published-online": null,
+     "published": 2008,
+     "created": 2008,
+     "journal-issue.published-print": null
+    },
+    "volume": "36",
+    "issue": "1",
+    "page": null,
+    "first_author": "Bickel",
+    "doi": "10.1214/009053607000000758",
+    "publisher": "Institute of Mathematical Statistics",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Regularized estimation of large covariance matrices",
+     "container": "The Annals of Statistics",
+     "year": 2008,
+     "years": {
+      "issued": 2008,
+      "published-print": 2008,
+      "published-online": null,
+      "published": 2008,
+      "created": 2008,
+      "journal-issue.published-print": null
+     },
+     "volume": "36",
+     "issue": "1",
+     "page": null,
+     "first_author": "Bickel",
+     "doi": "10.1214/009053607000000758",
+     "publisher": "Institute of Mathematical Statistics",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "bickel2009simultaneous",
+   "type": "article",
+   "submitted": {
+    "key": "bickel2009simultaneous",
+    "type": "article",
+    "author": "Bickel, P. J. and Ritov, Y. and Tsybakov, A. B",
+    "title": "Simultaneous analysis of Lasso and Dantzig selector",
+    "journal": "The Annals of Statistics",
+    "volume": "37",
+    "number": "4",
+    "pages": "1705-1732",
+    "year": "2009",
+    "doi": "10.1214/08-AOS620"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Simultaneous analysis of Lasso and Dantzig selector",
+    "container": "The Annals of Statistics",
+    "year": 2009,
+    "years": {
+     "issued": 2009,
+     "published-print": 2009,
+     "published-online": null,
+     "published": 2009,
+     "created": 2009,
+     "journal-issue.published-print": null
+    },
+    "volume": "37",
+    "issue": "4",
+    "page": null,
+    "first_author": "Bickel",
+    "doi": "10.1214/08-aos620",
+    "publisher": "Institute of Mathematical Statistics",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Simultaneous analysis of Lasso and Dantzig selector",
+     "container": "The Annals of Statistics",
+     "year": 2009,
+     "years": {
+      "issued": 2009,
+      "published-print": 2009,
+      "published-online": null,
+      "published": 2009,
+      "created": 2009,
+      "journal-issue.published-print": null
+     },
+     "volume": "37",
+     "issue": "4",
+     "page": null,
+     "first_author": "Bickel",
+     "doi": "10.1214/08-aos620",
+     "publisher": "Institute of Mathematical Statistics",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "bradic2017uniform",
+   "type": "misc",
+   "submitted": {
+    "key": "bradic2017uniform",
+    "type": "misc",
+    "author": "Bradic, J. and Kolar, M",
+    "title": "Uniform inference for high-dimensional quantile regression: Linear functionals and regression rank scores",
+    "howpublished": "arXiv:1702.06209 [math.ST]",
+    "year": "2017",
+    "note": "Preprint"
+   },
+   "route": "arXiv API id_list",
+   "matched": {
+    "title": "Uniform Inference for High-dimensional Quantile Regression: Linear Functionals and Regression Rank Scores",
+    "container": "arXiv preprint",
+    "year": 2017,
+    "years": {},
+    "volume": null,
+    "issue": null,
+    "page": null,
+    "first_author": null,
+    "doi": null,
+    "publisher": null,
+    "type": "preprint"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "Medium",
+   "evidence": {
+    "crossref_query": {
+     "score": 0.0,
+     "n_items": 0,
+     "error": "HTTP 400",
+     "restricted": false
+    },
+    "dblp_query": {
+     "score": 0.0,
+     "n_hits": 0,
+     "error": "HTTP 429"
+    },
+    "openalex_query": {
+     "score": 0.0,
+     "n_items": 0,
+     "error": "HTTP 429"
+    },
+    "arxiv_query": {
+     "score": 0.716,
+     "error": null
+    },
+    "arxiv_id_check": {
+     "id": "1702.06209",
+     "ok": true,
+     "title": "Uniform Inference for High-dimensional Quantile Regression: Linear Functionals and Regression Rank Scores",
+     "year": 2017
+    },
+    "arxiv_url": "https://arxiv.org/abs/1702.06209"
+   },
+   "cited": true
+  },
+  {
+   "key": "buhlmann2011statistics",
+   "type": "book",
+   "submitted": {
+    "key": "buhlmann2011statistics",
+    "type": "book",
+    "author": "B\\\"uhlmann, P. and van de Geer, S",
+    "title": "Statistics for High-Dimensional Data: Methods, Theory and Applications",
+    "publisher": "Springer",
+    "year": "2011",
+    "doi": "10.1007/978-3-642-20192-9"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Statistics for High-Dimensional Data",
+    "container": "Springer Series in Statistics",
+    "year": 2011,
+    "years": {
+     "issued": 2011,
+     "published-print": 2011,
+     "published-online": null,
+     "published": 2011,
+     "created": 2011,
+     "journal-issue.published-print": null
+    },
+    "volume": null,
+    "issue": null,
+    "page": null,
+    "first_author": "B\u00fchlmann",
+    "doi": "10.1007/978-3-642-20192-9",
+    "publisher": "Springer Berlin Heidelberg",
+    "type": "book"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Statistics for High-Dimensional Data",
+     "container": "Springer Series in Statistics",
+     "year": 2011,
+     "years": {
+      "issued": 2011,
+      "published-print": 2011,
+      "published-online": null,
+      "published": 2011,
+      "created": 2011,
+      "journal-issue.published-print": null
+     },
+     "volume": null,
+     "issue": null,
+     "page": null,
+     "first_author": "B\u00fchlmann",
+     "doi": "10.1007/978-3-642-20192-9",
+     "publisher": "Springer Berlin Heidelberg",
+     "type": "book"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "carroll2006measurement",
+   "type": "book",
+   "submitted": {
+    "key": "carroll2006measurement",
+    "type": "book",
+    "author": "Carroll, R. J. and Ruppert, D. and Stefanski, L. A. and Crainiceanu, C. M",
+    "title": "Measurement Error in Nonlinear Models: A Modern Perspective",
+    "edition": "2nd",
+    "publisher": "Chapman \\& Hall/CRC",
+    "year": "2006",
+    "doi": "10.1201/9781420010138"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Measurement Error in Nonlinear Models",
+    "container": "",
+    "year": 2006,
+    "years": {
+     "issued": 2006,
+     "published-print": null,
+     "published-online": 2006,
+     "published": 2006,
+     "created": 2010,
+     "journal-issue.published-print": null
+    },
+    "volume": null,
+    "issue": null,
+    "page": null,
+    "first_author": "Carroll",
+    "doi": "10.1201/9781420010138",
+    "publisher": "Chapman and Hall/CRC",
+    "type": "book"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Measurement Error in Nonlinear Models",
+     "container": "",
+     "year": 2006,
+     "years": {
+      "issued": 2006,
+      "published-print": null,
+      "published-online": 2006,
+      "published": 2006,
+      "created": 2010,
+      "journal-issue.published-print": null
+     },
+     "volume": null,
+     "issue": null,
+     "page": null,
+     "first_author": "Carroll",
+     "doi": "10.1201/9781420010138",
+     "publisher": "Chapman and Hall/CRC",
+     "type": "book"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "datta2017cocolasso",
+   "type": "article",
+   "submitted": {
+    "key": "datta2017cocolasso",
+    "type": "article",
+    "author": "Datta, A. and Zou, H",
+    "title": "CoCoLasso for high-dimensional error-in-variables regression",
+    "journal": "The Annals of Statistics",
+    "volume": "45",
+    "number": "6",
+    "pages": "2400-2426",
+    "year": "2017",
+    "doi": "10.1214/16-AOS1527"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "CoCoLasso for high-dimensional error-in-variables regression",
+    "container": "The Annals of Statistics",
+    "year": 2017,
+    "years": {
+     "issued": 2017,
+     "published-print": 2017,
+     "published-online": null,
+     "published": 2017,
+     "created": 2017,
+     "journal-issue.published-print": null
+    },
+    "volume": "45",
+    "issue": "6",
+    "page": null,
+    "first_author": "Datta",
+    "doi": "10.1214/16-aos1527",
+    "publisher": "Institute of Mathematical Statistics",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "CoCoLasso for high-dimensional error-in-variables regression",
+     "container": "The Annals of Statistics",
+     "year": 2017,
+     "years": {
+      "issued": 2017,
+      "published-print": 2017,
+      "published-online": null,
+      "published": 2017,
+      "created": 2017,
+      "journal-issue.published-print": null
+     },
+     "volume": "45",
+     "issue": "6",
+     "page": null,
+     "first_author": "Datta",
+     "doi": "10.1214/16-aos1527",
+     "publisher": "Institute of Mathematical Statistics",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "fernandes2021smoothing",
+   "type": "article",
+   "submitted": {
+    "key": "fernandes2021smoothing",
+    "type": "article",
+    "author": "Fernandes, M. and Guerre, E. and Horta, E",
+    "title": "Smoothing quantile regressions",
+    "journal": "Journal of Business \\& Economic Statistics",
+    "volume": "39",
+    "number": "1",
+    "pages": "338-357",
+    "year": "2021",
+    "doi": "10.1080/07350015.2019.1660177"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Smoothing Quantile Regressions",
+    "container": "Journal of Business &amp; Economic Statistics",
+    "year": 2019,
+    "years": {
+     "issued": 2019,
+     "published-print": 2021,
+     "published-online": 2019,
+     "published": 2019,
+     "created": 2019,
+     "journal-issue.published-print": 2021
+    },
+    "volume": "39",
+    "issue": "1",
+    "page": "338-357",
+    "first_author": "Fernandes",
+    "doi": "10.1080/07350015.2019.1660177",
+    "publisher": "Informa UK Limited",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [
+    "year 2021 = the print/issue year; the identifier's `issued' date is 2019 (online first)"
+   ],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Smoothing Quantile Regressions",
+     "container": "Journal of Business &amp; Economic Statistics",
+     "year": 2019,
+     "years": {
+      "issued": 2019,
+      "published-print": 2021,
+      "published-online": 2019,
+      "published": 2019,
+      "created": 2019,
+      "journal-issue.published-print": 2021
+     },
+     "volume": "39",
+     "issue": "1",
+     "page": "338-357",
+     "first_author": "Fernandes",
+     "doi": "10.1080/07350015.2019.1660177",
+     "publisher": "Informa UK Limited",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "fuller1987",
+   "type": "book",
+   "submitted": {
+    "key": "fuller1987",
+    "type": "book",
+    "author": "Fuller, W. A",
+    "title": "Measurement Error Models",
+    "publisher": "Wiley",
+    "year": "1987",
+    "doi": "10.1002/9780470316665"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Measurement Error Models",
+    "container": "Wiley Series in Probability and Statistics",
+    "year": 1987,
+    "years": {
+     "issued": 1987,
+     "published-print": 1987,
+     "published-online": 2008,
+     "published": 1987,
+     "created": 2008,
+     "journal-issue.published-print": null
+    },
+    "volume": null,
+    "issue": null,
+    "page": null,
+    "first_author": "Fuller",
+    "doi": "10.1002/9780470316665",
+    "publisher": "Wiley",
+    "type": "monograph"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Measurement Error Models",
+     "container": "Wiley Series in Probability and Statistics",
+     "year": 1987,
+     "years": {
+      "issued": 1987,
+      "published-print": 1987,
+      "published-online": 2008,
+      "published": 1987,
+      "created": 2008,
+      "journal-issue.published-print": null
+     },
+     "volume": null,
+     "issue": null,
+     "page": null,
+     "first_author": "Fuller",
+     "doi": "10.1002/9780470316665",
+     "publisher": "Wiley",
+     "type": "monograph"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "gryparis2009measurement",
+   "type": "article",
+   "submitted": {
+    "key": "gryparis2009measurement",
+    "type": "article",
+    "author": "Gryparis, A. and Paciorek, C. J. and Zeka, A. and Schwartz, J. and Coull, B. A",
+    "title": "Measurement error caused by spatial misalignment in environmental epidemiology",
+    "journal": "Biostatistics",
+    "volume": "10",
+    "number": "2",
+    "pages": "258-274",
+    "year": "2009",
+    "doi": "10.1093/biostatistics/kxn033"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Measurement error caused by spatial misalignment in environmental epidemiology",
+    "container": "Biostatistics",
+    "year": 2008,
+    "years": {
+     "issued": 2008,
+     "published-print": 2009,
+     "published-online": 2008,
+     "published": 2008,
+     "created": 2008,
+     "journal-issue.published-print": 2009
+    },
+    "volume": "10",
+    "issue": "2",
+    "page": "258-274",
+    "first_author": "Gryparis",
+    "doi": "10.1093/biostatistics/kxn033",
+    "publisher": "Oxford University Press (OUP)",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [
+    "year 2009 = the print/issue year; the identifier's `issued' date is 2008 (online first)",
+    "PubMed 18927119: Biostatistics (Oxford, England) 2009;10(2):258-74"
+   ],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Measurement error caused by spatial misalignment in environmental epidemiology",
+     "container": "Biostatistics",
+     "year": 2008,
+     "years": {
+      "issued": 2008,
+      "published-print": 2009,
+      "published-online": 2008,
+      "published": 2008,
+      "created": 2008,
+      "journal-issue.published-print": 2009
+     },
+     "volume": "10",
+     "issue": "2",
+     "page": "258-274",
+     "first_author": "Gryparis",
+     "doi": "10.1093/biostatistics/kxn033",
+     "publisher": "Oxford University Press (OUP)",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "title": "Measurement error caused by spatial misalignment in environmental epidemiology.",
+     "journal": "Biostatistics (Oxford, England)",
+     "year": "2009",
+     "volume": "10",
+     "issue": "2",
+     "pages": "258-74",
+     "pmid": "18927119"
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "he2000quantile",
+   "type": "article",
+   "submitted": {
+    "key": "he2000quantile",
+    "type": "article",
+    "author": "He, X. and Liang, H",
+    "title": "Quantile regression estimates for a class of linear and partially linear errors-in-variables models",
+    "journal": "Statistica Sinica",
+    "volume": "10",
+    "pages": "129-140",
+    "year": "2000"
+   },
+   "route": "publisher PDF (Statistica Sinica archive)",
+   "matched": {
+    "title": "Quantile regression estimates for a class of linear and partially linear errors-in-variables models",
+    "container": "Statistica Sinica",
+    "year": 2000,
+    "years": {},
+    "volume": "10",
+    "issue": null,
+    "page": "129-140",
+    "first_author": "He",
+    "doi": null,
+    "publisher": null,
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "Medium",
+   "evidence": {
+    "crossref_query": {
+     "score": 0.0,
+     "n_items": 0,
+     "error": "HTTP 400",
+     "restricted": true
+    },
+    "manual_evidence": {
+     "route": "publisher PDF (Statistica Sinica archive)",
+     "url": "https://www3.stat.sinica.edu.tw/statistica/oldpdf/A10n16.pdf",
+     "quote": "Statistica Sinica 10(2000), 129-140 | QUANTILE REGRESSION ESTIMATES FOR A CLASS OF LINEAR AND PARTIALLY LINEAR ERRORS-IN-VARIABLES MODELS | Xuming He and Hua Liang"
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "he2023smoothed",
+   "type": "article",
+   "submitted": {
+    "key": "he2023smoothed",
+    "type": "article",
+    "author": "He, X. and Pan, X. and Tan, K. M. and Zhou, W.-X",
+    "title": "Smoothed quantile regression with large-scale inference",
+    "journal": "Journal of Econometrics",
+    "volume": "232",
+    "number": "2",
+    "pages": "367-388",
+    "year": "2023",
+    "doi": "10.1016/j.jeconom.2021.07.010"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Smoothed quantile regression with large-scale inference",
+    "container": "Journal of Econometrics",
+    "year": 2023,
+    "years": {
+     "issued": 2023,
+     "published-print": 2023,
+     "published-online": null,
+     "published": 2023,
+     "created": 2021,
+     "journal-issue.published-print": 2023
+    },
+    "volume": "232",
+    "issue": "2",
+    "page": "367-388",
+    "first_author": "He",
+    "doi": "10.1016/j.jeconom.2021.07.010",
+    "publisher": "Elsevier BV",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [
+    "PubMed 36776480: Journal of econometrics 2023;232(2):367-388"
+   ],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Smoothed quantile regression with large-scale inference",
+     "container": "Journal of Econometrics",
+     "year": 2023,
+     "years": {
+      "issued": 2023,
+      "published-print": 2023,
+      "published-online": null,
+      "published": 2023,
+      "created": 2021,
+      "journal-issue.published-print": 2023
+     },
+     "volume": "232",
+     "issue": "2",
+     "page": "367-388",
+     "first_author": "He",
+     "doi": "10.1016/j.jeconom.2021.07.010",
+     "publisher": "Elsevier BV",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "title": "Smoothed Quantile Regression with Large-Scale Inference.",
+     "journal": "Journal of econometrics",
+     "year": "2023",
+     "volume": "232",
+     "issue": "2",
+     "pages": "367-388",
+     "pmid": "36776480"
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "javanmard2014hypothesis",
+   "type": "article",
+   "submitted": {
+    "key": "javanmard2014hypothesis",
+    "type": "article",
+    "author": "Javanmard, A. and Montanari, A",
+    "title": "Hypothesis testing in high-dimensional regression under the Gaussian random design model: Asymptotic theory",
+    "journal": "IEEE Transactions on Information Theory",
+    "volume": "60",
+    "number": "10",
+    "pages": "6522-6554",
+    "year": "2014",
+    "doi": "10.1109/TIT.2014.2343629"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Hypothesis Testing in High-Dimensional Regression Under the Gaussian Random Design Model: Asymptotic Theory",
+    "container": "IEEE Transactions on Information Theory",
+    "year": 2014,
+    "years": {
+     "issued": 2014,
+     "published-print": 2014,
+     "published-online": null,
+     "published": 2014,
+     "created": 2014,
+     "journal-issue.published-print": null
+    },
+    "volume": "60",
+    "issue": "10",
+    "page": "6522-6554",
+    "first_author": "Javanmard",
+    "doi": "10.1109/tit.2014.2343629",
+    "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Hypothesis Testing in High-Dimensional Regression Under the Gaussian Random Design Model: Asymptotic Theory",
+     "container": "IEEE Transactions on Information Theory",
+     "year": 2014,
+     "years": {
+      "issued": 2014,
+      "published-print": 2014,
+      "published-online": null,
+      "published": 2014,
+      "created": 2014,
+      "journal-issue.published-print": null
+     },
+     "volume": "60",
+     "issue": "10",
+     "page": "6522-6554",
+     "first_author": "Javanmard",
+     "doi": "10.1109/tit.2014.2343629",
+     "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "koenker1978",
+   "type": "article",
+   "submitted": {
+    "key": "koenker1978",
+    "type": "article",
+    "author": "Koenker, R. and Bassett, G",
+    "title": "Regression quantiles",
+    "journal": "Econometrica",
+    "volume": "46",
+    "number": "1",
+    "pages": "33-50",
+    "year": "1978",
+    "doi": "10.2307/1913643"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Regression Quantiles",
+    "container": "Econometrica",
+    "year": 1978,
+    "years": {
+     "issued": 1978,
+     "published-print": 1978,
+     "published-online": null,
+     "published": 1978,
+     "created": 2006,
+     "journal-issue.published-print": 1978
+    },
+    "volume": "46",
+    "issue": "1",
+    "page": "33",
+    "first_author": "Koenker",
+    "doi": "10.2307/1913643",
+    "publisher": "JSTOR",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [
+    "page 33-50 refines 33"
+   ],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Regression Quantiles",
+     "container": "Econometrica",
+     "year": 1978,
+     "years": {
+      "issued": 1978,
+      "published-print": 1978,
+      "published-online": null,
+      "published": 1978,
+      "created": 2006,
+      "journal-issue.published-print": 1978
+     },
+     "volume": "46",
+     "issue": "1",
+     "page": "33",
+     "first_author": "Koenker",
+     "doi": "10.2307/1913643",
+     "publisher": "JSTOR",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "ledoit2004",
+   "type": "article",
+   "submitted": {
+    "key": "ledoit2004",
+    "type": "article",
+    "author": "Ledoit, O. and Wolf, M",
+    "title": "A well-conditioned estimator for large-dimensional covariance matrices",
+    "journal": "Journal of Multivariate Analysis",
+    "volume": "88",
+    "number": "2",
+    "pages": "365-411",
+    "year": "2004",
+    "doi": "10.1016/S0047-259X(03)00096-4"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "A well-conditioned estimator for large-dimensional covariance matrices",
+    "container": "Journal of Multivariate Analysis",
+    "year": 2004,
+    "years": {
+     "issued": 2004,
+     "published-print": 2004,
+     "published-online": null,
+     "published": 2004,
+     "created": 2003,
+     "journal-issue.published-print": 2004
+    },
+    "volume": "88",
+    "issue": "2",
+    "page": "365-411",
+    "first_author": "Ledoit",
+    "doi": "10.1016/s0047-259x(03)00096-4",
+    "publisher": "Elsevier BV",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "A well-conditioned estimator for large-dimensional covariance matrices",
+     "container": "Journal of Multivariate Analysis",
+     "year": 2004,
+     "years": {
+      "issued": 2004,
+      "published-print": 2004,
+      "published-online": null,
+      "published": 2004,
+      "created": 2003,
+      "journal-issue.published-print": 2004
+     },
+     "volume": "88",
+     "issue": "2",
+     "page": "365-411",
+     "first_author": "Ledoit",
+     "doi": "10.1016/s0047-259x(03)00096-4",
+     "publisher": "Elsevier BV",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "loh2012highdim",
+   "type": "article",
+   "submitted": {
+    "key": "loh2012highdim",
+    "type": "article",
+    "author": "Loh, P.-L. and Wainwright, M. J",
+    "title": "High-dimensional regression with noisy and missing data: Provable guarantees with nonconvexity",
+    "journal": "The Annals of Statistics",
+    "volume": "40",
+    "number": "3",
+    "pages": "1633-1664",
+    "year": "2012",
+    "doi": "10.1214/12-AOS1018"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "High-dimensional regression with noisy and missing data: Provable guarantees with nonconvexity",
+    "container": "The Annals of Statistics",
+    "year": 2012,
+    "years": {
+     "issued": 2012,
+     "published-print": 2012,
+     "published-online": null,
+     "published": 2012,
+     "created": 2012,
+     "journal-issue.published-print": null
+    },
+    "volume": "40",
+    "issue": "3",
+    "page": null,
+    "first_author": "Loh",
+    "doi": "10.1214/12-aos1018",
+    "publisher": "Institute of Mathematical Statistics",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "High-dimensional regression with noisy and missing data: Provable guarantees with nonconvexity",
+     "container": "The Annals of Statistics",
+     "year": 2012,
+     "years": {
+      "issued": 2012,
+      "published-print": 2012,
+      "published-online": null,
+      "published": 2012,
+      "created": 2012,
+      "journal-issue.published-print": null
+     },
+     "volume": "40",
+     "issue": "3",
+     "page": null,
+     "first_author": "Loh",
+     "doi": "10.1214/12-aos1018",
+     "publisher": "Institute of Mathematical Statistics",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "nakamura1990",
+   "type": "article",
+   "submitted": {
+    "key": "nakamura1990",
+    "type": "article",
+    "author": "Nakamura, T",
+    "title": "Corrected score function for errors-in-variables models: Methodology and application to generalized linear models",
+    "journal": "Biometrika",
+    "volume": "77",
+    "number": "1",
+    "pages": "127-137",
+    "year": "1990",
+    "doi": "10.1093/biomet/77.1.127"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Corrected score function for errors-in-variables models: Methodology and application to generalized linear models",
+    "container": "Biometrika",
+    "year": 1990,
+    "years": {
+     "issued": 1990,
+     "published-print": 1990,
+     "published-online": null,
+     "published": 1990,
+     "created": 2007,
+     "journal-issue.published-print": 1990
+    },
+    "volume": "77",
+    "issue": "1",
+    "page": "127-137",
+    "first_author": "NAKAMURA",
+    "doi": "10.1093/biomet/77.1.127",
+    "publisher": "Oxford University Press (OUP)",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Corrected score function for errors-in-variables models: Methodology and application to generalized linear models",
+     "container": "Biometrika",
+     "year": 1990,
+     "years": {
+      "issued": 1990,
+      "published-print": 1990,
+      "published-online": null,
+      "published": 1990,
+      "created": 2007,
+      "journal-issue.published-print": 1990
+     },
+     "volume": "77",
+     "issue": "1",
+     "page": "127-137",
+     "first_author": "NAKAMURA",
+     "doi": "10.1093/biomet/77.1.127",
+     "publisher": "Oxford University Press (OUP)",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "negahban2012unified",
+   "type": "article",
+   "submitted": {
+    "key": "negahban2012unified",
+    "type": "article",
+    "author": "Negahban, S. N. and Ravikumar, P. and Wainwright, M. J. and Yu, B",
+    "title": "A unified framework for high-dimensional analysis of $M$-estimators with decomposable regularizers",
+    "journal": "Statistical Science",
+    "volume": "27",
+    "number": "4",
+    "pages": "538-557",
+    "year": "2012",
+    "doi": "10.1214/12-STS400"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "A Unified Framework for High-Dimensional Analysis of $M$-Estimators with Decomposable Regularizers",
+    "container": "Statistical Science",
+    "year": 2012,
+    "years": {
+     "issued": 2012,
+     "published-print": 2012,
+     "published-online": null,
+     "published": 2012,
+     "created": 2012,
+     "journal-issue.published-print": null
+    },
+    "volume": "27",
+    "issue": "4",
+    "page": null,
+    "first_author": "Negahban",
+    "doi": "10.1214/12-sts400",
+    "publisher": "Institute of Mathematical Statistics",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "A Unified Framework for High-Dimensional Analysis of $M$-Estimators with Decomposable Regularizers",
+     "container": "Statistical Science",
+     "year": 2012,
+     "years": {
+      "issued": 2012,
+      "published-print": 2012,
+      "published-online": null,
+      "published": 2012,
+      "created": 2012,
+      "journal-issue.published-print": null
+     },
+     "volume": "27",
+     "issue": "4",
+     "page": null,
+     "first_author": "Negahban",
+     "doi": "10.1214/12-sts400",
+     "publisher": "Institute of Mathematical Statistics",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "noble2017",
+   "type": "article",
+   "submitted": {
+    "key": "noble2017",
+    "type": "article",
+    "author": "Noble, S. and Spann, M. N. and Tokoglu, F. and Shen, X. and Constable, R. T. and Scheinost, D",
+    "title": "Influences on the test-retest reliability of functional connectivity MRI and its relationship with behavioral utility",
+    "journal": "Cerebral Cortex",
+    "volume": "27",
+    "number": "11",
+    "pages": "5415-5429",
+    "year": "2017",
+    "doi": "10.1093/cercor/bhx230"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Influences on the Test\u2013Retest Reliability of Functional Connectivity MRI and its Relationship with Behavioral Utility",
+    "container": "Cerebral Cortex",
+    "year": 2017,
+    "years": {
+     "issued": 2017,
+     "published-print": 2017,
+     "published-online": 2017,
+     "published": 2017,
+     "created": 2017,
+     "journal-issue.published-print": 2017
+    },
+    "volume": "27",
+    "issue": "11",
+    "page": "5415-5429",
+    "first_author": "Noble",
+    "doi": "10.1093/cercor/bhx230",
+    "publisher": "Oxford University Press (OUP)",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [
+    "PubMed 28968754: Cerebral cortex (New York, N.Y. : 1991) 2017;27(11):5415-5429"
+   ],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Influences on the Test\u2013Retest Reliability of Functional Connectivity MRI and its Relationship with Behavioral Utility",
+     "container": "Cerebral Cortex",
+     "year": 2017,
+     "years": {
+      "issued": 2017,
+      "published-print": 2017,
+      "published-online": 2017,
+      "published": 2017,
+      "created": 2017,
+      "journal-issue.published-print": 2017
+     },
+     "volume": "27",
+     "issue": "11",
+     "page": "5415-5429",
+     "first_author": "Noble",
+     "doi": "10.1093/cercor/bhx230",
+     "publisher": "Oxford University Press (OUP)",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "title": "Influences on the Test-Retest Reliability of Functional Connectivity MRI and its Relationship with Behavioral Utility.",
+     "journal": "Cerebral cortex (New York, N.Y. : 1991)",
+     "year": "2017",
+     "volume": "27",
+     "issue": "11",
+     "pages": "5415-5429",
+     "pmid": "28968754"
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "politis1999subsampling",
+   "type": "book",
+   "submitted": {
+    "key": "politis1999subsampling",
+    "type": "book",
+    "author": "Politis, D. N. and Romano, J. P. and Wolf, M",
+    "title": "Subsampling",
+    "publisher": "Springer",
+    "year": "1999",
+    "doi": "10.1007/978-1-4612-1554-7"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Subsampling",
+    "container": "Springer Series in Statistics",
+    "year": 1999,
+    "years": {
+     "issued": 1999,
+     "published-print": 1999,
+     "published-online": null,
+     "published": 1999,
+     "created": 2011,
+     "journal-issue.published-print": null
+    },
+    "volume": null,
+    "issue": null,
+    "page": null,
+    "first_author": "Politis",
+    "doi": "10.1007/978-1-4612-1554-7",
+    "publisher": "Springer New York",
+    "type": "book"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Subsampling",
+     "container": "Springer Series in Statistics",
+     "year": 1999,
+     "years": {
+      "issued": 1999,
+      "published-print": 1999,
+      "published-online": null,
+      "published": 1999,
+      "created": 2011,
+      "journal-issue.published-print": null
+     },
+     "volume": null,
+     "issue": null,
+     "page": null,
+     "first_author": "Politis",
+     "doi": "10.1007/978-1-4612-1554-7",
+     "publisher": "Springer New York",
+     "type": "book"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "pollard1991",
+   "type": "article",
+   "submitted": {
+    "key": "pollard1991",
+    "type": "article",
+    "author": "Pollard, D",
+    "title": "Asymptotics for least absolute deviation regression estimators",
+    "journal": "Econometric Theory",
+    "volume": "7",
+    "number": "2",
+    "pages": "186-199",
+    "year": "1991",
+    "doi": "10.1017/S0266466600004394"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Asymptotics for Least Absolute Deviation Regression Estimators",
+    "container": "Econometric Theory",
+    "year": 1991,
+    "years": {
+     "issued": 1991,
+     "published-print": 1991,
+     "published-online": 2009,
+     "published": 1991,
+     "created": 2009,
+     "journal-issue.published-print": 1991
+    },
+    "volume": "7",
+    "issue": "2",
+    "page": "186-199",
+    "first_author": "Pollard",
+    "doi": "10.1017/s0266466600004394",
+    "publisher": "Cambridge University Press (CUP)",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Asymptotics for Least Absolute Deviation Regression Estimators",
+     "container": "Econometric Theory",
+     "year": 1991,
+     "years": {
+      "issued": 1991,
+      "published-print": 1991,
+      "published-online": 2009,
+      "published": 1991,
+      "created": 2009,
+      "journal-issue.published-print": 1991
+     },
+     "volume": "7",
+     "issue": "2",
+     "page": "186-199",
+     "first_author": "Pollard",
+     "doi": "10.1017/s0266466600004394",
+     "publisher": "Cambridge University Press (CUP)",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "romano2019conformalized",
+   "type": "inproceedings",
+   "submitted": {
+    "key": "romano2019conformalized",
+    "type": "inproceedings",
+    "author": "Romano, Y. and Patterson, E. and Cand\\`es, E",
+    "title": "Conformalized quantile regression",
+    "booktitle": "Advances in Neural Information Processing Systems 32 (NeurIPS 2019)",
+    "year": "2019"
+   },
+   "route": "NeurIPS 2019 proceedings index (papers.nips.cc)",
+   "matched": {
+    "title": "Conformalized quantile regression",
+    "container": "Advances in Neural Information Processing Systems 32",
+    "year": 2019,
+    "years": {},
+    "volume": null,
+    "issue": null,
+    "page": null,
+    "first_author": "Romano",
+    "doi": null,
+    "publisher": null,
+    "type": "proceedings-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "Medium",
+   "evidence": {
+    "crossref_query": {
+     "score": 0.0,
+     "n_items": 0,
+     "error": "HTTP 400",
+     "restricted": false
+    },
+    "manual_evidence": {
+     "route": "NeurIPS 2019 proceedings index (papers.nips.cc)",
+     "url": "https://papers.nips.cc/paper_files/paper/2019/hash/5103c3584b063c431bd1268e9b5e76fb-Abstract.html",
+     "quote": "Conformalized Quantile Regression, Advances in Neural Information Processing Systems 32 (2019), Romano, Patterson and Candes"
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "rosenbaum2010",
+   "type": "article",
+   "submitted": {
+    "key": "rosenbaum2010",
+    "type": "article",
+    "author": "Rosenbaum, M. and Tsybakov, A. B",
+    "title": "Sparse recovery under matrix uncertainty",
+    "journal": "The Annals of Statistics",
+    "volume": "38",
+    "number": "5",
+    "pages": "2620-2651",
+    "year": "2010",
+    "doi": "10.1214/10-AOS793"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Sparse recovery under matrix uncertainty",
+    "container": "The Annals of Statistics",
+    "year": 2010,
+    "years": {
+     "issued": 2010,
+     "published-print": 2010,
+     "published-online": null,
+     "published": 2010,
+     "created": 2010,
+     "journal-issue.published-print": null
+    },
+    "volume": "38",
+    "issue": "5",
+    "page": null,
+    "first_author": "Rosenbaum",
+    "doi": "10.1214/10-aos793",
+    "publisher": "Institute of Mathematical Statistics",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Sparse recovery under matrix uncertainty",
+     "container": "The Annals of Statistics",
+     "year": 2010,
+     "years": {
+      "issued": 2010,
+      "published-print": 2010,
+      "published-online": null,
+      "published": 2010,
+      "created": 2010,
+      "journal-issue.published-print": null
+     },
+     "volume": "38",
+     "issue": "5",
+     "page": null,
+     "first_author": "Rosenbaum",
+     "doi": "10.1214/10-aos793",
+     "publisher": "Institute of Mathematical Statistics",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "stefanski1989",
+   "type": "article",
+   "submitted": {
+    "key": "stefanski1989",
+    "type": "article",
+    "author": "Stefanski, L. A",
+    "title": "Unbiased estimation of a nonlinear function of a normal mean with application to measurement error models",
+    "journal": "Communications in Statistics - Theory and Methods",
+    "volume": "18",
+    "number": "12",
+    "pages": "4335-4358",
+    "year": "1989",
+    "doi": "10.1080/03610928908830159"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Unbiased estimation of a nonlinear function a normal mean with application to measurement err oorf models",
+    "container": "Communications in Statistics - Theory and Methods",
+    "year": 1989,
+    "years": {
+     "issued": 1989,
+     "published-print": 1989,
+     "published-online": null,
+     "published": 1989,
+     "created": 2007,
+     "journal-issue.published-print": 1989
+    },
+    "volume": "18",
+    "issue": "12",
+    "page": "4335-4358",
+    "first_author": "Stefanski",
+    "doi": "10.1080/03610928908830159",
+    "publisher": "Informa UK Limited",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Unbiased estimation of a nonlinear function a normal mean with application to measurement err oorf models",
+     "container": "Communications in Statistics - Theory and Methods",
+     "year": 1989,
+     "years": {
+      "issued": 1989,
+      "published-print": 1989,
+      "published-online": null,
+      "published": 1989,
+      "created": 2007,
+      "journal-issue.published-print": 1989
+     },
+     "volume": "18",
+     "issue": "12",
+     "page": "4335-4358",
+     "first_author": "Stefanski",
+     "doi": "10.1080/03610928908830159",
+     "publisher": "Informa UK Limited",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "stefanski1995simulation",
+   "type": "article",
+   "submitted": {
+    "key": "stefanski1995simulation",
+    "type": "article",
+    "author": "Stefanski, L. A. and Cook, J. R",
+    "title": "Simulation-extrapolation: The measurement error jackknife",
+    "journal": "Journal of the American Statistical Association",
+    "volume": "90",
+    "number": "432",
+    "pages": "1247-1256",
+    "year": "1995",
+    "doi": "10.1080/01621459.1995.10476629"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Simulation-Extrapolation: The Measurement Error Jackknife",
+    "container": "Journal of the American Statistical Association",
+    "year": 1995,
+    "years": {
+     "issued": 1995,
+     "published-print": 1995,
+     "published-online": null,
+     "published": 1995,
+     "created": 2012,
+     "journal-issue.published-print": 1995
+    },
+    "volume": "90",
+    "issue": "432",
+    "page": "1247-1256",
+    "first_author": "Stefanski",
+    "doi": "10.1080/01621459.1995.10476629",
+    "publisher": "Informa UK Limited",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Simulation-Extrapolation: The Measurement Error Jackknife",
+     "container": "Journal of the American Statistical Association",
+     "year": 1995,
+     "years": {
+      "issued": 1995,
+      "published-print": 1995,
+      "published-online": null,
+      "published": 1995,
+      "created": 2012,
+      "journal-issue.published-print": 1995
+     },
+     "volume": "90",
+     "issue": "432",
+     "page": "1247-1256",
+     "first_author": "Stefanski",
+     "doi": "10.1080/01621459.1995.10476629",
+     "publisher": "Informa UK Limited",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "vandegeer2014asymptotically",
+   "type": "article",
+   "submitted": {
+    "key": "vandegeer2014asymptotically",
+    "type": "article",
+    "author": "van de Geer, S. and B\\\"uhlmann, P. and Ritov, Y. and Dezeure, R",
+    "title": "On asymptotically optimal confidence regions and tests for high-dimensional models",
+    "journal": "The Annals of Statistics",
+    "volume": "42",
+    "number": "3",
+    "pages": "1166-1202",
+    "year": "2014",
+    "doi": "10.1214/14-AOS1221"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "On asymptotically optimal confidence regions and tests for high-dimensional models",
+    "container": "The Annals of Statistics",
+    "year": 2014,
+    "years": {
+     "issued": 2014,
+     "published-print": 2014,
+     "published-online": null,
+     "published": 2014,
+     "created": 2014,
+     "journal-issue.published-print": null
+    },
+    "volume": "42",
+    "issue": "3",
+    "page": null,
+    "first_author": "van de Geer",
+    "doi": "10.1214/14-aos1221",
+    "publisher": "Institute of Mathematical Statistics",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "On asymptotically optimal confidence regions and tests for high-dimensional models",
+     "container": "The Annals of Statistics",
+     "year": 2014,
+     "years": {
+      "issued": 2014,
+      "published-print": 2014,
+      "published-online": null,
+      "published": 2014,
+      "created": 2014,
+      "journal-issue.published-print": null
+     },
+     "volume": "42",
+     "issue": "3",
+     "page": null,
+     "first_author": "van de Geer",
+     "doi": "10.1214/14-aos1221",
+     "publisher": "Institute of Mathematical Statistics",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "wang2012",
+   "type": "article",
+   "submitted": {
+    "key": "wang2012",
+    "type": "article",
+    "author": "Wang, L. and Wu, Y. and Li, R",
+    "title": "Quantile regression for analyzing heterogeneity in ultra-high dimension",
+    "journal": "Journal of the American Statistical Association",
+    "volume": "107",
+    "number": "497",
+    "pages": "214-222",
+    "year": "2012",
+    "doi": "10.1080/01621459.2012.656014"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Quantile Regression for Analyzing Heterogeneity in Ultra-High Dimension",
+    "container": "Journal of the American Statistical Association",
+    "year": 2012,
+    "years": {
+     "issued": 2012,
+     "published-print": 2012,
+     "published-online": null,
+     "published": 2012,
+     "created": 2012,
+     "journal-issue.published-print": 2012
+    },
+    "volume": "107",
+    "issue": "497",
+    "page": "214-222",
+    "first_author": "Wang",
+    "doi": "10.1080/01621459.2012.656014",
+    "publisher": "Informa UK Limited",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [
+    "PubMed 23082036: Journal of the American Statistical Association 2012;107(497):214-222"
+   ],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Quantile Regression for Analyzing Heterogeneity in Ultra-High Dimension",
+     "container": "Journal of the American Statistical Association",
+     "year": 2012,
+     "years": {
+      "issued": 2012,
+      "published-print": 2012,
+      "published-online": null,
+      "published": 2012,
+      "created": 2012,
+      "journal-issue.published-print": 2012
+     },
+     "volume": "107",
+     "issue": "497",
+     "page": "214-222",
+     "first_author": "Wang",
+     "doi": "10.1080/01621459.2012.656014",
+     "publisher": "Informa UK Limited",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "title": "Quantile Regression for Analyzing Heterogeneity in Ultra-high Dimension.",
+     "journal": "Journal of the American Statistical Association",
+     "year": "2012",
+     "volume": "107",
+     "issue": "497",
+     "pages": "214-222",
+     "pmid": "23082036"
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "wang2012correctedloss",
+   "type": "article",
+   "submitted": {
+    "key": "wang2012correctedloss",
+    "type": "article",
+    "author": "Wang, H. J. and Stefanski, L. A. and Zhu, Z",
+    "title": "Corrected-loss estimation for quantile regression with covariate measurement errors",
+    "journal": "Biometrika",
+    "volume": "99",
+    "number": "2",
+    "pages": "405-421",
+    "year": "2012",
+    "doi": "10.1093/biomet/ass005"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Corrected-loss estimation for quantile regression with covariate measurement errors",
+    "container": "Biometrika",
+    "year": 2012,
+    "years": {
+     "issued": 2012,
+     "published-print": 2012,
+     "published-online": 2012,
+     "published": 2012,
+     "created": 2012,
+     "journal-issue.published-print": 2012
+    },
+    "volume": "99",
+    "issue": "2",
+    "page": "405-421",
+    "first_author": "Wang",
+    "doi": "10.1093/biomet/ass005",
+    "publisher": "Oxford University Press (OUP)",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [
+    "PubMed 23843665: Biometrika 2012;99(2):405-421"
+   ],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Corrected-loss estimation for quantile regression with covariate measurement errors",
+     "container": "Biometrika",
+     "year": 2012,
+     "years": {
+      "issued": 2012,
+      "published-print": 2012,
+      "published-online": 2012,
+      "published": 2012,
+      "created": 2012,
+      "journal-issue.published-print": 2012
+     },
+     "volume": "99",
+     "issue": "2",
+     "page": "405-421",
+     "first_author": "Wang",
+     "doi": "10.1093/biomet/ass005",
+     "publisher": "Oxford University Press (OUP)",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "title": "Corrected-loss estimation for quantile regression with covariate measurement errors.",
+     "journal": "Biometrika",
+     "year": "2012",
+     "volume": "99",
+     "issue": "2",
+     "pages": "405-421",
+     "pmid": "23843665"
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "wei2009quantile",
+   "type": "article",
+   "submitted": {
+    "key": "wei2009quantile",
+    "type": "article",
+    "author": "Wei, Y. and Carroll, R. J",
+    "title": "Quantile regression with measurement error",
+    "journal": "Journal of the American Statistical Association",
+    "volume": "104",
+    "number": "487",
+    "pages": "1129-1143",
+    "year": "2009",
+    "doi": "10.1198/jasa.2009.tm08420"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Quantile Regression With Measurement Error",
+    "container": "Journal of the American Statistical Association",
+    "year": 2009,
+    "years": {
+     "issued": 2009,
+     "published-print": 2009,
+     "published-online": null,
+     "published": 2009,
+     "created": 2009,
+     "journal-issue.published-print": 2009
+    },
+    "volume": "104",
+    "issue": "487",
+    "page": "1129-1143",
+    "first_author": "Wei",
+    "doi": "10.1198/jasa.2009.tm08420",
+    "publisher": "Informa UK Limited",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [
+    "PubMed 20305802: Journal of the American Statistical Association 2009;104(487):1129-1143"
+   ],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Quantile Regression With Measurement Error",
+     "container": "Journal of the American Statistical Association",
+     "year": 2009,
+     "years": {
+      "issued": 2009,
+      "published-print": 2009,
+      "published-online": null,
+      "published": 2009,
+      "created": 2009,
+      "journal-issue.published-print": 2009
+     },
+     "volume": "104",
+     "issue": "487",
+     "page": "1129-1143",
+     "first_author": "Wei",
+     "doi": "10.1198/jasa.2009.tm08420",
+     "publisher": "Informa UK Limited",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "title": "Quantile Regression With Measurement Error.",
+     "journal": "Journal of the American Statistical Association",
+     "year": "2009",
+     "volume": "104",
+     "issue": "487",
+     "pages": "1129-1143",
+     "pmid": "20305802"
+    }
+   },
+   "cited": true
+  },
+  {
+   "key": "zhang2014confidence",
+   "type": "article",
+   "submitted": {
+    "key": "zhang2014confidence",
+    "type": "article",
+    "author": "Zhang, C.-H. and Zhang, S. S",
+    "title": "Confidence intervals for low dimensional parameters in high dimensional linear models",
+    "journal": "Journal of the Royal Statistical Society: Series B (Statistical Methodology)",
+    "volume": "76",
+    "number": "1",
+    "pages": "217-242",
+    "year": "2014",
+    "doi": "10.1111/rssb.12026"
+   },
+   "route": "Crossref DOI metadata",
+   "matched": {
+    "title": "Confidence Intervals for Low Dimensional Parameters in High Dimensional Linear Models",
+    "container": "Journal of the Royal Statistical Society Series B: Statistical Methodology",
+    "year": 2013,
+    "years": {
+     "issued": 2013,
+     "published-print": 2014,
+     "published-online": 2013,
+     "published": 2013,
+     "created": 2013,
+     "journal-issue.published-print": 2014
+    },
+    "volume": "76",
+    "issue": "1",
+    "page": "217-242",
+    "first_author": "Zhang",
+    "doi": "10.1111/rssb.12026",
+    "publisher": "Oxford University Press (OUP)",
+    "type": "journal-article"
+   },
+   "flags": [],
+   "notes": [
+    "year 2014 = the print/issue year; the identifier's `issued' date is 2013 (online first)"
+   ],
+   "match_quality": "Exact",
+   "status": "Verified",
+   "confidence": "High",
+   "evidence": {
+    "crossref_doi": {
+     "ok": true
+    },
+    "crossref": {
+     "title": "Confidence Intervals for Low Dimensional Parameters in High Dimensional Linear Models",
+     "container": "Journal of the Royal Statistical Society Series B: Statistical Methodology",
+     "year": 2013,
+     "years": {
+      "issued": 2013,
+      "published-print": 2014,
+      "published-online": 2013,
+      "published": 2013,
+      "created": 2013,
+      "journal-issue.published-print": 2014
+     },
+     "volume": "76",
+     "issue": "1",
+     "page": "217-242",
+     "first_author": "Zhang",
+     "doi": "10.1111/rssb.12026",
+     "publisher": "Oxford University Press (OUP)",
+     "type": "journal-article"
+    },
+    "pubmed": {
+     "error": null,
+     "ids": 0
+    }
+   },
+   "cited": true
+  }
+ ],
+ "duplicates": [],
+ "missing_keys": [],
+ "uncited_keys": [],
+ "dois_found": {}
+}

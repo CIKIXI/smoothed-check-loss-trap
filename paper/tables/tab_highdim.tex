@@ -1,0 +1,21 @@
+\begin{table}[ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\caption{High-dimensional comparison ($n=400$, $p=500$, $s=10$, $\tau=1/2$, $\lambda=0.02$, $R=30$, fixed $\betas$): median $\ell_2$ error against $\betas$, IQR in parentheses. ``smoothed'' is the two-stage smoothed estimator, following the published algorithm of that method as reimplemented in the code accompanying this paper; ``naive'', ``RC'' and ``oracle'' are exact linear-programming quantile regressions on $W$, on the calibrated $\muv=\Ccal W$, and on the clean $X$. The error is variance-dominated here, so the smoothed estimator is competitive in $\ell_2$ although it targets $\bbar$; its distance to $\bbar$, reported beneath each block, stays bounded away from zero.}
+\label{tab:highdim}
+\begin{tabular}{lcccc}
+\toprule
+$\sigma_u$ & smoothed & naive & RC & oracle \\
+\midrule
+0.1 & 0.734 (0.703, 0.789) & 0.892 (0.863, 0.960) & 0.878 (0.848, 0.944) & 0.746 (0.734, 0.779) \\
+\multicolumn{5}{l}{\quad smoothed: $\norm{\bbar-\betas}_2=0.062$, $\norm{\hat\beta-\bbar}_2=0.713$} \\
+\midrule
+0.3 & 1.236 (1.172, 1.354) & 1.639 (1.551, 1.746) & 1.514 (1.443, 1.592) & 0.746 (0.734, 0.779) \\
+\multicolumn{5}{l}{\quad smoothed: $\norm{\bbar-\betas}_2=0.517$, $\norm{\hat\beta-\bbar}_2=1.088$} \\
+\midrule
+0.5 & 1.830 (1.731, 1.933) & 2.493 (2.384, 2.645) & 2.097 (2.025, 2.153) & 0.746 (0.734, 0.779) \\
+\multicolumn{5}{l}{\quad smoothed: $\norm{\bbar-\betas}_2=1.253$, $\norm{\hat\beta-\bbar}_2=1.530$} \\
+\bottomrule
+\end{tabular}
+\end{table}

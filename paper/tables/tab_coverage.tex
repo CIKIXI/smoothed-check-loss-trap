@@ -1,0 +1,25 @@
+\begin{table}[ht]
+\centering
+\small
+\caption{Coverage of nominal $90\%$ and $95\%$ Wald intervals ($\sigma_u=0.5$, $\betas=2$, $\bbar=1.6$, 400 replications). Intervals use the sandwich covariance of Theorem~\ref{thm:lowdim} for the calibrated estimator and the corresponding smoothed-score covariance for the smoothed estimator. The calibrated intervals cover $\betas$ at close to the nominal rate; the smoothed intervals are equally well calibrated, but for $\bbar$, and cover $\betas$ essentially never.}
+\label{tab:coverage}
+\begin{tabular}{cccccc}
+\toprule
+& & \multicolumn{2}{c}{calibrated, target $\betas$} & \multicolumn{2}{c}{smoothed, $95\%$} \\
+$\tau$ & $n$ & $90\%$ & $95\%$ & covers $\betas$ & covers $\bbar$ \\
+\midrule
+0.3 & 500 & 0.920 & 0.953 & 0.000 & 0.958 \\
+0.3 & 1000 & 0.902 & 0.943 & 0.000 & 0.955 \\
+0.3 & 2000 & 0.897 & 0.932 & 0.000 & 0.940 \\
+0.3 & 4000 & 0.892 & 0.948 & 0.000 & 0.948 \\
+0.5 & 500 & 0.890 & 0.945 & 0.000 & 0.945 \\
+0.5 & 1000 & 0.902 & 0.970 & 0.000 & 0.953 \\
+0.5 & 2000 & 0.912 & 0.950 & 0.000 & 0.925 \\
+0.5 & 4000 & 0.925 & 0.968 & 0.000 & 0.968 \\
+0.7 & 500 & 0.897 & 0.945 & 0.000 & 0.950 \\
+0.7 & 1000 & 0.932 & 0.973 & 0.000 & 0.955 \\
+0.7 & 2000 & 0.920 & 0.963 & 0.000 & 0.945 \\
+0.7 & 4000 & 0.912 & 0.960 & 0.000 & 0.945 \\
+\bottomrule
+\end{tabular}
+\end{table}

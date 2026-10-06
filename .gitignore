@@ -1,0 +1,29 @@
+# Python ---------------------------------------------------------------------
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Data downloads --------------------------------------------------------------
+# The four NHANES files are public and are fetched by the reader (Section 5 of the
+# README).  They are 23 MB in total and are deliberately not committed.
+data/nhanes/*.xpt
+
+# LaTeX build products --------------------------------------------------------
+# Only relevant if a manuscript copy is built inside this repository.
+*.aux
+*.log
+*.blg
+*.bbl
+*.out
+*.toc
+*.synctex.gz
+
+# OS / editor -----------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+*.swp
+.vscode/
+.idea/

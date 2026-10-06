@@ -1,0 +1,21 @@
+\begin{table}[ht]
+\centering
+\small
+\caption{Population score at the truth, $\E[W_{i1}\psit(r_i^*,\sigma^*)]$ (smoothed loss, with $\sigma=\sigma^*$) and $\E[{\muv}_{i1}(\tau-\ind{e_i<\delta_\tau})]$ (calibrated, check loss), estimated from $N=4\times10^5$ observations. The last column is the analytic prediction $-(\Sigma_u\betas)_1 d(\sigma^*)$ of Theorem~\ref{thm:score}. The smoothed score is non-zero with $t$-statistics in the tens to hundreds; the calibrated score is indistinguishable from zero.}
+\label{tab:score}
+\begin{tabular}{ccccccc}
+\toprule
+$\sigma_u$ & $\tau$ & $\E[W_{i1}\psit]$ & s.e. & $t$ & analytic & $\E[{\muv}_{i1}\psi]$ ($t$) \\
+\midrule
+0.1 & 0.3 & -0.01286 & 0.00060 & -21.3 & -0.01283 & -0.00002 (-0.0) \\
+0.1 & 0.5 & -0.00782 & 0.00072 & -10.9 & -0.00808 & +0.00016 (+0.2) \\
+0.1 & 0.7 & -0.01340 & 0.00060 & -22.2 & -0.01284 & -0.00056 (-0.8) \\
+0.3 & 0.3 & -0.06453 & 0.00056 & -115.9 & -0.06527 & +0.00108 (+1.5) \\
+0.3 & 0.5 & -0.04960 & 0.00064 & -76.9 & -0.05110 & +0.00098 (+1.3) \\
+0.3 & 0.7 & -0.06510 & 0.00056 & -116.9 & -0.06528 & +0.00087 (+1.2) \\
+0.5 & 0.3 & -0.12329 & 0.00059 & -210.2 & -0.12402 & +0.00068 (+1.0) \\
+0.5 & 0.5 & -0.10763 & 0.00063 & -172.1 & -0.10690 & -0.00018 (-0.3) \\
+0.5 & 0.7 & -0.12252 & 0.00058 & -210.0 & -0.12403 & +0.00070 (+1.0) \\
+\bottomrule
+\end{tabular}
+\end{table}

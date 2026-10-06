@@ -1,0 +1,70 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.35\baselineskip}
+\setlength{\emergencystretch}{1em}
+
+\begin{document}
+
+Kaixu Cai\\
+School of Mathematics and Statistics\\
+Guangxi Normal University\\
+Guilin 541006, China\\
+\texttt{1006282498@qq.com}
+
+\bigskip
+Dear Editors,
+
+I am submitting the manuscript ``The Smoothed-Check-Loss Trap: Why Convolution-Based
+Corrections Fail in Quantile Regression with Measurement Error'' for consideration as an
+original research paper in TEST.
+
+The paper concerns quantile regression when the covariates are measured with classical
+additive error, $W=X+U$. Corrected scores and conditional estimating equations are available
+in fixed dimension, and penalised versions of them have been proposed for the case $p>n$. What
+has not been settled is the shortcut that is common in applied work all the same: convolve the
+check loss with the measurement error distribution and read the result as a corrected score.
+The first half of the paper shows that this shortcut cannot work, and for the whole class of
+kernels rather than for one kernel or one bandwidth. For any kernel with positive density at
+zero the population score at the truth is $-(\Sigma_u\beta^*)d$; if the bandwidth is allowed to
+depend on $\beta$ through any $M\succeq0$ the score becomes $(\Sigma_u+M)\beta^*d_M$, which for
+the self-consistent choice $M=\Sigma_u$ is exactly twice the fixed-scale score. Under a
+Gaussian design the smoothed loss is minimised exactly at the attenuated value
+$\bar\beta=(\Sigma_x+\Sigma_u)^{-1}\Sigma_x\beta^*$, whatever the bandwidth, so the smoothed and
+the naive estimator share their limit. The second half gives the repair. Conditioning on $W$
+produces a calibrated regressor $\mu_W=CW$ under which an ordinary quantile regression is
+correctly specified and its score is exactly mean-zero, so penalised estimation and debiased
+inference become available. I give $\ell_1$ oracle inequalities in $p>n$, first for a known and
+then for an estimated calibration; I prove that the debiased estimator is asymptotically normal
+with the oracle-calibration variance under an explicit condition on the calibration; and I show
+that the sample-covariance plug-in provably does not meet that condition, with the resulting
+coverage loss measured in the simulations.
+
+I believe the paper suits TEST. The contribution is theoretical, but each result is tied to a
+practice: the negative half explains why a convenient implementation moves the estimand without
+warning in the output, and the positive half is a methodology that a practitioner can run, with
+the $\ell_1$ theory and the debiased intervals that go with it. The simulations and the
+application to NHANES 2017--2018, where the measurement error covariance is estimated from two
+24-hour dietary recalls rather than assumed, show the correction changing nutrient
+coefficients severalfold. All tables and figures in the paper are produced by the scripts
+listed in the reproducibility appendix, which are self-contained and can be supplied as
+supplementary material.
+
+The manuscript is original, is not under consideration elsewhere and has not been published
+before. I am the sole author and I approve the submission. There is no funding to acknowledge
+and no competing interests. All proofs are in the appendices.
+
+Thank you for considering the paper.
+
+\medskip
+Sincerely,
+
+\medskip
+Kaixu Cai
+
+\end{document}
