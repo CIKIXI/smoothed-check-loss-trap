@@ -51,6 +51,7 @@ requirements.txt    Python packages
 | Figures 1-3 | `simulations/routeA_figures.py` | seconds, vector PDF |
 | all LaTeX tables | `simulations/routeA_tables.py` | seconds, reads the JSON results |
 | the numeric audit | `simulations/consistency_audit.py` | ~1 min |
+| the layout (overfull boxes, page alignment, page-top indents) | `review/layout_check.py`, `review/page_top_indent.py` | seconds |
 | the manuscript | `simulations/build_test.py --si all` (TEST layout and supplement) | ~1 min |
 
 Every experiment writes its raw output to `simulations/*.json`; those files are committed, so
